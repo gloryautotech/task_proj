@@ -143,8 +143,6 @@ let deleteUserNameById = (req, res) => {
 
 //login check
 let loginCheck = (req, res) => {
-    var v = req.params.userId;
-    console.log(v)
     console.log("username", req.body.username)
     console.log("constat",constants.constants.HTTP_SUCCESS)
     userDataModel.find({ $or: [{ 'email': req.body.username }, { 'phone': req.body.username }] },async(err, result) => {

@@ -15,7 +15,7 @@ function App() {
 		<Router>
 		  <Switch>	   
 			<Route exact path='/' component={LoginPage}/>
-			<Route exact path='/otpVerify' component={OtpVerify}/>
+			{/* <Route exact path='/otpVerify' component={OtpVerify}/> */}
 			<Route exact path='/Home' component={Home}/>
 		  </Switch>
 		</Router>
