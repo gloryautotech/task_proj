@@ -1,0 +1,52 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Task Project API",
+      "description": "Task Project spec for Swagger",
+      "termsOfService": "http://swagger.io/terms/"
+    },
+    "basePath": "/api/v1/userData",
+    "tags": [
+      {
+        "name": "User",
+        "description": "API for User"
+      },
+        {
+        "name": "Common",
+        "description": "API for Common Usage"
+      }
+    ],
+    "schemes": [
+      "http",
+      "https"
+    ],
+    "consumes": [
+      "multipart/form-data"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths":{
+      "/alluserlist":{
+        "get": {
+          "tags": [
+            "User"
+          ],
+          "description": "Get all User Data",
+          "operationId": "Get all User Data",
+          "produces": [
+            "application/json"
+          ],
+
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      }
+      }}
