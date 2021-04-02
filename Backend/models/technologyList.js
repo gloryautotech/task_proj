@@ -10,10 +10,10 @@ let technologyListSchema = new Schema({
         type: String,
         default: 'default name'
     },
-    technologyLevel: {
-        type: String,
-        default:'present'
-    },
+    technologyLevel: [{
+        id : String,
+        level : String
+         }],
     created: {
         type: Date,
         default: Date.now

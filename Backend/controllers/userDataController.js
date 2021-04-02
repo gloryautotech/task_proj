@@ -89,13 +89,18 @@ let createUserData = (req, res) => {
         lasrModified: today
     })
     //.select('-_id -__v')
-    newUserData.save((err, result) => {
+    newUserData.save(async(err, result) => {
         if (err) {
             logger.log('createUserData',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
             res.send(apiResponse)
         }
         else {
+            console.log("new user data result", result)
+            let accessToken = await response.createAccessToken(result._id , result.userFirstName, req.models); 
+            console.log("accestoken",accessToken)
+            accessToken = {"accessToken":accessToken}
+            result = {result,accessToken}
             let apiResponse = response.respons(true,constants.messages.SUCCESS,constants.constants.HTTP_SUCCESS,result)
             res.send(apiResponse)
         }
@@ -146,21 +151,20 @@ let loginCheck = (req, res) => {
     console.log("username", req.body.username)
     console.log("constat",constants.constants.HTTP_SUCCESS)
     userDataModel.find({ $or: [{ 'email': req.body.username }, { 'phone': req.body.username }] },async(err, result) => {
-        console.log(result)
+        console.log("result",result)
         if (err) {
             // logger.log('LoginCeck', req, err,  req.body.username, req.body)
             logger.log('LoginCeck',req, err,req.body,res)
-            console.log(err)
+            console.log("err",err)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
             res.send(apiResponse)
         }
-        else if (result == undefined || result == null || result == '') {
+        else if (!result) {
+            console.log("null username")
             let apiResponse = response.respons(true,constants.messages.LOGIN.NOT_FOUND,constants.constants.HTTP_SUCCESS,null)
             res.send(apiResponse)
         }
         else {
-            logger.log('LoginCeck',req, err, req.body.username,req.body)
-
             console.log("result login", result[0].password)
             if (req.body.password == undefined || req.body.password == null || req.body.password == '') {
                 let apiResponse = response.respons(true,constants.messages.LOGIN.NOT_FOUND + err,constants.constants.HTTP_SUCCESS,null)
@@ -171,7 +175,9 @@ let loginCheck = (req, res) => {
                 let accessToken = await response.createAccessToken(result[0]._id , result[0].userFirstName, req.models); 
 				console.log("accestoken",accessToken)
                 logger.log('LoginCeck',req, result, req.body.username,req.body)
-                let apiResponse = response.respons(true,constants.messages.LOGIN.SUCCESS,constants.constants.HTTP_SUCCESS,result)
+                accessToken = {"accessToken":accessToken}
+                result = {result,accessToken}
+                let apiResponse = response.respons(true, constants.messages.LOGIN.SUCCESS, constants.constants.HTTP_SUCCESS, result )
                 res.send(apiResponse)
             }
             else {
@@ -187,7 +193,7 @@ let sendOTP = (req, res) => {
 	const otp = Math.floor(100000 + Math.random() * 900000);
 	const ttl = 2 * 60 * 1000;
 	const expires = Date.now() + ttl;
-	const data = `${username}.${otp}.${expires}`;
+    const data = `${username}.${otp}.${expires}`;
 	const hash = crypto.createHmac('sha256', smsKey).update(data).digest('hex');
 	const fullHash = `${hash}.${expires}`;
 	var type = /^[0-9\+\ ]+$/;
@@ -239,18 +245,19 @@ let verifyOTP = (req, res) => {
 	const otp = req.body.otp;
 	let [ hashValue, expires ] = hash.split('.');
 
+
 	let now = Date.now();	
 	if (now > parseInt(expires)) {
 		return res.status(504).send({ msg: 'Timeout. Please try again' });
 	}
-	let data = `${username}.${otp}.${expires}`;
+    let data = `${username}.${otp}.${expires}`;
 	let newCalculatedHash = crypto.createHmac('sha256', smsKey).update(data).digest('hex');
 	if (newCalculatedHash === hashValue) {
 		console.log('user confirmed');
-		res.status(202)
+		res.status(202).send({ verification: false, msg: 'OTP' })
 	} else {
 		console.log('not authenticated');
-		return res.status(400).send({ verification: false, msg: 'Incorrect OTP' });
+		return res.status(400).send({ verification: true, msg: 'Incorrect OTP' });
 	}
 }
 

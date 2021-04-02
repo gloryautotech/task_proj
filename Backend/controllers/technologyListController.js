@@ -67,6 +67,26 @@ let viewByTechnologyType = (req, res) => {
     })
 }
 
+let viewByTechnologyName = (req, res) => {
+    var v = req.params.technologyType;
+    console.log(v)
+    technologyList.find({ 'technologyName': req.body.technologyName }, (err, result) => {
+        if (err) {
+            logger.log('viewByTechnologyName',req, err,req.body,res)
+            let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
+            res.send(apiResponse)
+        }
+        else if (result == undefined || result == null || result == '') {
+            let apiResponse = response.respons(true,constants.messages.NOT_FOUND,constants.constants.HTTP_SUCCESS,null)
+            res.send(apiResponse)
+        }
+        else {
+            let apiResponse = response.respons(true,constants.messages.SUCCESS,constants.constants.HTTP_SUCCESS,result)
+            res.send(apiResponse)
+        }
+    })
+}
+
 let createTechnologyList = (req, res) => {
     var today = Date.now()
     let newUserData = new technologyList({
@@ -108,9 +128,10 @@ let deleteTechnologyById = (req, res) => {
 }
 
 module.exports = {
-    createTechnologyList: createTechnologyList,
-    getAllTechnologyList: getAllTechnologyList,
-    viewByTechnologyType: viewByTechnologyType,
-    editTechnologyList: editTechnologyList,
-    deleteTechnologyById: deleteTechnologyById
+    createTechnologyList,
+    getAllTechnologyList,
+    viewByTechnologyType,
+    editTechnologyList,
+    deleteTechnologyById,
+    viewByTechnologyName
 }

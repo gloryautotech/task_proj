@@ -14,7 +14,7 @@ const swaggerDocument = require('./docs/swagger.json');
 const app = express ()
 
 //middle
-app.use(cors())
+app.use(cors({credentials: true, origin:'http://localhost:3000'}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())

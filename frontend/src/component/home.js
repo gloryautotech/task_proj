@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import technologyList from "./technologyList";
+import signUp from "./signUp";
 import axios from 'axios';
-import styles from './styles/home.module.css';
 
-axios.defaults.withCredentials = true;
-function Home() {
-	const [ state, setState ] = useState({
-		value: 'Private Protected Route - Home'
-	});
+import { useHistory } from "react-router";
 
-	return (
-		<div className={styles}>
-			<div className={styles.top}>
-				<p>Glory Autotech</p>
-			</div>
-			<div className={styles.bottom}>
-				<button className={styles.logout}>
-					Log out
-				</button>
+function Home(props){
+    
+	let history = useHistory()
+    //const[isUserNew,setisUserNew]=useState(false)
 
-				<div className={styles.card} />
-				<div className={styles.words}> {state.value}</div>
-			</div>
-		</div>
-	);
+    useEffect(()=>{
+        let userName = props.location.state.userName
+        console.log("username_123",userName)
+        axios.post('http://localhost:4000/api/v1/userData/fetchuserlist',{
+            username: userName
+        })
+        .then(response=>{
+            console.log("home",response.data.data)
+            if(!response.data.data){
+                history.push('/signup')
+            }else{
+                history.push('/technologylist')
+            }
+        })
+
+    },[])
+
+    return(
+        <div>
+        </div>
+    )
+
 }
 
-export default Home;
+export default Home

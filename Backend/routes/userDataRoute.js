@@ -20,18 +20,19 @@ app.post(baseUrl + '/sendOTP',userData.sendOTP)
 //registeruser
 app.get(baseUrl + '/alluserlist',auth.isAuthenticated, userData.getUserAllData)
 app.get(baseUrl + '/viewuserlist/:userId',auth.isAuthenticated, userData.viewById)
-app.post(baseUrl + '/createuserlist',auth.isAuthenticated, userData.createUserData)
+app.post(baseUrl + '/createuserlist', userData.createUserData)
 app.put(baseUrl + '/:userId/edituserlist',auth.isAuthenticated, userData.editUserData)
-app.get(baseUrl + '/fetchuserlist',auth.isAuthenticated, userData.viewByUserName)
+app.post(baseUrl + '/fetchuserlist', userData.viewByUserName)
 app.delete(baseUrl + '/:userId/deleteuserlist',auth.isAuthenticated, userData.deleteUserNameById)
 
 //login user
-app.get(baseUrl + '/loginuser', userData.loginCheck)
+app.post(baseUrl + '/loginuser', userData.loginCheck)
 
 //Technology List
 app.get(baseUrl + '/alltechnologylist',auth.isAuthenticated, technology.getAllTechnologyList)
 app.post(baseUrl + '/createtechnologylist',auth.isAuthenticated, technology.createTechnologyList)
 app.get(baseUrl + '/:technologyType/viewbytechnologytype',auth.isAuthenticated, technology.viewByTechnologyType)
+app.post(baseUrl + '/viewByTechnologyName',auth.isAuthenticated, technology.viewByTechnologyName)
 app.put(baseUrl + '/:technologyListId/editbytechnologylistid',auth.isAuthenticated, technology.editTechnologyList)
 app.delete(baseUrl + '/:technologyListId/deletetechnologylist',auth.isAuthenticated, technology.deleteTechnologyById)
 
