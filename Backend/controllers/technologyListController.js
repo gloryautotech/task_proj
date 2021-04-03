@@ -48,9 +48,9 @@ let editTechnologyList = (req, res) => {
 }
 
 let viewByTechnologyType = (req, res) => {
-    var v = req.params.technologyType;
+    var v = req.body.technologyType;
     console.log(v)
-    technologyList.find({ 'technologyType': req.params.technologyType }, (err, result) => {
+    technologyList.find({ 'technologyType': req.body.technologyType }, (err, result) => {
         if (err) {
             logger.log('viewByTechnologyType',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
@@ -89,10 +89,14 @@ let viewByTechnologyName = (req, res) => {
 
 let createTechnologyList = (req, res) => {
     var today = Date.now()
+    var levels = []
+    req.body.technologyLevel.forEach((element) => {
+        levels.push({technologyLevelName:element.level})
+    });
     let newUserData = new technologyList({
         technologyType: req.body.technologyType,
         technologyName: req.body.technologyName,
-        technologyLevel: req.body.technologyLevel,
+        technologyLevel:levels,
         created: today,
         lasrModified: today
     })

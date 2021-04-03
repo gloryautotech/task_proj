@@ -47,11 +47,27 @@ let editTaskList = (req, res) => {
 }
 
 let viewBytechnologyListId = (req, res) => {
-    var v = req.params.technologyType;
-    console.log(v)
-    taskList.find({ '_id': req.params.technologyListId }, (err, result) => {
+    taskList.find({ 'technologyListId': req.body.technologyListId }, (err, result) => {
         if (err) {
             logger.log('viewBytechnologyListId',req, err,req.body,res)
+            let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
+            res.send(apiResponse)
+        }
+        else if (result == undefined || result == null || result == '') {
+            let apiResponse = response.respons(true,constants.messages.NOT_FOUND,constants.constants.HTTP_SUCCESS,null)
+            res.send(apiResponse)
+        }
+        else {
+            let apiResponse = response.respons(true,constants.messages.SUCCESS,constants.constants.HTTP_SUCCESS,result)
+            res.send(apiResponse)
+        }
+    })
+}
+
+let viewBytaskId = (req, res) => {
+    taskList.find({ '_id': req.params.taskId }, (err, result) => {
+        if (err) {
+            logger.log('viewBytaskId',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
             res.send(apiResponse)
         }
@@ -107,9 +123,10 @@ let deleteTaskById = (req, res) => {
 }
 
 module.exports = {
-    createTaskList: createTaskList,
-    getAllTaskList: getAllTaskList,
-    editTaskList: editTaskList,
-    viewBytechnologyListId: viewBytechnologyListId,
-    deleteTaskById: deleteTaskById
+    createTaskList,
+    getAllTaskList,
+    editTaskList,
+    viewBytechnologyListId,
+    deleteTaskById,
+    viewBytaskId
 }

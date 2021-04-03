@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const technologyLevelSchema = new Schema({
+    technologyLevelName:String
+})
 let technologyListSchema = new Schema({
     technologyType: {
         type: String,
@@ -10,10 +13,7 @@ let technologyListSchema = new Schema({
         type: String,
         default: 'default name'
     },
-    technologyLevel: [{
-        id : String,
-        level : String
-         }],
+    technologyLevel: [technologyLevelSchema],
     created: {
         type: Date,
         default: Date.now

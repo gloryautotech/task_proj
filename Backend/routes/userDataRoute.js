@@ -39,12 +39,13 @@ app.delete(baseUrl + '/:technologyListId/deletetechnologylist',auth.isAuthentica
 //Task List
 app.get(baseUrl + '/alltasklist',auth.isAuthenticated, task.getAllTaskList)
 app.post(baseUrl + '/createtasklist',auth.isAuthenticated, task.createTaskList)
-app.get(baseUrl + '/:technologyListId/viewbytechnologylistid',auth.isAuthenticated, task.viewBytechnologyListId)
+app.post(baseUrl + '/viewbytechnologylistid',auth.isAuthenticated, task.viewBytechnologyListId)
+app.get(baseUrl + '/viewbytaskId/:taskid', task.viewBytaskId)
 app.put(baseUrl + '/:taskListId/editbytaskListId',auth.isAuthenticated, task.editTaskList)
 app.delete(baseUrl + '/:taskListId/deletetasklist',auth.isAuthenticated, task.deleteTaskById)
 
 //email service
-app.get(baseUrl + '/email',auth.isAuthenticated, email.sendEmail)
+app.post(baseUrl + '/email',auth.isAuthenticated, email.sendEmail)
 }
 
 

@@ -34,20 +34,20 @@ function DashBoard1(){
                 <Content style={{ padding: '0 50px' }}>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>DashBoard1</Breadcrumb.Item>
+                    <Breadcrumb.Item>DashBoard2</Breadcrumb.Item>
                 </Breadcrumb>
                 <div className="site-layout-content">
                     <Title style={{marginRight:1080}}>Frontend</Title>              
                     {
                         technologyList.map(technologyList=><div>{technologyList.technologyType == 'frontend'?<div style={{borderRadius:50}} key={technologyList._id}><Card  style={{ width: 200 ,borderRadius:40, justifyContent:'center', display:'flex', alignItems:'center'}}
-                        onClick={()=>console.log("name",technologyList.technologyName)}>{technologyList.technologyName}</Card></div>:''}</div>)
+                        onClick={()=>history.push({pathname: '/technologylevel',state: {technologyName: technologyList.technologyName}})}>{technologyList.technologyName}</Card></div>:''}</div>)
                     }   
                 </div>
                 <div className="site-layout-content">
                     <Title style={{marginRight:1080}}>Backend</Title>
                     {
                         technologyList.map(technologyList=><div>{technologyList.technologyType == 'backend'?<div style={{borderRadius:50}} key={technologyList._id}><Card  style={{ width: 200 ,borderRadius:40, justifyContent:'center', display:'flex', alignItems:'center'}}
-                        onClick={()=>console.log("name",technologyList.technologyName)}>{technologyList.technologyName}</Card></div>:''}</div>)
+                        onClick={()=>history.push({pathname: '/technologylevel',state: {technologyName: technologyList.technologyName}})}>{technologyList.technologyName}</Card></div>:''}</div>)
                     }
                 </div>
                 </Content>
