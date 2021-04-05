@@ -48,9 +48,9 @@ let editTechnologyList = (req, res) => {
 }
 
 let viewByTechnologyType = (req, res) => {
-    var v = req.body.technologyType;
+    var v = req.params.technologyType;
     console.log(v)
-    technologyList.find({ 'technologyType': req.body.technologyType }, (err, result) => {
+    technologyList.find({ 'technologyType': req.params.technologyType }, (err, result) => {
         if (err) {
             logger.log('viewByTechnologyType',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
@@ -68,9 +68,9 @@ let viewByTechnologyType = (req, res) => {
 }
 
 let viewByTechnologyName = (req, res) => {
-    var v = req.params.technologyType;
-    console.log(v)
-    technologyList.find({ 'technologyName': req.body.technologyName }, (err, result) => {
+    var v = req.params.technologyname;
+    console.log("technologyName",v)
+    technologyList.find({ 'technologyName': req.params.technologyname }, (err, result) => {
         if (err) {
             logger.log('viewByTechnologyName',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)

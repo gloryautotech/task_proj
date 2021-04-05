@@ -17,6 +17,8 @@ function DashBoard3(props){
     const [email, setemail] = useState('')
 
     useEffect(()=>{
+        
+        console.log("technology id id ",window.name)
         let technologyListId = props.location.state.technologyListId
         console.log("technology nme",technologyListId)
          axios({
@@ -41,16 +43,29 @@ function DashBoard3(props){
 const sendTask = (id) =>{
     setExpanded(false)
     //let urlPathOfTask='http://localhost:4000/api/v1/userData/viewbytaskId/'
-    let urlOfGivenTask='http://localhost:3000/giventask'
+    let urlOfGivenTask='http://localhost:3000/giventask/'
     axios({
         'method': 'post',
         'url': 'http://localhost:4000/api/v1/userData/email',
-        'data': {emailid:email,subject:'Your Task is',text:'Open this link to get your task    '+urlOfGivenTask+id} ,
+        'data': {emailid:email,subject:'Your Task is',text:'Open this link to get your task    '+urlOfGivenTask+'   or your id is '+id} ,
         'headers': {
             'token':localStorage.getItem('accessToken')
         },
     }).then(response=>{
-        
+        axios({
+            'method': 'post',
+            'url': 'http://localhost:4000/api/v1/userData/createassigntasklist',
+            'data': {
+                userId: window.name,
+                emailIdOfReceiver: email,
+                assignTaskId: id,
+                assignTaskStatus: 'Receive',
+                assignTaskVerifiedStatus: 'send'
+            } ,
+            'headers': {
+                'token':localStorage.getItem('accessToken')
+            },
+        })
     }).catch(err=>{
         console.log("error",err)
     })

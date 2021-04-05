@@ -47,7 +47,7 @@ let editTaskList = (req, res) => {
 }
 
 let viewBytechnologyListId = (req, res) => {
-    taskList.find({ 'technologyListId': req.body.technologyListId }, (err, result) => {
+    taskList.find({ 'technologyListId': req.params.technologylistid }, (err, result) => {
         if (err) {
             logger.log('viewBytechnologyListId',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
@@ -65,7 +65,7 @@ let viewBytechnologyListId = (req, res) => {
 }
 
 let viewBytaskId = (req, res) => {
-    taskList.find({ '_id': req.params.taskId }, (err, result) => {
+    taskList.find({ '_id': req.params.taskid }, (err, result) => {
         if (err) {
             logger.log('viewBytaskId',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)

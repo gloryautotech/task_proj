@@ -6,7 +6,7 @@ import home from "./component/home";
 import signUp from "./component/signUp";
 import technologyLevel from "./component/technologyLevel";
 import taskList from "./component/taskList";
-import givenTask from "./component/givenTask";
+import givenTask from "./component/assignTask";
 
 function App() {
 	return (

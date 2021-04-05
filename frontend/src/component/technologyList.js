@@ -14,6 +14,7 @@ function DashBoard1(){
     const[technologyList,setTechnologyList]=useState([])
 
     useEffect(()=>{
+        console.log("window.name",window.name)
         axios({
             'method':'GET',
             'url':'http://localhost:4000/api/v1/userData/alltechnologylist',

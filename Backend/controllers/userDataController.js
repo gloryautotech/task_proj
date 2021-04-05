@@ -56,8 +56,8 @@ let viewById = (req, res) => {
 let viewByUserName = (req, res) => {
     var v = req.params.userId;
     console.log(v)
-    console.log("username",req.body.username)
-    userDataModel.find({ $or:[{'email':req.body.username}, {'phone':req.body.username} ]}, (err, result) => {
+    console.log("username",req.params.username)
+    userDataModel.find({ $or:[{'email':req.params.username}, {'phone':req.params.username} ]}, (err, result) => {
         if (err) {
             logger.log('viewByUserName',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
@@ -254,10 +254,10 @@ let verifyOTP = (req, res) => {
 	let newCalculatedHash = crypto.createHmac('sha256', smsKey).update(data).digest('hex');
 	if (newCalculatedHash === hashValue) {
 		console.log('user confirmed');
-		res.status(202).send({ verification: false, msg: 'OTP' })
+		res.status(202).send({ verification: true, msg: 'User Confirmed' })
 	} else {
 		console.log('not authenticated');
-		return res.status(400).send({ verification: true, msg: 'Incorrect OTP' });
+		return res.status(400).send({ verification: false, msg: 'Incorrect OTP' });
 	}
 }
 
