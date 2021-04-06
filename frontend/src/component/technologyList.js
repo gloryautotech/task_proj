@@ -4,9 +4,10 @@ import { Layout, Space, Breadcrumb, Card} from 'antd';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 import { useHistory } from "react-router";
+import pageHeader from "./pageHeader";
+
 const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
-
 
 function DashBoard1(){
     
@@ -17,7 +18,7 @@ function DashBoard1(){
         console.log("window.name",window.name)
         axios({
             'method':'GET',
-            'url':'http://localhost:4000/api/v1/userData/alltechnologylist',
+            'url':'http://localhost:4000/api/v1/technologylist/alltechnologylist',
             'headers': {
                 'token':localStorage.getItem('accessToken')
             }
@@ -29,14 +30,9 @@ function DashBoard1(){
 
     return(
         <div>
+            <pageHeader />
            <Layout className="layout">
-                <Header>
-                </Header>
                 <Content style={{ padding: '0 50px' }}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>DashBoard2</Breadcrumb.Item>
-                </Breadcrumb>
                 <div className="site-layout-content">
                     <Title style={{marginRight:1080}}>Frontend</Title>              
                     {

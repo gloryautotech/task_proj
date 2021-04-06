@@ -7,9 +7,12 @@ import signUp from "./component/signUp";
 import technologyLevel from "./component/technologyLevel";
 import taskList from "./component/taskList";
 import givenTask from "./component/assignTask";
+import PageHeader from './component/pageHeader';
 
 function App() {
-	return (
+	return (		
+		<div>
+			{localStorage.getItem('accessToken')?<PageHeader />:''}
 		<Router>
 			<Switch>
 				<Route path="/" exact component={loginPage} />
@@ -21,6 +24,7 @@ function App() {
 				<Route path="/giventask" exact component={givenTask} />
 			</Switch>
 		</Router>
+		</div>
 	);
 }
 

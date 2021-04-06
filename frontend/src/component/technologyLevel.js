@@ -17,9 +17,8 @@ function DashBoard2(props){
         let technologyName = props.location.state.technologyName
         console.log("technology nme",technologyName)
         axios({
-            'method': 'POST',
-            'url': 'http://localhost:4000/api/v1/userData/viewByTechnologyName',
-            'data': {technologyName:technologyName} ,
+            'method': 'get',
+            'url': `http://localhost:4000/api/v1/technologylist/viewByTechnologyname/${technologyName}`,
             'headers': {
                 'token':localStorage.getItem('accessToken')
             }

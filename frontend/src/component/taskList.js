@@ -22,9 +22,8 @@ function DashBoard3(props){
         let technologyListId = props.location.state.technologyListId
         console.log("technology nme",technologyListId)
          axios({
-            'method': 'post',
-            'url': 'http://localhost:4000/api/v1/userData/viewbytechnologylistid',
-            'data': {technologyListId:technologyListId} ,
+            'method': 'get',
+            'url': `http://localhost:4000/api/v1/tasklist/viewbytechnologylistid/${technologyListId}`,
             'headers': {
                 'token':localStorage.getItem('accessToken')
             },
@@ -46,7 +45,7 @@ const sendTask = (id) =>{
     let urlOfGivenTask='http://localhost:3000/giventask/'
     axios({
         'method': 'post',
-        'url': 'http://localhost:4000/api/v1/userData/email',
+        'url': 'http://localhost:4000/api/v1/email',
         'data': {emailid:email,subject:'Your Task is',text:'Open this link to get your task    '+urlOfGivenTask+'   or your id is '+id} ,
         'headers': {
             'token':localStorage.getItem('accessToken')
@@ -54,7 +53,7 @@ const sendTask = (id) =>{
     }).then(response=>{
         axios({
             'method': 'post',
-            'url': 'http://localhost:4000/api/v1/userData/createassigntasklist',
+            'url': 'http://localhost:4000/api/v1/assigntask/createassigntasklist',
             'data': {
                 userId: window.name,
                 emailIdOfReceiver: email,

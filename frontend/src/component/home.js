@@ -13,9 +13,7 @@ function Home(props){
     useEffect(()=>{
         let userName = props.location.state.userName
         console.log("username_123",userName)
-        axios.post('http://localhost:4000/api/v1/userData/fetchuserlist',{
-            username: userName
-        })
+        axios.get(`http://localhost:4000/api/v1/userdata/fetchuserlist/${userName}`)
         .then(response=>{
             console.log("home",response.data.data)
             if(!response.data.data){
