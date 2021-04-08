@@ -101,7 +101,7 @@ let createUserData = (req, res) => {
             console.log("accestoken",accessToken)
             accessToken = {"accessToken":accessToken}
             result = {result,accessToken}
-            let apiResponse = response.respons(true,constants.messages.SUCCESS,constants.constants.HTTP_SUCCESS,result)
+            let apiResponse = response.respons(true,constants.messages.DATA_ADDED,constants.constants.HTTP_SUCCESS,result)
             res.send(apiResponse)
         }
     })

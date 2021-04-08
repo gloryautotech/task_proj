@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Layout, Space, Breadcrumb, Card} from 'antd';
 import Title from 'antd/lib/typography/Title';
+import style from "./styles/style.common.css";
 import axios from 'axios';
 import { useHistory } from "react-router";
 const { Header, Content, Footer } = Layout;
@@ -31,21 +32,13 @@ function DashBoard2(props){
     return(
         <div>
            <Layout className="layout">
-                <Header>
-                </Header>
-                <Content style={{ padding: '0 50px' }}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>DashBoard2</Breadcrumb.Item>
-                </Breadcrumb>
                 <div className="site-layout-content">
-                    <Title style={{marginRight:1080}}>Level</Title>              
+                    <Title>Level</Title>              
                     {
-                        technologyLevel.map(technologyLevel=><div style={{borderRadius:50}} key={technologyLevel._id}><Card  style={{ width: 200 ,borderRadius:40, justifyContent:'center', display:'flex', alignItems:'center'}}
+                        technologyLevel.map(technologyLevel=><div className="technology_card" key={technologyLevel._id}><Card  style={{ width: 200 ,borderRadius:40, justifyContent:'center', display:'flex', alignItems:'center'}}
                         onClick={()=>history.push({pathname: '/tasklist',state: {technologyListId: technologyLevel._id}})}>{technologyLevel.technologyLevelName}</Card></div>)
                     }   
                 </div>
-                </Content>
             </Layout>
         </div>
     )

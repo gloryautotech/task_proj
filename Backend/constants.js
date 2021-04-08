@@ -79,7 +79,8 @@
       "NOT_FOUND": "Not Found",
       "SUCCESS": "Data Found",
       "INVALID_TOKEN": "Token Invalid",
-      "SEND_TOKEN": "Plase Send Token"
+      "SEND_TOKEN": "Plase Send Token",
+      "DATA_ADDED": "Data Added Successfully"
     }
 
   module.exports = {

@@ -90,6 +90,7 @@ let viewByTechnologyName = (req, res) => {
 let createTechnologyList = (req, res) => {
     var today = Date.now()
     var levels = []
+    console.log("req.body of create tech luist",req.body)
     req.body.technologyLevel.forEach((element) => {
         levels.push({technologyLevelName:element.level})
     });
@@ -107,7 +108,7 @@ let createTechnologyList = (req, res) => {
             res.send(apiResponse)
         }
         else {
-            let apiResponse = response.respons(true,constants.messages.SUCCESS,constants.constants.HTTP_SUCCESS,result)
+            let apiResponse = response.respons(true,constants.messages.DATA_ADDED,constants.constants.HTTP_SUCCESS,result)
             res.send(apiResponse)
         }
     })

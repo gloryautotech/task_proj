@@ -72,10 +72,7 @@ const sendTask = (id) =>{
     
     return(
         <div>
-           <Layout className="layout">
-                <Header>
-                </Header>
-                <Content style={{ padding: '0 50px' }}>
+            <Title>Task List</Title>
                 {taskList?(
                    taskList.map((taskList)=>(
                        <div  style={{blockSize:250}}>
@@ -106,8 +103,6 @@ const sendTask = (id) =>{
                        </div>
                    ))
                 ):<div>No Data Found</div>}
-                </Content>
-            </Layout>
         </div>
     )
 

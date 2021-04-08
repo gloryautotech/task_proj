@@ -19,6 +19,7 @@ function SignUp() {
     const [dateofBirth, setdateofBirth] = useState('')
     const [organizationName, setorganizationName] = useState('')
 
+
     const genderHandleChange = (value) => {
         console.log('Gender', value)
         setgender(value)

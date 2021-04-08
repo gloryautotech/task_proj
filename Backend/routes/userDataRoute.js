@@ -53,7 +53,7 @@ app.post(baseUrl + '/assigntask/createassigntasklist',auth.isAuthenticated, assi
 app.get(baseUrl + '/assigntask/viewbyuserid/:userid',auth.isAuthenticated, assignTask.viewByuserId)
 app.post(baseUrl + '/assigntask/viewbyuseridandtaskid', assignTask.viewByUserIdandTaskId)
 app.post(baseUrl + '/assigntask/editassigntask/:assignid', assignTask.editassignTask)
-app.post(baseUrl + '/assigntask/viewbyemailandid/', assignTask.viewByEmailAndId)
+app.post(baseUrl + '/assigntask/viewbyemailandid', assignTask.viewByEmailAndId)
 
 }
 
