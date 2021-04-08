@@ -3,15 +3,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { useHistory } from "react-router";
 import { Menu, Button } from 'antd';
-import {
-  AppstoreOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  ContainerOutlined,
-  MailOutlined,
-} from '@ant-design/icons';
+
+import { HomeOutlined, PartitionOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import SignUp from './signUp';
 
 const { SubMenu } = Menu;
@@ -27,27 +20,28 @@ function LeftSideBar() {
      setisAddUser(true)
     }
 	return (
-        <div style={{ width: "100%" }} >
-        <Menu
-          defaultSelectedKeys={['1']}
-          defaultOpenKeys={['sub1']}
-          mode="inline"
-          theme="dark"
-          inlineCollapsed={collapsed}
-        >
-          <Menu.Item key="1" icon={<PieChartOutlined />}>
-            Add Technology
-          </Menu.Item>
-          <Menu.Item key="2" icon={<DesktopOutlined />}>
-            Add Task
-          </Menu.Item>
-          <Menu.Item key="3" icon={<ContainerOutlined />} onClick={addUser}>
-            Add User
-            <Link to="/signup" />
-          </Menu.Item>
-        </Menu>
-        {isAddUser?<SignUp/>:''}
-      </div>
+    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+    <Menu.Item key="1">
+      <HomeOutlined />
+      <span>Home</span>
+      <Link to="/technologylist" />
+    </Menu.Item>
+    <Menu.Item key="2">
+    <PlusCircleOutlined />
+      <span>Add Technology</span>
+      <Link to="/addtechnology" />
+    </Menu.Item>
+    <Menu.Item key="3">
+    <PlusCircleOutlined />
+      <span>Add Task</span>
+      <Link to="/addtask" />
+    </Menu.Item>
+            <Menu.Item key="4">
+    <PlusCircleOutlined />
+      <span>Assign Task</span>
+      <Link to="/assigntask" />
+    </Menu.Item>
+  </Menu>
 	);
 
 }
