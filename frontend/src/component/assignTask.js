@@ -24,7 +24,7 @@ function GivenTask(props) {
     const [adminId, setadminId] = useState('')
     useEffect(() => {
 
-        console.log("assifn task user id", window.name)
+        console.log("assifn task user id",sessionStorage.getItem("user_id"))
 
     }, [])
 

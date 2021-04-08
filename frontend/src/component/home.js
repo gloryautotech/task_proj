@@ -21,7 +21,7 @@ function Home(props){
             }else{
                 console.log("window.name",response.data.data[0]._id)
                 if(response.data.data[0]._id){
-                window.name = response.data.data[0]._id}
+                sessionStorage.setItem("user_id",response.data.data[0]._id) }
                 history.push('/technologylist')
             }
         })

@@ -66,7 +66,7 @@ function AddTask() {
 
 
     useEffect(()=>{
-        console.log("window.name",window.name)
+        console.log("User_id",sessionStorage.getItem("user_id"))
 
     },[])
 

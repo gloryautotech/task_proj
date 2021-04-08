@@ -18,7 +18,7 @@ function DashBoard3(props){
 
     useEffect(()=>{
         
-        console.log("technology id id ",window.name)
+        console.log("technology id id ",sessionStorage.getItem("user_id"))
         let technologyListId = props.location.state.technologyListId
         console.log("technology nme",technologyListId)
          axios({
@@ -55,7 +55,7 @@ const sendTask = (id) =>{
             'method': 'post',
             'url': 'http://localhost:4000/api/v1/assigntask/createassigntasklist',
             'data': {
-                userId: window.name,
+                userId: sessionStorage.getItem("user_id"),
                 emailIdOfReceiver: email,
                 assignTaskId: id,
                 assignTaskStatus: 'Receive',

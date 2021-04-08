@@ -16,7 +16,7 @@ function DashBoard1(){
     const[technologyList,setTechnologyList]=useState([])
 
     useEffect(()=>{
-        console.log("window.name",window.name)
+        console.log("user_id",sessionStorage.getItem("user_id"))
         axios({
             'method':'GET',
             'url':'http://localhost:4000/api/v1/technologylist/alltechnologylist',
@@ -36,14 +36,14 @@ function DashBoard1(){
                 <div className="site-layout-content">
                     <Title >Frontend</Title>              
                     {
-                        technologyList.map(technologyList=><div>{technologyList.technologyType == 'frontend'?<div className="technology_card" style={{borderRadius:50}} key={technologyList._id}><Card  style={{ width: 200 ,borderRadius:40, justifyContent:'center', display:'flex', alignItems:'center'}}
+                        technologyList.map(technologyList=><div className="technology_card">{technologyList.technologyType == 'frontend'?<div  style={{borderRadius:50}} key={technologyList._id}><Card  style={{ width: 200 ,borderRadius:40, justifyContent:'center', display:'flex', alignItems:'center'}}
                         onClick={()=>history.push({pathname: '/technologylevel',state: {technologyName: technologyList.technologyName}})}>{technologyList.technologyName}</Card></div>:''}</div>)
                     }   
                 </div>
                 <div className="site-layout-content">
                     <Title >Backend</Title>
                     {
-                        technologyList.map(technologyList=><div>{technologyList.technologyType == 'backend'?<div className="technology_card" style={{borderRadius:50}} key={technologyList._id}><Card  style={{ width: 200 ,borderRadius:40, justifyContent:'center', display:'flex', alignItems:'center'}}
+                        technologyList.map(technologyList=><div  className="technology_card">{technologyList.technologyType == 'backend'?<div style={{borderRadius:50}} key={technologyList._id}><Card  style={{ width: 200 ,borderRadius:40, justifyContent:'center', display:'flex', alignItems:'center'}}
                         onClick={()=>history.push({pathname: '/technologylevel',state: {technologyName: technologyList.technologyName}})}>{technologyList.technologyName}</Card></div>:''}</div>)
                     }
                 </div>
