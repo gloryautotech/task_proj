@@ -1,9 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Input, Button, DatePicker, Select, Checkbox, Divider} from 'antd';
+import { Card, Form, Input, Button, DatePicker, Select, Checkbox, Divider, Layout} from 'antd';
 import { useHistory } from "react-router";
 import moment from 'moment';
 import axios from 'axios';
+import PageHeader from './pageHeader';
+import LeftSideBar from "./leftSideBar";
+const { Header, Footer, Sider, Content } = Layout;
 const { Option } = Select;
 
 const CheckboxGroup = Checkbox.Group;
@@ -26,7 +29,15 @@ function AddTask() {
     const [istechtype, setistechtype] = useState(true)
     const [istechlevel, setistechlevel] = useState(true)
     const [technologyListLevel, settechnologyListLevel] = useState([])
-    const [technologyLevel, settechnologyLevel] = useState('')
+    const [technologyLevel, settechnologyLevel] = useState('')    
+    const [collapsed, setcollapsed] = useState(false)
+
+    const onCollapse = (collapsed) => {
+        setcollapsed(collapsed)
+    }
+    const toggle = () => {
+        setcollapsed(!collapsed)
+    }
     const technologyTypeHandleChange = (value) => {
         axios({
             'method':'GET',
@@ -96,6 +107,19 @@ function AddTask() {
 
     return (
         <div>
+             <Layout className="layout" style={{ minHeight: '100vh' }}>
+                <Header>
+                    <PageHeader />
+                </Header>
+                <Layout>
+                    <Sider
+                        collapsible
+                        collapsed={collapsed}
+                        onCollapse={onCollapse}>
+                        <div className="logo" />
+                        <LeftSideBar currentkey={'3'} />
+                    </Sider>
+                    <Content style={{ padding: 20 }}>
                         <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true }]} style={{ display: 'inline-list-item' }}>
                 <Select
                     placeholder="Select a option and change input text above"
@@ -105,7 +129,7 @@ function AddTask() {
                     <Option value="backend">Back End</Option>
                 </Select>
             </Form.Item>
-            <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true }]} style={{ display: 'inline-list-item' }}>
+            <Form.Item name="technoloyName" label="Technology Name" rules={[{ required: true }]} style={{ display: 'inline-list-item' }}>
                 <Select
                     placeholder="Select a option and change input text above"
                     disabled={istechtype}
@@ -157,6 +181,9 @@ function AddTask() {
             <Form.Item>
                 <Button type='primary' onClick={submit}>Submit</Button>
             </Form.Item>
+            </Content>
+            </Layout>
+            </Layout>
         </div>
     )
 

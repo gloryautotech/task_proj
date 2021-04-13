@@ -198,7 +198,7 @@ function GivenTask(props) {
                     <div className={styles.background}>
                         <div className={styles.container}>
                             <div className={styles.heading}>Glory Autotech</div>
-                            <div className={styles.input_text}>unique Id:</div>
+                            <div style={{paddingLeft:20,fontSize:20}}>unique Id:</div>
                             <div className={styles.input_container}>
                                 <input
                                     type="tel"
@@ -208,7 +208,7 @@ function GivenTask(props) {
                                     className={styles.input}
                                 />
                             </div>
-                            <div className={styles.input_text}>Email Id:</div>
+                            <div style={{paddingLeft:20,fontSize:20}}>Email Id:</div>
                             <div className={styles.input_container}>
                                 <input
                                     type="tel"

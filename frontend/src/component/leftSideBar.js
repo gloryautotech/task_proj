@@ -9,7 +9,7 @@ import SignUp from './signUp';
 
 const { SubMenu } = Menu;
 
-function LeftSideBar() {
+function LeftSideBar(props) {
   let history = useHistory()
     const [collapsed, setcollapsed] = useState(false)
   const [isAddUser, setisAddUser] = useState(false)
@@ -20,7 +20,7 @@ function LeftSideBar() {
      setisAddUser(true)
     }
 	return (
-    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+    <Menu theme="dark" defaultSelectedKeys={[props.currentkey]} mode="inline">
     <Menu.Item key="1">
       <HomeOutlined />
       <span>Home</span>

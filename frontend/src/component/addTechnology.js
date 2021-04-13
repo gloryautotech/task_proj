@@ -1,9 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Input, Button, DatePicker, Select, Checkbox, Divider, Alert } from 'antd';
+import { Card, Form, Input, Button, DatePicker, Select, Checkbox, Divider, Alert, Layout } from 'antd';
 import { useHistory } from "react-router";
 import moment from 'moment';
 import axios from 'axios';
+import PageHeader from './pageHeader';
+import LeftSideBar from "./leftSideBar";
+const { Header, Footer, Sider, Content } = Layout;
 const { Option } = Select;
 
 const CheckboxGroup = Checkbox.Group;
@@ -22,7 +25,15 @@ function AddTechnology() {
     const [checkedList, setCheckedList] = useState(defaultCheckedList);
     const [indeterminate, setIndeterminate] = useState(true);
     const [checkAll, setCheckAll] = useState(false);
-    const [issubmit, setissubmit] = useState(false)
+    const [issubmit, setissubmit] = useState(false)  
+    const [collapsed, setcollapsed] = useState(false)
+
+    const onCollapse = (collapsed) => {
+        setcollapsed(collapsed)
+    }
+    const toggle = () => {
+        setcollapsed(!collapsed)
+    }
 
     
     const timeId = setTimeout(() => {
@@ -83,6 +94,19 @@ function AddTechnology() {
 
     return (
         <div>
+                        <Layout className="layout" style={{ minHeight: '100vh' }}>
+                <Header>
+                    <PageHeader />
+                </Header>
+                <Layout>
+                    <Sider
+                        collapsible
+                        collapsed={collapsed}
+                        onCollapse={onCollapse}>
+                        <div className="logo" />
+                        <LeftSideBar currentkey={'2'} />
+                    </Sider>
+                    <Content style={{ padding: 20 }}>
             {issubmit?
                        <div style={{width:212,position:"absolute",right:0,zIndex:9999}}> 
            <Alert message="Success Text" type="success" />
@@ -125,6 +149,9 @@ function AddTechnology() {
             <Form.Item>
                 <Button type='primary' onClick={submit}>Submit</Button>
             </Form.Item>
+            </Content>
+            </Layout>
+            </Layout>
         </div>
     )
 

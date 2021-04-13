@@ -1,0 +1,71 @@
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userFirstName",
+            "in": "formData",
+            "description": "User First Name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userLastName",
+            "in": "formData",
+            "description": "User Last Name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "Email",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "formData",
+            "description": "Phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Password",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "gender",
+            "in": "formData",
+            "description": "male/female/others",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name":"dateOfBirth",
+            "in":"formData",
+            "description":"Date of Birth",
+            "required":false,
+            "type": "string"
+          },
+          {
+            "name": "organizationName",
+            "in": "formData",
+            "description": "Organization Name",
+            "required": false,
+            "type": "string"
+          }
+        ],

@@ -32,20 +32,6 @@ function RouteJs() {
 	
 	return (		
 	<Router>
-	<Layout style={{ minHeight: '100vh' }}>
-		{localStorage.getItem("accessToken")?	<Header>
-						<PageHeader />
-			</Header>:''}
-
-			<Layout>
-				{localStorage.getItem("accessToken")?
-		<Sider
-			collapsible
-			collapsed={collapsed}
-			onCollapse={onCollapse}>
-			<div className="logo" />
-	<LeftSideBar/>
-		</Sider>:''}
 			<Content style={{background: '#fff' }}>
 			<Route path="/" exact component={loginPage} /><div>
 		 		<Route path="/signup" exact component={signUp} />
@@ -60,10 +46,6 @@ function RouteJs() {
 				<Route path="/assigntask" exact component={assignTasklist} />
 				</div>
 			</Content>
-
-		</Layout>
-
-	</Layout>
 </Router>
 	);
 }

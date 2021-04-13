@@ -4,7 +4,9 @@ import { Layout, Space, Breadcrumb, Card, Button, Input} from 'antd';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 import { useHistory } from "react-router";
-const { Header, Content, Footer } = Layout;
+import PageHeader from './pageHeader';
+import LeftSideBar from "./leftSideBar";
+const { Header, Footer, Sider, Content } = Layout;
 const { Meta } = Card;
 const { TextArea } = Input;
 
@@ -15,6 +17,14 @@ function DashBoard3(props){
     const[expanded,setExpanded]=useState(false)
     const[single,setSingle]=useState()
     const [email, setemail] = useState('')
+    const [collapsed, setcollapsed] = useState(false)
+
+    const onCollapse = (collapsed) => {
+        setcollapsed(collapsed)
+    }
+    const toggle = () => {
+        setcollapsed(!collapsed)
+    }
 
     useEffect(()=>{
         
@@ -72,6 +82,19 @@ const sendTask = (id) =>{
     
     return(
         <div>
+                        <Layout className="layout" style={{ minHeight: '100vh' }}>
+                <Header>
+                    <PageHeader />
+                </Header>
+                <Layout>
+                    <Sider
+                        collapsible
+                        collapsed={collapsed}
+                        onCollapse={onCollapse}>
+                        <div className="logo" />
+                        <LeftSideBar currentkey={'1'} />
+                    </Sider>
+                    <Content style={{ padding: 20 }}>
             <Title>Task List</Title>
                 {taskList?(
                    taskList.map((taskList)=>(
@@ -103,6 +126,10 @@ const sendTask = (id) =>{
                        </div>
                    ))
                 ):<div>No Data Found</div>}
+
+</Content>
+                </Layout>
+            </Layout>
         </div>
     )
 

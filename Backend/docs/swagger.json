@@ -6,7 +6,7 @@
       "description": "Task Project spec for Swagger",
       "termsOfService": "http://swagger.io/terms/"
     },
-    "basePath": "/api/v1/userData",
+    "basePath": "/api/v1/",
     "tags": [
       {
         "name": "User",
@@ -28,7 +28,7 @@
       "application/json"
     ],
     "paths":{
-      "/alluserlist":{
+      "/userdata/alluserlist":{
         "get": {
           "tags": [
             "User"
@@ -38,7 +38,157 @@
           "produces": [
             "application/json"
           ],
-
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/userdata/createuserlist":{
+        "post": {
+          "tags": [
+            "User"
+          ],
+          "description": "Create User Data",
+          "operationId": "Create User Data",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "userFirstName",
+            "in": "formData",
+            "description": "User First Name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userLastName",
+            "in": "formData",
+            "description": "User Last Name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "Email",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "formData",
+            "description": "Phone",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Password",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "gender",
+            "in": "formData",
+            "description": "male/female/others",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name":"dateOfBirth",
+            "in":"formData",
+            "description":"Date of Birth",
+            "required":false,
+            "type": "string"
+          },
+          {
+            "name": "organizationName",
+            "in": "formData",
+            "description": "Organization Name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Create User successfully "
+            }
+          }
+        }
+      },
+      "/userdata/viewuserlist/{userId}":{
+        "get": {
+          "tags": [
+            "User"
+          ],
+          "description": "View By ID",
+          "operationId": "View By ID",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/userdata/edituserlist/{userId}":{
+        "put": {
+          "tags": [
+            "User"
+          ],
+          "description": "Edit User data",
+          "operationId": "Edit User data",
+          "produces": [
+            "application/json"
+          ],
+        "parameters": [{
+              "name": "token",
+              "in": "header",
+              "description": "Token",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "userId",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "User Data",
+              "in": "body",
+              "schema": {
+                "$ref": "#/definitions/edituserdata"
+              }
+            }],
           "responses": {
             "200": {
               "description": "Get All Data successfully "
@@ -49,4 +199,37 @@
           }
         }
       }
-      }}
+    
+    },
+    "definitions":{
+      "edituserdata":{
+        "type": "object",
+        "properties":{
+        "userFirstName": {
+          "type": "String"
+      },
+      "userLastName": {
+          "type": "String"
+      },
+      "email": {
+          "type": "String"
+      },
+      "phone": {
+          "type": "String"
+      },
+      "password": {
+          "type": "String"
+      },
+      "gender": {
+          "type": "String"
+      },
+      "dateOfBirth": {
+          "type": "Date"
+      },
+      "organizationName": {
+          "type": "String"
+      }
+      }
+    }
+    }
+  }

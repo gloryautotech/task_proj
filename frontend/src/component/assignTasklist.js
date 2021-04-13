@@ -5,15 +5,24 @@ import Title from 'antd/lib/typography/Title';
 import style from "./styles/style.common.css";
 import axios from 'axios';
 import { useHistory } from "react-router";
-import pageHeader from "./pageHeader";
+import PageHeader from './pageHeader';
+import LeftSideBar from "./leftSideBar";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Footer, Sider, Content } = Layout;
 const { Meta } = Card;
 
 function DashBoard1(){
     
 	let history = useHistory()
-    const[assignTasklist,setassignTasklist]=useState([])
+    const[assignTasklist,setassignTasklist]=useState([])    
+    const [collapsed, setcollapsed] = useState(false)
+
+    const onCollapse = (collapsed) => {
+        setcollapsed(collapsed)
+    }
+    const toggle = () => {
+        setcollapsed(!collapsed)
+    }
 
     useEffect(()=>{
         console.log("user_id",sessionStorage.getItem("user_id"))
@@ -30,17 +39,31 @@ function DashBoard1(){
     },[])
 
     return(
-        <div>
-           <Layout className="layout">
-                <Content style={{ padding: '0 50px' }}>
+        <div>   
+             <Layout className="layout" style={{ minHeight: '100vh' }}>
+        <Header>
+            <PageHeader />
+        </Header>
+        <Layout>
+            <Sider
+                collapsible
+                collapsed={collapsed}
+                onCollapse={onCollapse}>
+                <div className="logo" />
+                <LeftSideBar currentkey={'4'}/>
+            </Sider>
+            <Content style={{ padding: 20 }}>
                 <div className="site-layout-content">
+                    {assignTasklist?<div>
                     <Title >Assign Task</Title>              
                     {
                         assignTasklist.map(assignTasklist=><div className="technology_card" style={{borderRadius:50}} key={assignTasklist._id}><Card  style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}
                         ><div><div>Assign Task:</div>{assignTasklist.emailIdOfReceiver}<div><span>Task Status: </span>{assignTasklist.assignTaskStatus}</div><div><span>Your Status: </span>{assignTasklist.assignTaskVerifiedStatus}</div></div></Card></div>)
-                    }   
+                    }  </div> :<div>No Data Found</div>}
                 </div>
-                </Content>
+         
+</Content>
+                </Layout>
             </Layout>
         </div>
     )
