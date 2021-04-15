@@ -1,13 +1,12 @@
 
-import React, { useEffect, useState } from 'react';
-import { Card, Form, Input, Button, DatePicker, Select, Checkbox, Divider, Alert, Layout} from 'antd';
-import { useHistory } from "react-router";
-import moment from 'moment';
+import React, {useState, useEffect } from 'react';
+import {Form, Input, Button, Select, Checkbox, Divider, Alert, Layout} from 'antd';
 import axios from 'axios';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
 import { useForm } from 'antd/lib/form/Form';
-const { Header, Footer, Sider, Content } = Layout;
+import { useHistory } from "react-router";
+const { Header, Sider, Content } = Layout;
 const { Option } = Select;
 
 const CheckboxGroup = Checkbox.Group;
@@ -17,9 +16,7 @@ const plainOptions = ['Basic',
 'Advance'];
 
 function AddTechnology() {
-
     let history = useHistory()
-
     const [technologyType, settechnologyType] = useState('')
     const [technologyName, settechnologyName] = useState('')
     const [checkedList, setCheckedList] = useState('');
@@ -31,15 +28,18 @@ function AddTechnology() {
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
     }
-    const toggle = () => {
-        setcollapsed(!collapsed)
-    }
 
-    
+
+    useEffect(() => {
+        if (!localStorage.getItem('accessToken')) {
+			console.log("Not login")
+			history.push("/")
+		}
+    }, [])
     const timeId = setTimeout(() => {
         // After 3 seconds set the show value to false
         setissubmit(false)
-      }, 3000)
+      }, 8000)
 
     const technologyTypeHandleChange = (value) => {
         console.log('Type', value)
@@ -114,9 +114,8 @@ function AddTechnology() {
            <Form form={form} name="addtechnology" onFinish={submit} style={{width:400}} scrollToFirstError>
             <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true, message:'please select technology Type' }]} style={{ display: 'inline-list-item' }}>
                 <Select
-                    placeholder="Select a option and change input text above"
-                    onChange={(e) => { technologyTypeHandleChange(e) }}
-                    defaultValue={technologyType}>
+                    placeholder="Select"
+                    onChange={(e) => { technologyTypeHandleChange(e) }}>
                     <Option value="frontend">Front End</Option>
                     <Option value="backend">Back End</Option>
                 </Select>
@@ -134,14 +133,14 @@ function AddTechnology() {
                         message: 'please Type Technology Name'
                     }
                 ]}>
-                <Input onChange={(e) => { settechnologyName(e.target.value) }}></Input>
+                <Input onChange={(e) => { settechnologyName(e.target.value) }} placeholder={"Enter Technology Name"}></Input>
             </Form.Item>
             <Form.Item
                 label='level'
                 name='level'
                 rules={[
                     {
-                        required: true,
+                        
                         message: 'Please Check your level'
                     }
                 ]}>

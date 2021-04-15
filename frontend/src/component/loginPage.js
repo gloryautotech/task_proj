@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles/style.module.css';
-import { Radio, Input, Form } from 'antd';
+import { Radio, Input, Form, Spin } from 'antd';
 import { useHistory } from "react-router";
 import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
@@ -14,12 +14,12 @@ function LoginPage(props) {
 	const [isOtpSend, setisOtpSend] = useState(false)
 	const [isConfirmOtp, setisConfirmOtp] = useState(false)
 	const [isPassword, setisPassword] = useState(false)
-	const [regexp, setregexp] = useState(/^[0-9\+\ ]+$/)
 	const [userName, setuserName] = useState('')
 	const [hash, sethash] = useState('')
 	const [otp, setotp] = useState('')
 	const [password, setpassword] = useState('')
 	const [value, setValue] = useState();
+	const [isLoading, setisLoading] = useState(false)
 	const [form] = useForm();
 
 
@@ -60,23 +60,29 @@ function LoginPage(props) {
 	}
 
 	const sendOtp = (e) => {
-		// if (userName === '' || regexp.test(userName)) {
-		// 	console.log("number")
-		// } else {
-		// 	console.log("String")
-		// }
+		setisLoading(true)
+		if(userName.length<=0){
+			//setError({ error: "Plase Enter UserName" })
+			setisLoading(false)
+		}else{
 		axios
 			.post('http://localhost:4000/api/v1/userData/sendOTP', {
 				username: `${userName}`
 			})
 			.then(function (res) {
+				setisLoading(false)
 				console.log("res", res);
 				setisConfirmOtp(true)
 				const hash = res.data.hash;
 				hashHandleChange(hash);
 			});
+		}
 	};
 	const confirmOtp = () => {
+		setisLoading(true)
+		if(userName.length<=0 || otp.length<=0){
+			setisLoading(false)
+		}else{
 		console.log("state.username", userName)
 		console.log("state.hash", hash)
 		console.log("state.otp", otp)
@@ -88,6 +94,7 @@ function LoginPage(props) {
 				withCredentials: true
 			})
 			.then(function (res) {
+				setisLoading(false)
 				console.log("verify", res);
 				history.push({
 					pathname: '/home',
@@ -100,8 +107,13 @@ function LoginPage(props) {
 				console.log(error.response.data);
 				setError({ ...error, error: error.response.data.msg });
 			});
+		}
 	};
 	const login = () => {
+		setisLoading(true)
+		if(userName.length<=0 || password.length<=0){
+			setisLoading(false)
+		}else{
 		console.log("username", `${userName}`)
 		console.log("password", `${password}`)
 		axios
@@ -114,6 +126,7 @@ function LoginPage(props) {
 					console.log("null", res.data.message)
 					setError({ error: res.data.message })
 				}
+				setisLoading(false)
 				console.log("accessToken", res.data.data.accessToken.accessToken);
 				localStorage.setItem("accessToken", res.data.data.accessToken.accessToken)
 				history.push({
@@ -127,6 +140,7 @@ function LoginPage(props) {
 			.catch(function (error) {
 				console.log(error);
 			});
+		}
 	};
 
 	const formItemLayout = {
@@ -148,7 +162,8 @@ function LoginPage(props) {
 		},
 	};
 
-	return (
+	return (<div>
+		{isLoading?<Spin tip="Loading..."></Spin>:
 		<div className={styles}>
 			<div className={styles.background}>
 				<div className={styles.container}>
@@ -166,15 +181,15 @@ function LoginPage(props) {
 								}
 							]}>
 							<Input
-								type="tel"
+								style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
 								value={userName}
 								onChange={setUserName}
-								placeholder="Enter the username"
+								placeholder="Enter the Email-id/Phone number"
 								className={styles.input}
 							/>
 						</Form.Item>
 						<Form.Item
-							label=''
+							style={{flex:1,justifyContent:"center"}}
 							name='opction'
 							rules={[
 								{
@@ -198,11 +213,11 @@ function LoginPage(props) {
 									}
 								]}>
 								<Input.Password
-									type="tel"
+									style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919",height:40}}
 									value={password}
 									onChange={setPassword}
 									placeholder="Enter the Password"
-									className={styles.input}
+									
 								/></Form.Item> : ''}
 						{
 							isConfirmOtp ?						<Form.Item
@@ -215,7 +230,7 @@ function LoginPage(props) {
 								}
 							]}>
 								 <Input
-								type="tel"
+								style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919",height:40}}
 								value={otp}
 								onChange={setOtp}
 								placeholder="Enter the 6 digits OTP"
@@ -236,6 +251,7 @@ function LoginPage(props) {
 					</Form>
 				</div>
 			</div>
+		</div>}
 		</div>
 	);
 }

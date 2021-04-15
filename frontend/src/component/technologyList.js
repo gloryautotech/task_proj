@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Space, Breadcrumb, Card } from 'antd';
+import { Layout, Card, Spin } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import style from "./styles/style.common.css";
 import axios from 'axios';
 import { useHistory } from "react-router";
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
-const { Meta } = Card;
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 function DashBoard1() {
 
     let history = useHistory()
     const [technologyList, setTechnologyList] = useState([])
     const [collapsed, setcollapsed] = useState(false)
+    const [isLoading, setisLoading] = useState(false)
 
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
     }
-    const toggle = () => {
-        setcollapsed(!collapsed)
-    }
+
 
     useEffect(() => {
+        if (!localStorage.getItem('accessToken')) {
+			console.log("Not login")
+			history.push("/")
+        }else{
+            setisLoading(true)
         console.log("user_id", sessionStorage.getItem("user_id"))
         axios({
             'method': 'GET',
@@ -34,7 +37,9 @@ function DashBoard1() {
         }).then(response => {
             console.log('response.data', response.data.data)
             setTechnologyList(response.data.data)
+            setisLoading(false)
         })
+    }
     }, [])
 
 
@@ -53,6 +58,7 @@ function DashBoard1() {
                         <LeftSideBar currentkey={'1'}/>
                     </Sider>
                     <Content style={{ padding: 20 }}>
+                    {isLoading?<Spin tip="Loading..."></Spin>:<div>
                         <div className="site-layout-content">
                             <Title >Frontend</Title>
                             {
@@ -66,7 +72,7 @@ function DashBoard1() {
                                 technologyList.map(technologyList => <div className="technology_card">{technologyList.technologyType == 'backend' ? <div style={{ borderRadius: 50 }} key={technologyList._id}><Card style={{ width: 200, borderRadius: 40, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
                                     onClick={() => history.push({ pathname: '/technologylevel', state: { technologyName: technologyList.technologyName } })}>{technologyList.technologyName}</Card></div> : ''}</div>)
                             }
-                        </div>
+                        </div></div>}
                     </Content>
                 </Layout>
             </Layout>

@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Space, Breadcrumb, Card} from 'antd';
+import { Layout, Card} from 'antd';
 import Title from 'antd/lib/typography/Title';
 import style from "./styles/style.common.css";
 import axios from 'axios';
-import { useHistory } from "react-router";
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
+import { useHistory } from "react-router";
 
-const { Header, Footer, Sider, Content } = Layout;
-const { Meta } = Card;
+const { Header, Sider, Content } = Layout;
 
 function DashBoard1(){
-    
-	let history = useHistory()
+    let history = useHistory()
     const[assignTasklist,setassignTasklist]=useState([])    
     const [collapsed, setcollapsed] = useState(false)
 
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
     }
-    const toggle = () => {
-        setcollapsed(!collapsed)
-    }
+
 
     useEffect(()=>{
+        if (!localStorage.getItem('accessToken')) {
+			console.log("Not login")
+			history.push("/")
+		}else{
         console.log("user_id",sessionStorage.getItem("user_id"))
         axios({
             'method':'GET',
@@ -36,6 +36,7 @@ function DashBoard1(){
             console.log('response.data',response.data.data)
             setassignTasklist(response.data.data)
         })
+    }
     },[])
 
     return(

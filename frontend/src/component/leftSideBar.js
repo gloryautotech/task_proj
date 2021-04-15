@@ -1,24 +1,10 @@
-import React,{useState} from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
-import { useHistory } from "react-router";
-import { Menu, Button } from 'antd';
-
-import { HomeOutlined, PartitionOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import SignUp from './signUp';
-
-const { SubMenu } = Menu;
+import React from 'react';
+import { Link } from "react-router-dom";
+import { Menu } from 'antd';
+import { HomeOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 function LeftSideBar(props) {
-  let history = useHistory()
-    const [collapsed, setcollapsed] = useState(false)
-  const [isAddUser, setisAddUser] = useState(false)
-    const toggleCollapsed = () => {
-        setcollapsed(!collapsed)
-    }
-    const addUser = () =>{
-     setisAddUser(true)
-    }
+
 	return (
     <Menu theme="dark" defaultSelectedKeys={[props.currentkey]} mode="inline">
     <Menu.Item key="1">

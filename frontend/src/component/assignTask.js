@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Space, Breadcrumb, Card, Button, Input, Form } from 'antd';
-import Title from 'antd/lib/typography/Title';
+import {Card, Button, Input, Form } from 'antd';
 import axios from 'axios';
-
 import styles from './styles/style.module.css';
-import { useHistory } from "react-router";
 import { useForm } from 'antd/lib/form/Form';
-const { Header, Content, Footer } = Layout;
-const { Meta } = Card;
-const { TextArea } = Input;
 
 function GivenTask(props) {
 
-    let history = useHistory()
     const [isData, setisData] = useState(false)
     const [taskId, settaskId] = useState('')
     const [email, setemail] = useState('')
@@ -22,13 +15,10 @@ function GivenTask(props) {
     const [isStart, setisStart] = useState(false)
     const [currentUserTaskId, setcurrentUserTaskId] = useState('')
     const [adminEmail, setadminEmail] = useState('')
-    const [adminId, setadminId] = useState('')
     const [form] = useForm();
 
     useEffect(() => {
-
         console.log("assifn task user id", sessionStorage.getItem("user_id"))
-
     }, [])
 
     const viewbyemailandid = async () => {
@@ -42,7 +32,6 @@ function GivenTask(props) {
             }
         }).then(response => {
             console.log('response viewbyemailandid', response.data.data.userId)
-            // setadminId(response.data.data.userId)
             viewbytaskId(response.data.data.userId)
         }).catch(err => {
             console.log("error", err)
@@ -180,7 +169,7 @@ function GivenTask(props) {
                 span: 20,
             },
             sm: {
-                span: 8,
+                span: 6,
             },
         },
         wrapperCol: {
@@ -220,9 +209,9 @@ function GivenTask(props) {
                 :
                 <div className={styles}>
                     <div className={styles.background}>
-                        <div className={styles.container}>
+                        <div className={styles.container} style={{height:250}}>
                             <div className={styles.heading}>Glory Autotech</div>
-                            <Form {...formItemLayout} form={form} name="giventask" onFinish={onSubmitteDetalis} style={{ width: 350 }} scrollToFirstError>
+                            <Form {...formItemLayout} form={form} name="giventask" onFinish={onSubmitteDetalis}scrollToFirstError>
                                 <Form.Item
                                     label='Unique Id'
                                     name='uniqueid'
@@ -233,7 +222,7 @@ function GivenTask(props) {
                                         }
                                     ]}>
                                     <Input
-                                        type="tel"
+                                        style={{width:250, borderRadius:10, borderWidth:2,borderColor:"#191919",height:40}}
                                         value={taskId}
                                         onChange={(e) => { settaskId(e.target.value) }}
                                         placeholder="Enter Your Unique Id"
@@ -254,12 +243,13 @@ function GivenTask(props) {
                                         }
                                     ]}>
                                     <Input
+                                        style={{width:250, borderRadius:10, borderWidth:2,borderColor:"#191919",height:40}}
                                         value={email}
                                         onChange={(e) => { setemail(e.target.value) }}
                                         placeholder="Enter the Email"
                                     /></Form.Item>
                                 <Form.Item>
-                                    <button type='primary' htmlType="submit">
+                                    <button type='primary' htmlType="submit" className={styles.submit} style={{marginTop:-5,marginRight:60}}>
                                         Submit
                 </button></Form.Item>
                             </Form>

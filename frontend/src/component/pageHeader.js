@@ -1,24 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Space, Breadcrumb, Card, Button } from 'antd';
-import Title from 'antd/lib/typography/Title';
+import { Layout, Button } from 'antd';
 import styles from './styles/style.module.css';
 import styles1 from "./styles/style.header.css";
 import { UserOutlined } from "@ant-design/icons";
-import LeftSideBar from "./leftSideBar";
 import { useHistory } from "react-router";
 import axios from 'axios';
 
-const { Header, Content, Footer } = Layout;
-const { Meta } = Card;
+const { Header, Content } = Layout;
 
 
 function PageHeader() {
-	const [islogout, setislogout] = useState(false)
 	const [userData, setuserData] = useState('')
 	let history = useHistory()
 	const logoutHandelChnage = () =>{
-		setislogout(true)
 		localStorage.removeItem("accessToken")
 		history.push('/')
 	}
@@ -42,7 +37,6 @@ useEffect(() => {
 				<UserOutlined className="user_icon"/>
 				<Button onClick={logoutHandelChnage}>Logout</Button>
 				</Header>
-				{/* <LeftSideBar className="header_menu"/> */}
 				<Content style={{ padding: '0 50px' }}>
 				</Content>
 			

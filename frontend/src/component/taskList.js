@@ -1,36 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Space, Breadcrumb, Card, Button, Input, Form } from 'antd';
+import { Layout, Space, Card, Button, Input, Spin } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
-import { useHistory } from "react-router";
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
-import { useForm } from 'antd/lib/form/Form';
-const { Header, Footer, Sider, Content } = Layout;
-const { Meta } = Card;
-const { TextArea } = Input;
+import { useHistory } from "react-router";
+const { Header, Sider, Content } = Layout;
+
 
 function DashBoard3(props) {
-
     let history = useHistory()
     const [taskList, settaskList] = useState([])
     const [expanded, setExpanded] = useState(false)
     const [single, setSingle] = useState()
     const [email, setemail] = useState('')
     const [collapsed, setcollapsed] = useState(false)
-    const [form] = useForm();
     const [isNotEmail, setisNotEmail] = useState(true)
     const [error, seterror] = useState('')
+    const [isLoading, setisLoading] = useState(false)
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
     }
-    const toggle = () => {
-        setcollapsed(!collapsed)
-    }
+
 
     useEffect(() => {
-
+        if (!localStorage.getItem('accessToken')) {
+			console.log("Not login")
+			history.push("/")
+		}else{
+            setisLoading(true)
         console.log("technology id id ", sessionStorage.getItem("user_id"))
         let technologyListId = props.location.state.technologyListId
         console.log("technology nme", technologyListId)
@@ -43,9 +42,11 @@ function DashBoard3(props) {
         }).then(response => {
             console.log('response.data', response.data.data)
             settaskList(response.data.data)
+            setisLoading(false)
         }).catch(err => {
             console.log("error", err)
         })
+    }
     }, [])
 
     const handleIndividual = async (id) => {
@@ -108,6 +109,7 @@ function DashBoard3(props) {
                         <LeftSideBar currentkey={'1'} />
                     </Sider>
                     <Content style={{ padding: 20 }}>
+                    {isLoading?<Spin tip="Loading..."></Spin>:<div>
                         <Title>Task List</Title>
                         {taskList ? (
                             taskList.map((taskList) => (
@@ -137,7 +139,7 @@ function DashBoard3(props) {
                                 </div>
                             ))
                         ) : <div>No Data Found</div>}
-
+                                      </div>  }
                     </Content>
                 </Layout>
             </Layout>

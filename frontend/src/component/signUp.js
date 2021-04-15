@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Input, Button, DatePicker, Select } from 'antd';
+import {Form, Input, Button, DatePicker, Select } from 'antd';
 import styles from './styles/style.module.css';
 import { useHistory } from "react-router";
 import moment from 'moment';
@@ -118,7 +118,9 @@ function SignUp() {
                                     message: 'Please enter your First Name'
                                 }
                             ]}>
-                            <Input onChange={(e) => { setfirstName(e.target.value) }}></Input>
+                            <Input 
+                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            onChange={(e) => { setfirstName(e.target.value) }}></Input>
                         </Form.Item>
                         <Form.Item
                             label='Last Name'
@@ -133,7 +135,9 @@ function SignUp() {
                                     message: 'Please enter your Last Name'
                                 }
                             ]}>
-                            <Input onChange={(e) => { setlastName(e.target.value) }}></Input>
+                            <Input 
+                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            onChange={(e) => { setlastName(e.target.value) }}></Input>
                         </Form.Item>
                        
                         <Form.Item
@@ -149,7 +153,9 @@ function SignUp() {
                                     message: 'Please enter your Email'
                                 }
                             ]}>
-                            <Input onChange={(e) => { setemail(e.target.value) }}></Input>
+                            <Input 
+                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            onChange={(e) => { setemail(e.target.value) }}></Input>
                         </Form.Item>
                         <Form.Item
                             label='Phone'
@@ -164,7 +170,9 @@ function SignUp() {
                                     message: 'Please enter your Phone'
                                 }
                             ]}>
-                            <Input onChange={(e) => { setphone(e.target.value) }}></Input>
+                            <Input 
+                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            onChange={(e) => { setphone(e.target.value) }}></Input>
                         </Form.Item>
                         <Form.Item
                             label='Password'
@@ -177,10 +185,13 @@ function SignUp() {
                             ]}
                             hasFeedback
                             >
-                            <Input.Password onChange={(e) => { setpassword(e.target.value) }}></Input.Password>
+                            <Input.Password 
+                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            onChange={(e) => { setpassword(e.target.value) }}></Input.Password>
                         </Form.Item>
-                        <Form.Item name="gender" label="Gender" rules={[{ required: true }]} style={{ display: 'inline-list-item' }}>
+                        <Form.Item name="gender" label="Gender" rules={[{ required: true }]} >
                             <Select
+                                style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
                                 placeholder="Select a option and change input text above"
                                 onChange={(e) => { genderHandleChange(e) }}
                                 defaultValue={gender}>
@@ -191,6 +202,7 @@ function SignUp() {
                         </Form.Item>
                         <Form.Item name="dateOfBirth" label="Date Of Birth">
                             <DatePicker
+                                style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
                                 defaultValue={moment(Date.now())}
                                 disabledDate={disabledDate}
                                 format={'YYYY/MM/DD'}
@@ -205,10 +217,12 @@ function SignUp() {
                                     message: 'Please enter your Organization Name'
                                 }
                             ]}>
-                            <Input onChange={(e) => { setorganizationName(e.target.value) }}></Input>
+                            <Input
+                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            onChange={(e) => { setorganizationName(e.target.value) }}></Input>
                         </Form.Item>
                         <Form.Item {...formItemLayout} style={{marginLeft:300}}>
-                            <Button type='primary' htmlType="submit">Submit</Button>
+                            <Button type='primary' htmlType="submit" className={styles.submit} >Submit</Button>
                         </Form.Item>
                         </Form>
                     </div>

@@ -1,26 +1,17 @@
 
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Input, Button, DatePicker, Select, Checkbox, Divider, Layout} from 'antd';
-import { useHistory } from "react-router";
-import moment from 'moment';
+import {Form, Input, Button, Select, Layout, Alert} from 'antd';
 import axios from 'axios';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
 import { useForm } from 'antd/lib/form/Form';
-const { Header, Footer, Sider, Content } = Layout;
+import { useHistory } from "react-router";
+const { Header, Sider, Content } = Layout;
 const { Option } = Select;
-
-const CheckboxGroup = Checkbox.Group;
-
-const plainOptions = ['Basic', 
-'intermediate', 
-'Advance'];
-const defaultCheckedList = ['Basic'];
 
 function AddTask() {
 
     let history = useHistory()
-
     const [taskName, settaskName] = useState('')
     const [technologyType, settechnologyType] = useState('')
     const [technologyName, settechnologyName] = useState('')
@@ -29,16 +20,20 @@ function AddTask() {
     const[technologyList,setTechnologyList]=useState([])
     const [istechtype, setistechtype] = useState(true)
     const [istechlevel, setistechlevel] = useState(true)
-    const [technologyListLevel, settechnologyListLevel] = useState([])
-    const [technologyLevel, settechnologyLevel] = useState('')    
+    const [technologyListLevel, settechnologyListLevel] = useState([])   
     const [collapsed, setcollapsed] = useState(false)
+    const [issubmit, setissubmit] = useState(false)  
     const [form] = useForm();
+
+    const timeId = setTimeout(() => {
+        // After 3 seconds set the show value to false
+        setissubmit(false)
+      }, 8000)
+
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
     }
-    const toggle = () => {
-        setcollapsed(!collapsed)
-    }
+
     const technologyTypeHandleChange = (value) => {
         axios({
             'method':'GET',
@@ -49,6 +44,7 @@ function AddTask() {
         }).then(response=>{
             console.log('response.data',response.data.data)
             setTechnologyList(response.data.data)
+            setissubmit(true)
         })
         console.log('Type', value)
         settechnologyType(value)
@@ -78,6 +74,10 @@ function AddTask() {
 
 
     useEffect(()=>{
+        if (!localStorage.getItem('accessToken')) {
+			console.log("Not login")
+			history.push("/")
+		}
         console.log("User_id",sessionStorage.getItem("user_id"))
 
     },[])
@@ -121,22 +121,24 @@ function AddTask() {
                         <LeftSideBar currentkey={'3'} />
                     </Sider>
                     <Content style={{ padding: 20 }}>
+                    {issubmit?
+                       <div style={{width:212,position:"absolute",right:0,zIndex:9999}}> 
+           <Alert message="Success Text" type="success" />
+           </div>:''}
                     <Form form={form} name="addtechnology" onFinish={submit} style={{width:400}} scrollToFirstError>
                         <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true, message:"Please select Technology Type" }]} style={{ display: 'inline-list-item' }}>
                 <Select
-                    placeholder="Select a option and change input text above"
-                    onChange={(e) => { technologyTypeHandleChange(e) }}
-                    defaultValue={technologyType}>
+                    placeholder="Select"
+                    onChange={(e) => { technologyTypeHandleChange(e) }}>
                     <Option value="frontend">Front End</Option>
                     <Option value="backend">Back End</Option>
                 </Select>
             </Form.Item>
             <Form.Item name="technoloyName" label="Technology Name" rules={[{ required: true,message:"Please select Technology Name" }]} style={{ display: 'inline-list-item' }}>
                 <Select
-                    placeholder="Select a option and change input text above"
+                    placeholder="Select"
                     disabled={istechtype}
-                    onChange={(e)=>{technologyNameHandleChange(e)}}
-                    defaultValue={technologyName}>
+                    onChange={(e)=>{technologyNameHandleChange(e)}}>
                                         {
                         technologyList.map(technologyList=><Option value={technologyList.technologyName}>
                         {technologyList.technologyName}</Option>)
@@ -146,7 +148,7 @@ function AddTask() {
             </Form.Item>
             <Form.Item name="technoloyLevel" label="Technology Level" rules={[{ required: true,message:"Please select Technology Level" }]} style={{ display: 'inline-list-item' }}>
                 <Select
-                    placeholder="Select a option and change input text above"
+                    placeholder="Select"
                     disabled={istechlevel}
                     onChange={(e)=>{technologyLevelHandleChange(e)}}
                     >
@@ -166,7 +168,7 @@ function AddTask() {
                         message: 'Please enter your Task Name'
                     }
                 ]}>
-                <Input onChange={(e) => { settaskName(e.target.value) }}></Input>
+                <Input placeholder={"Enter Task Name"} onChange={(e) => { settaskName(e.target.value) }}></Input>
             </Form.Item>
             <Form.Item
                 label='Task Description'
@@ -177,7 +179,7 @@ function AddTask() {
                         message: 'Please enter your Task Description'
                     }
                 ]}>
-                <Input onChange={(e) => { settaskDescription(e.target.value) }}></Input>
+                <Input placeholder={"Enter Task Description"} onChange={(e) => { settaskDescription(e.target.value) }}></Input>
             </Form.Item>
 
             <Form.Item>
