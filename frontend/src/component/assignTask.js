@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Space, Breadcrumb, Card, Button, Input } from 'antd';
+import { Layout, Space, Breadcrumb, Card, Button, Input, Form } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 
 import styles from './styles/style.module.css';
 import { useHistory } from "react-router";
+import { useForm } from 'antd/lib/form/Form';
 const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
 const { TextArea } = Input;
@@ -22,9 +23,11 @@ function GivenTask(props) {
     const [currentUserTaskId, setcurrentUserTaskId] = useState('')
     const [adminEmail, setadminEmail] = useState('')
     const [adminId, setadminId] = useState('')
+    const [form] = useForm();
+
     useEffect(() => {
 
-        console.log("assifn task user id",sessionStorage.getItem("user_id"))
+        console.log("assifn task user id", sessionStorage.getItem("user_id"))
 
     }, [])
 
@@ -39,7 +42,7 @@ function GivenTask(props) {
             }
         }).then(response => {
             console.log('response viewbyemailandid', response.data.data.userId)
-           // setadminId(response.data.data.userId)
+            // setadminId(response.data.data.userId)
             viewbytaskId(response.data.data.userId)
         }).catch(err => {
             console.log("error", err)
@@ -63,14 +66,14 @@ function GivenTask(props) {
 
     const viewuserlist = async (id) => {
         console.log("viewuserlist")
-        console.log("adminId",id)
+        console.log("adminId", id)
         await axios({
             'method': 'get',
             'url': (`http://localhost:4000/api/v1/userdata/viewuserlist/${id}`)
         }).then(response => {
             console.log('response viewuserlist ', response.data.data)
             setadminEmail(response.data.data.email)
-            openSendEmail(response.data.data.email,'Open task', email+' open there task at ')
+            openSendEmail(response.data.data.email, 'Open task', email + ' open there task at ')
             viewbyuseridandtaskid(id)
         }).catch(err => {
             console.log("error", err)
@@ -97,7 +100,7 @@ function GivenTask(props) {
     }
 
     const editassigntask = async (id) => {
-        console.log("editassigntask",id)
+        console.log("editassigntask", id)
         await axios({
             'method': 'post',
             'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${id}`,
@@ -111,12 +114,12 @@ function GivenTask(props) {
     }
 
     const openSendEmail = (email, subject, text) => {
-        let nowDate= new Date()
+        let nowDate = new Date()
         console.log(nowDate)
         axios({
             'method': 'post',
             'url': 'http://localhost:4000/api/v1/email',
-            'data': { emailid: email, subject: subject, text: text + nowDate}
+            'data': { emailid: email, subject: subject, text: text + nowDate }
         })
     }
     const onSubmitteDetalis = () => {
@@ -125,15 +128,15 @@ function GivenTask(props) {
     }
 
     const startTask = () => {
-        console.log("admid id on start",adminEmail)
+        console.log("admid id on start", )
         axios({
             'method': 'post',
-            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${setcurrentUserTaskId}`,
+            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
             'data': { assignTaskStatus: 'Start' },
         }).then(response => {
             console.log('response.data', response.data.data)
             setisStart(true)
-            openSendEmail(adminEmail,'Start task','user start there task at ')
+            openSendEmail(adminEmail, 'Start task', 'user start there task at ')
         }).catch(err => {
             console.log("error", err)
         })
@@ -141,14 +144,15 @@ function GivenTask(props) {
 
     }
     const sumbitTask = () => {
-        console.log("admid id on submit",adminEmail)
+        console.log("admid id on submit", adminEmail)
         axios({
             'method': 'post',
-            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${setcurrentUserTaskId}`,
+            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
             'data': { assignTaskStatus: 'End' },
         }).then(response => {
+            setisStart(false)
             console.log('response.data', response.data.data)
-            openSendEmail(adminEmail,'Complete task','user submit there task at ' + gitLink + 'on ')
+            openSendEmail(adminEmail, 'Complete task', 'user submit there task at ' + gitLink + 'on ')
         }).catch(err => {
             console.log("error", err)
         })
@@ -156,18 +160,38 @@ function GivenTask(props) {
 
     const stopTask = () => {
         setisStart(false)
-        console.log("admid id on submit",adminEmail)
+        console.log("admid id on submit", adminEmail)
         axios({
             'method': 'post',
-            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${setcurrentUserTaskId}`,
+            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
             'data': { assignTaskStatus: 'End' },
         }).then(response => {
+            setisStart(false)
             console.log('response.data', response.data.data)
-            openSendEmail(adminEmail,'Stop task','user stop there task at ')
+            openSendEmail(adminEmail, 'Stop task', 'user stop there task at ')
         }).catch(err => {
             console.log("error", err)
         })
     }
+
+    const formItemLayout ={
+        labelCol:{
+            xs: {
+                span: 20,
+            },
+            sm: {
+                span: 8,
+            },
+        },
+        wrapperCol: {
+            xs: {
+                span: 24,
+            },
+            sm: {
+                span: 20,
+            },
+        },
+    };
 
     return (
         <div>
@@ -198,29 +222,47 @@ function GivenTask(props) {
                     <div className={styles.background}>
                         <div className={styles.container}>
                             <div className={styles.heading}>Glory Autotech</div>
-                            <div style={{paddingLeft:20,fontSize:20}}>unique Id:</div>
-                            <div className={styles.input_container}>
-                                <input
-                                    type="tel"
-                                    value={taskId}
-                                    onChange={(e) => { settaskId(e.target.value) }}
-                                    placeholder="Enter Your Unique Id"
-                                    className={styles.input}
-                                />
-                            </div>
-                            <div style={{paddingLeft:20,fontSize:20}}>Email Id:</div>
-                            <div className={styles.input_container}>
-                                <input
-                                    type="tel"
-                                    value={email}
-                                    onChange={(e) => { setemail(e.target.value) }}
-                                    placeholder="Enter the Email"
-                                    className={styles.input}
-                                />
-                            </div>
-                            <button onClick={onSubmitteDetalis} className={styles.submit}>
-                                Submit
-                </button>
+                            <Form {...formItemLayout} form={form} name="giventask" onFinish={onSubmitteDetalis} style={{ width: 350 }} scrollToFirstError>
+                                <Form.Item
+                                    label='Unique Id'
+                                    name='uniqueid'
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please enter your Unique Id'
+                                        }
+                                    ]}>
+                                    <Input
+                                        type="tel"
+                                        value={taskId}
+                                        onChange={(e) => { settaskId(e.target.value) }}
+                                        placeholder="Enter Your Unique Id"
+                                        className={styles.input}
+                                    />
+                                </Form.Item>
+                                <Form.Item
+                                    label='Email'
+                                    name='email'
+                                    rules={[
+                                        {
+                                            type: "email",
+                                            message: 'Please Enter a Valid Email'
+                                        },
+                                        {
+                                            required: true,
+                                            message: 'Please enter your Email'
+                                        }
+                                    ]}>
+                                    <Input
+                                        value={email}
+                                        onChange={(e) => { setemail(e.target.value) }}
+                                        placeholder="Enter the Email"
+                                    /></Form.Item>
+                                <Form.Item>
+                                    <button type='primary' htmlType="submit">
+                                        Submit
+                </button></Form.Item>
+                            </Form>
                         </div>
                     </div>
                 </div>}

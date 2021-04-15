@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles/style.module.css';
-import { Radio } from 'antd';
+import { Radio, Input, Form } from 'antd';
 import { useHistory } from "react-router";
-
+import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
+
 function LoginPage(props) {
 	let history = useHistory()
 	const [error, setError] = useState({
@@ -18,8 +19,9 @@ function LoginPage(props) {
 	const [hash, sethash] = useState('')
 	const [otp, setotp] = useState('')
 	const [password, setpassword] = useState('')
-
 	const [value, setValue] = useState();
+	const [form] = useForm();
+
 
 	const onChange = e => {
 		console.log('radio checked', e.target.value);
@@ -58,11 +60,11 @@ function LoginPage(props) {
 	}
 
 	const sendOtp = (e) => {
-		if (userName === '' || regexp.test(userName)) {
-			console.log("number")
-		} else {
-			console.log("String")
-		}
+		// if (userName === '' || regexp.test(userName)) {
+		// 	console.log("number")
+		// } else {
+		// 	console.log("String")
+		// }
 		axios
 			.post('http://localhost:4000/api/v1/userData/sendOTP', {
 				username: `${userName}`
@@ -126,55 +128,112 @@ function LoginPage(props) {
 				console.log(error);
 			});
 	};
+
+	const formItemLayout = {
+		labelCol: {
+			xs: {
+				span: 20,
+			},
+			sm: {
+				span: 6,
+			},
+		},
+		wrapperCol: {
+			xs: {
+				span: 24,
+			},
+			sm: {
+				span: 20,
+			},
+		},
+	};
+
 	return (
 		<div className={styles}>
 			<div className={styles.background}>
 				<div className={styles.container}>
 					<div className={styles.heading}>Glory Autotech</div>
 					<div className={styles.error}>{error.error}</div>
-					<div className={styles.success}>{error.success}</div>{isOtpSend ?
-						<div className={styles.input_text}>Enter One Time Password:</div> :
-						<div className={styles.input_text}>Phone number/ Email Id:</div>}
-					<div className={styles.input_container}>
-						<input
-							type="tel"
-							value={userName}
-							onChange={setUserName}
-							placeholder="Enter the username"
-							className={styles.input}
-						/>
-						<Radio.Group onChange={onChange} value={value}>
-							<Radio value={'password'}>Password</Radio>
-							<Radio value={"otp"}>OTP</Radio>
-						</Radio.Group>
-						{isPassword ? <input
-							type="tel"
-							value={password}
-							onChange={setPassword}
-							placeholder="Enter the Password"
-							className={styles.input}
-						/> : ''}
+					<div className={styles.success}>{error.success}</div>
+					<Form {...formItemLayout} form={form} name="login" style={{ width: 400 }} scrollToFirstError>
+						<Form.Item
+							label='UserName'
+							name='userName'
+							rules={[
+								{
+									required: true,
+									message: 'Please enter UserName'
+								}
+							]}>
+							<Input
+								type="tel"
+								value={userName}
+								onChange={setUserName}
+								placeholder="Enter the username"
+								className={styles.input}
+							/>
+						</Form.Item>
+						<Form.Item
+							label=''
+							name='opction'
+							rules={[
+								{
+									required: true,
+									message: 'Please Select one'
+								}
+							]}>
+							<Radio.Group onChange={onChange} value={value}>
+								<Radio value={'password'}>Password</Radio>
+								<Radio value={"otp"}>OTP</Radio>
+							</Radio.Group>
+						</Form.Item>
+						{isPassword ?
+							<Form.Item
+								label='Password'
+								name='password'
+								rules={[
+									{
+										required: true,
+										message: 'Please enter your Password'
+									}
+								]}>
+								<Input.Password
+									type="tel"
+									value={password}
+									onChange={setPassword}
+									placeholder="Enter the Password"
+									className={styles.input}
+								/></Form.Item> : ''}
 						{
-							isConfirmOtp ? <input
+							isConfirmOtp ?						<Form.Item
+							label='OTP'
+							name='otp'
+							rules={[
+								{
+									required: true,
+									message: 'Please enter your Otp'
+								}
+							]}>
+								 <Input
 								type="tel"
 								value={otp}
 								onChange={setOtp}
 								placeholder="Enter the 6 digits OTP"
 								className={styles.input}
-							/> : ''
+							/></Form.Item> : ''
 						}
-					</div>
-					{isOtpSend ? <button onClick={sendOtp} className={styles.submit}>
-						Send OTP
-					</button> : ''
-					}
-					{isConfirmOtp ? <button onClick={confirmOtp} className={styles.submit}>
-						Confirm OTP
-					</button> : ''}
-					{isPassword ? <button onClick={login} className={styles.submit}>
-						Login
-					</button> : ''}
 
+						{isOtpSend ? <button onClick={sendOtp} className={styles.submit}>
+							Send OTP
+					</button> : ''
+						}
+						{isConfirmOtp ? <button onClick={confirmOtp} className={styles.submit}>
+							Confirm OTP
+					</button> : ''}
+						{isPassword ? <button onClick={login} className={styles.submit}>
+							Login
+					</button> : ''}
+					</Form>
 				</div>
 			</div>
 		</div>

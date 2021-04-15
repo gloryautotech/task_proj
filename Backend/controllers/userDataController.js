@@ -3,6 +3,9 @@ require('dotenv').config();
 const express = require('express')
 const mongoose = require('mongoose')
 const shortid = require('shortid')
+const accountSid = process.env.ACCOUNT_SID;
+const authToken = process.env.AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
 const response = require('../utils/common-helper')
 const constants = require('../constants')
 const logger = require('../utils/logger')
@@ -201,13 +204,13 @@ let sendOTP = (req, res) => {
 	if(type.test(username)){
 		console.log("number otp")
 		client.messages
-		.create({
-			body: `Your One Time Login Password For Task is ${otp}`,
-			from: twilioNum,
-			to: username
-		})
-		.then((messages) => console.log(messages))
-		.catch((err) => console.error(err));
+		    .create({
+			    body: `Your One Time Login Password For Task is ${otp}`,
+			    from: twilioNum,
+			    to: username
+		    })
+		    .then((messages) => console.log(messages))
+		    .catch((err) => console.error(err));
 	}else{
 		console.log("Email otp")
 	var transporter = nodemailer.createTransport({

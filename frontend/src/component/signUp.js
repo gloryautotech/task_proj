@@ -5,6 +5,7 @@ import styles from './styles/style.module.css';
 import { useHistory } from "react-router";
 import moment from 'moment';
 import axios from 'axios';
+import { useForm } from 'antd/lib/form/Form';
 const { Option } = Select;
 
 function SignUp() {
@@ -23,7 +24,7 @@ function SignUp() {
         error: '',
         success: ''
     });
-
+    const [form] = useForm();
 
     const genderHandleChange = (value) => {
         console.log('Gender', value)
@@ -75,6 +76,25 @@ function SignUp() {
             });
     }
 
+    const formItemLayout ={
+        labelCol:{
+            xs: {
+                span: 20,
+            },
+            sm: {
+                span: 6,
+            },
+        },
+        wrapperCol: {
+            xs: {
+                span: 24,
+            },
+            sm: {
+                span: 20,
+            },
+        },
+    };
+
     return (
         <div className={styles}>
             <div className={styles.background}>
@@ -82,12 +102,17 @@ function SignUp() {
                     <div className={styles.heading}>Glory Autotech</div>
                     <div className={styles.error}>{error.error}</div>
                     <div className={styles.success}>{error.success}</div>
-                    <div style={{padding: 20,}}>
-                        <div style={{flexDirection: 'column'}}>
+                    <div style={{padding: 20}}>
+                        
+                            <Form {...formItemLayout} form={form} name="signUp" onFinish={submit} style={{width:400}} scrollToFirstError>
                         <Form.Item
                             label='First Name'
                             name='firstName'
                             rules={[
+                                {
+                                    pattern: /[a-zA-Z]/,
+                                    message: 'Please enter a valid Last Name',
+                                },
                                 {
                                     required: true,
                                     message: 'Please enter your First Name'
@@ -100,17 +125,25 @@ function SignUp() {
                             name='lastName'
                             rules={[
                                 {
+                                    pattern: /[a-zA-Z]/,
+                                    message: 'Please enter a valid Last Name',
+                                },
+                                {
                                     required: true,
                                     message: 'Please enter your Last Name'
                                 }
                             ]}>
                             <Input onChange={(e) => { setlastName(e.target.value) }}></Input>
                         </Form.Item>
-                        </div>
+                       
                         <Form.Item
                             label='Email'
                             name='email'
                             rules={[
+                                {
+                                    type: "email",
+                                    message: 'Please Enter a Valid Email'
+                                },
                                 {
                                     required: true,
                                     message: 'Please enter your Email'
@@ -122,6 +155,10 @@ function SignUp() {
                             label='Phone'
                             name='phone'
                             rules={[
+                                {
+                                    type:'number',
+                                    message: 'Please Enter only Number'
+                                },
                                 {
                                     required: true,
                                     message: 'Please enter your Phone'
@@ -137,8 +174,10 @@ function SignUp() {
                                     required: true,
                                     message: 'Please enter your Password'
                                 }
-                            ]}>
-                            <Input onChange={(e) => { setpassword(e.target.value) }}></Input>
+                            ]}
+                            hasFeedback
+                            >
+                            <Input.Password onChange={(e) => { setpassword(e.target.value) }}></Input.Password>
                         </Form.Item>
                         <Form.Item name="gender" label="Gender" rules={[{ required: true }]} style={{ display: 'inline-list-item' }}>
                             <Select
@@ -150,16 +189,15 @@ function SignUp() {
                                 <Option value="other">other</Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item style={{ display: 'inline-list-item', marginLeft: 300 }}>
+                        <Form.Item name="dateOfBirth" label="Date Of Birth">
                             <DatePicker
                                 defaultValue={moment(Date.now())}
                                 disabledDate={disabledDate}
                                 format={'YYYY/MM/DD'}
-                                style={{ display: 'inline-block', width: '150px', marginRight: 300 }}
                                 onChange={(date, dateString) => { setdateofBirth(dateString) }} />
                         </Form.Item>
                         <Form.Item
-                            label='Organization Name'
+                            label='Organization'
                             name='organizationName'
                             rules={[
                                 {
@@ -169,9 +207,10 @@ function SignUp() {
                             ]}>
                             <Input onChange={(e) => { setorganizationName(e.target.value) }}></Input>
                         </Form.Item>
-                        <Form.Item>
-                            <Button type='primary' onClick={submit}>Submit</Button>
+                        <Form.Item {...formItemLayout} style={{marginLeft:300}}>
+                            <Button type='primary' htmlType="submit">Submit</Button>
                         </Form.Item>
+                        </Form>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import moment from 'moment';
 import axios from 'axios';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
+import { useForm } from 'antd/lib/form/Form';
 const { Header, Footer, Sider, Content } = Layout;
 const { Option } = Select;
 
@@ -31,7 +32,7 @@ function AddTask() {
     const [technologyListLevel, settechnologyListLevel] = useState([])
     const [technologyLevel, settechnologyLevel] = useState('')    
     const [collapsed, setcollapsed] = useState(false)
-
+    const [form] = useForm();
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
     }
@@ -120,7 +121,8 @@ function AddTask() {
                         <LeftSideBar currentkey={'3'} />
                     </Sider>
                     <Content style={{ padding: 20 }}>
-                        <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true }]} style={{ display: 'inline-list-item' }}>
+                    <Form form={form} name="addtechnology" onFinish={submit} style={{width:400}} scrollToFirstError>
+                        <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true, message:"Please select Technology Type" }]} style={{ display: 'inline-list-item' }}>
                 <Select
                     placeholder="Select a option and change input text above"
                     onChange={(e) => { technologyTypeHandleChange(e) }}
@@ -129,7 +131,7 @@ function AddTask() {
                     <Option value="backend">Back End</Option>
                 </Select>
             </Form.Item>
-            <Form.Item name="technoloyName" label="Technology Name" rules={[{ required: true }]} style={{ display: 'inline-list-item' }}>
+            <Form.Item name="technoloyName" label="Technology Name" rules={[{ required: true,message:"Please select Technology Name" }]} style={{ display: 'inline-list-item' }}>
                 <Select
                     placeholder="Select a option and change input text above"
                     disabled={istechtype}
@@ -142,7 +144,7 @@ function AddTask() {
                     
                 </Select>
             </Form.Item>
-            <Form.Item name="technoloyLevel" label="Technology Level" rules={[{ required: true }]} style={{ display: 'inline-list-item' }}>
+            <Form.Item name="technoloyLevel" label="Technology Level" rules={[{ required: true,message:"Please select Technology Level" }]} style={{ display: 'inline-list-item' }}>
                 <Select
                     placeholder="Select a option and change input text above"
                     disabled={istechlevel}
@@ -179,8 +181,9 @@ function AddTask() {
             </Form.Item>
 
             <Form.Item>
-                <Button type='primary' onClick={submit}>Submit</Button>
+                <Button type='primary' htmlType='submit'>Submit</Button>
             </Form.Item>
+            </Form>
             </Content>
             </Layout>
             </Layout>

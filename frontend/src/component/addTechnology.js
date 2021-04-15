@@ -1,11 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Input, Button, DatePicker, Select, Checkbox, Divider, Alert, Layout } from 'antd';
+import { Card, Form, Input, Button, DatePicker, Select, Checkbox, Divider, Alert, Layout} from 'antd';
 import { useHistory } from "react-router";
 import moment from 'moment';
 import axios from 'axios';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
+import { useForm } from 'antd/lib/form/Form';
 const { Header, Footer, Sider, Content } = Layout;
 const { Option } = Select;
 
@@ -14,7 +15,6 @@ const CheckboxGroup = Checkbox.Group;
 const plainOptions = ['Basic', 
 'intermediate', 
 'Advance'];
-const defaultCheckedList = ['Basic'];
 
 function AddTechnology() {
 
@@ -22,12 +22,12 @@ function AddTechnology() {
 
     const [technologyType, settechnologyType] = useState('')
     const [technologyName, settechnologyName] = useState('')
-    const [checkedList, setCheckedList] = useState(defaultCheckedList);
+    const [checkedList, setCheckedList] = useState('');
     const [indeterminate, setIndeterminate] = useState(true);
     const [checkAll, setCheckAll] = useState(false);
     const [issubmit, setissubmit] = useState(false)  
     const [collapsed, setcollapsed] = useState(false)
-
+    const [form] = useForm();
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
     }
@@ -82,7 +82,7 @@ function AddTechnology() {
             .then(function (res) {
                 settechnologyName('')
                 settechnologyType('')
-                setCheckedList(defaultCheckedList)
+                setCheckedList('')
                 setissubmit(true)
                 timeId()
                 console.log("res of add technology",res)
@@ -111,7 +111,8 @@ function AddTechnology() {
                        <div style={{width:212,position:"absolute",right:0,zIndex:9999}}> 
            <Alert message="Success Text" type="success" />
            </div>:''}
-            <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true }]} style={{ display: 'inline-list-item' }}>
+           <Form form={form} name="addtechnology" onFinish={submit} style={{width:400}} scrollToFirstError>
+            <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true, message:'please select technology Type' }]} style={{ display: 'inline-list-item' }}>
                 <Select
                     placeholder="Select a option and change input text above"
                     onChange={(e) => { technologyTypeHandleChange(e) }}
@@ -125,8 +126,12 @@ function AddTechnology() {
                 name='technologyName'
                 rules={[
                     {
+                        pattern: /[a-zA-Z]/,
+                        message: 'Please enter a valid Technology Name',
+                    },
+                    {
                         required: true,
-                        message: 'Please enter your Last Name'
+                        message: 'please Type Technology Name'
                     }
                 ]}>
                 <Input onChange={(e) => { settechnologyName(e.target.value) }}></Input>
@@ -137,7 +142,7 @@ function AddTechnology() {
                 rules={[
                     {
                         required: true,
-                        message: 'Please enter your level'
+                        message: 'Please Check your level'
                     }
                 ]}>
                           <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
@@ -147,8 +152,9 @@ function AddTechnology() {
       <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
             </Form.Item>
             <Form.Item>
-                <Button type='primary' onClick={submit}>Submit</Button>
+                <Button type='primary' htmlType="submit">Submit</Button>
             </Form.Item>
+            </Form>
             </Content>
             </Layout>
             </Layout>
