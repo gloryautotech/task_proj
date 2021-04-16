@@ -4,6 +4,7 @@ const userData = require('../controllers/userDataController')
 const technology = require('../controllers/technologyListController')
 const task = require ('../controllers/taskListController')
 const assignTask = require('../controllers/assignTaskController')
+const questionBank = require('../controllers/questionBankController')
 const email = require('../mailService')
 
 //middle
@@ -55,6 +56,11 @@ app.post(baseUrl + '/assigntask/viewbyuseridandtaskid', assignTask.viewByUserIda
 app.post(baseUrl + '/assigntask/editassigntask/:assignid', assignTask.editassignTask)
 app.post(baseUrl + '/assigntask/viewbyemailandid', assignTask.viewByEmailAndId)
 
+//Question Bank
+app.get(baseUrl + '/questionbank/allquestionlist',auth.isAuthenticated, questionBank.getAllQuestionList)
+app.post(baseUrl + '/questionbank/createquestionbank',auth.isAuthenticated, questionBank.createQuestionBank)
+app.post(baseUrl + '/questionbank/createquestionbankoption',auth.isAuthenticated, questionBank.createQuestionBankOption)
+app.post(baseUrl + '/questionbank/viewbyquestionbanktype',auth.isAuthenticated, questionBank.viewByQuestionBankType)
 }
 
 

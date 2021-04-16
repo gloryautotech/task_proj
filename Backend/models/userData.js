@@ -26,6 +26,10 @@ let userDataSchema = new Schema({
         type: String,
         default:'present'
     },
+    userType: {
+        type: String,
+        default:'admin'
+    },
     dateOfBirth: {
         type: Date,
         default:'present'

@@ -80,9 +80,9 @@ function AddTechnology() {
             },
         })
             .then(function (res) {
-                settechnologyName('')
-                settechnologyType('')
-                setCheckedList('')
+                settechnologyName()
+                settechnologyType()
+                setCheckedList()
                 setissubmit(true)
                 timeId()
                 console.log("res of add technology",res)
@@ -133,7 +133,7 @@ function AddTechnology() {
                         message: 'please Type Technology Name'
                     }
                 ]}>
-                <Input onChange={(e) => { settechnologyName(e.target.value) }} placeholder={"Enter Technology Name"}></Input>
+                <Input defaultValue={technologyName} onChange={(e) => { settechnologyName(e.target.value) }} placeholder={"Enter Technology Name"}></Input>
             </Form.Item>
             <Form.Item
                 label='level'

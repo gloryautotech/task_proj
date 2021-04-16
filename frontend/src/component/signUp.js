@@ -69,7 +69,7 @@ function SignUp() {
                 if (res.data.data.result._id) {
                     sessionStorage.setItem("user_id", res.data.data.result._id)
                 }
-                history.push('/technologylist')
+                history.push('/round')
             })
             .catch(function (error) {
                 console.log(error);
@@ -162,7 +162,7 @@ function SignUp() {
                             name='phone'
                             rules={[
                                 {
-                                    type:'number',
+                                    pattern: /[0-9]/,
                                     message: 'Please Enter only Number'
                                 },
                                 {

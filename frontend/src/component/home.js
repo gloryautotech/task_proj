@@ -20,7 +20,7 @@ function Home(props){
                 
                 if(response.data.data[0]._id){
                 sessionStorage.setItem("user_id",response.data.data[0]._id) }
-                history.push('/technologylist')
+                history.push('/round')
             }
         })
 

@@ -86,6 +86,7 @@ let createUserData = (req, res) => {
         phone: req.body.phone,
         password: req.body.password,
         gender: req.body.gender,
+        userType: req.body.userType,
         dateOfBirth: req.body.dateOfBirth,
         organizationName: req.body.organizationName,
         created: today,

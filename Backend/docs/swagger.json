@@ -13,9 +13,17 @@
         "description": "API for User"
       },
         {
-        "name": "Common",
-        "description": "API for Common Usage"
-      }
+        "name": "Technology List",
+        "description": "API for Technology List Usage"
+      },
+      {
+      "name": "Task List",
+      "description": "API for Technology List Usage"
+    },
+    {
+    "name": "Assign Task",
+    "description": "API for Assign Task Usage"
+  }
     ],
     "schemes": [
       "http",
@@ -189,6 +197,364 @@
                 "$ref": "#/definitions/edituserdata"
               }
             }],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/userdata/fetchuserlist/{username}":{
+        "get": {
+          "tags": [
+            "User"
+          ],
+          "description": "View By Username",
+          "operationId": "View By Username",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "username",
+            "in": "path",
+            "description": "UserName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/userdata/deleteuserlist/{userId}":{
+        "delete": {
+          "tags": [
+            "User"
+          ],
+          "description": "Delete By UserId",
+          "operationId": "Delete By UserId",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/tasklist/alltasklist":{
+        "get": {
+          "tags": [
+            "Task List"
+          ],
+          "description": "View By all Task List",
+          "operationId": "View By all task list",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/tasklist/viewbytechnologylistid/{technologylistid}":{
+        "get": {
+          "tags": [
+            "Task List"
+          ],
+          "description": "View By Technology List Id",
+          "operationId": "View By technology list id",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "technologylistid",
+            "in": "path",
+            "description": "Technology List Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/tasklist/viewbytaskId/{taskid}":{
+        "get": {
+          "tags": [
+            "Task List"
+          ],
+          "description": "View By Task Id",
+          "operationId": "View By task id",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+          {
+            "name": "taskid",
+            "in": "path",
+            "description": "Task Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/tasklist/deletetasklist/{taskListId}":{
+        "delete": {
+          "tags": [
+            "Task List"
+          ],
+          "description": "Delete By Task List Id",
+          "operationId": "Delete By task List Id",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "taskListId",
+            "in": "path",
+            "description": "Task List Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      }   ,
+      "/technologylist/alltechnologylist":{
+        "get": {
+          "tags": [
+            "Technology List"
+          ],
+          "description": "View By all Technology List",
+          "operationId": "View By all technology list",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/technologylist/viewbytechnologytype/{technologyType}":{
+        "get": {
+          "tags": [
+            "Technology List"
+          ],
+          "description": "View By Technology Type",
+          "operationId": "View By technology type",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "technologyType",
+            "in": "path",
+            "description": "Technology Type",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/technologylist/viewByTechnologyname/{technologyname}":{
+        "get": {
+          "tags": [
+            "Technology List"
+          ],
+          "description": "View By Technology Name",
+          "operationId": "View By technology name",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "technologyname",
+            "in": "path",
+            "description": "Technology Name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/technologylist/deletetechnologylist/{technologyListId}":{
+        "delete": {
+          "tags": [
+            "Technology List"
+          ],
+          "description": "Delete By Technology List Id",
+          "operationId": "Delete By technology List Id",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "technologyListId",
+            "in": "path",
+            "description": "Technology List Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+          "responses": {
+            "200": {
+              "description": "Get All Data successfully "
+            },
+            "409": {
+              "description": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "/assigntask/viewbyuserid/{userid}":{
+        "get": {
+          "tags": [
+            "Assign Task"
+          ],
+          "description": "View By User Id",
+          "operationId": "View By user id",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+            "name": "token",
+            "in": "header",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "User Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
           "responses": {
             "200": {
               "description": "Get All Data successfully "

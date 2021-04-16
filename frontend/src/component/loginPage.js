@@ -39,7 +39,7 @@ function LoginPage(props) {
 	useEffect(() => {
 		if (localStorage.getItem('accessToken')) {
 			console.log("already login")
-			history.push("/technologylist")
+			history.push("/round")
 		}
 	}, [])
 

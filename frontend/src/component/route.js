@@ -12,6 +12,9 @@ import LeftSideBar from "./leftSideBar";
 import addTechnology from "./addTechnology";
 import addTask from "./addTask";
 import assignTasklist from "./assignTasklist";
+import addQuestionBank from "./addQuestionBank";
+import assignQuestionBank from "./assignQuestionBank";
+import round from "./round";
 const {Content } = Layout;
 
 function RouteJs() {
@@ -33,6 +36,9 @@ function RouteJs() {
 				<Route path="/addtechnology" exact component={addTechnology} />
 				<Route path="/addtask" exact component={addTask} />
 				<Route path="/assigntask" exact component={assignTasklist} />
+				<Route path="/addquestionbank" exact component={addQuestionBank} />
+				<Route path="/round" exact component={round} />
+				<Route path="/assignquestionbank" exact component={assignQuestionBank} />
 				</div>
 			</Content>
 </Router>
