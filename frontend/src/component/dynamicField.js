@@ -12,7 +12,7 @@ function DynamicField() {
               <div key={field.key}>
                 <Divider>Field {index + 1}</Divider>
                 <Form.Item
-                  name={[index, "option"]}
+                  name={[index]}
                   label="Option"
                   rules={[{ required: true }]}
                 >

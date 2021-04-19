@@ -6,6 +6,7 @@ import { HomeOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 function LeftSideBar(props) {
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isSubAdmin, setisSubAdmin] = useState(false)
   useEffect(() => {
     axios({
       'method': 'get',
@@ -14,7 +15,12 @@ function LeftSideBar(props) {
       console.log('Header Data ', response.data.data)
       if (response.data.data.userType == 'admin') {
         setIsAdmin(true)
-      } else {
+        setisSubAdmin(false)
+      } else if(response.data.data.userType == 'sub-admin') {
+        setisSubAdmin(true)
+        setIsAdmin(false)
+      }else{
+        setisSubAdmin(false)
         setIsAdmin(false)
       }
 
@@ -53,7 +59,7 @@ function LeftSideBar(props) {
             <Link to="/addquestionbank" />
           </Menu.Item>
         </Menu>
-        :
+        :<div>{isSubAdmin?
         <Menu theme="dark" defaultSelectedKeys={[props.currentkey]} mode="inline">
           <Menu.Item key="1">
             <HomeOutlined />
@@ -66,6 +72,15 @@ function LeftSideBar(props) {
             <Link to="/assigntask" />
           </Menu.Item>
         </Menu>
+        :
+        <Menu theme="dark" defaultSelectedKeys={[props.currentkey]} mode="inline">
+        <Menu.Item key="1">
+          <HomeOutlined />
+          <span>Home</span>
+          <Link to="/questionpaper" />
+        </Menu.Item>
+      </Menu>
+        }</div>
       }
     </div>
   );

@@ -18,6 +18,7 @@ function AssignQuestionBank() {
     const [collapsed, setcollapsed] = useState(false)
     const [email, setemail] = useState('')
     const [questionBankType, setquestionBankType] = useState()
+    const [confirmQuestionList, setconfirmQuestionList] = useState([])
     const [isQuestionList, setisQuestionList] = useState(false)
     const [noOfQuestion, setnoOfQuestion] = useState('')
     const [isLoading, setisLoading] = useState(false)
@@ -51,7 +52,7 @@ function AssignQuestionBank() {
             },
             'headers': {
                 'token': localStorage.getItem('accessToken')
-            },
+            }
         })
             .then(function (res) {
                 console.log("res of assign question bank", res.data.data)
@@ -63,6 +64,51 @@ function AssignQuestionBank() {
                 console.log(error);
             });
     }
+    const sumbitQuestion = () =>{
+        console.log("question",questionList)
+        var questionlist=[]
+        questionList.forEach(element => {
+            console.log("element",element)
+            questionlist.push({'questionId': element._id})
+        });
+        console.log("questionlist",questionlist)
+        axios({
+            'method': 'post',
+            'url': 'http://localhost:4000/api/v1/assignquestionbank/createassignquestionlist',
+            'data': {
+                assignEmail: email,
+                questionListId: questionlist
+            },
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            }
+        })
+            .then(function (res) {
+                console.log("res of assign question bank list", res.data.data)
+                axios({
+                    'method': 'post',
+                    'url': 'http://localhost:4000/api/v1/userdata/createIdPassword',
+                    'data': {
+                        email: email,
+                        password: res.data.data._id
+                    },
+                    'headers': {
+                        'token': localStorage.getItem('accessToken')
+                    }
+                })
+                    .then(function (res) {
+                        console.log("res of assign question bank list", res.data.data)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        
+    }
+
 
     return (
         <div>
@@ -143,7 +189,7 @@ function AssignQuestionBank() {
                                             </Form>
                                         </Card>
                                     </div>
-                                    {isQuestionList?
+                                    {isQuestionList?<div>
                                     <Card
                                         style={{
                                             borderRadius: 40,
@@ -157,7 +203,8 @@ function AssignQuestionBank() {
                                                 <Card style={{ borderRadius: 20, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
                                                 >{questionList.questionBankQuestion}</Card></div>)
                                         }
-                                    </Card>:''}
+                                  <div><Button style={{marginTop:50}} onClick={sumbitQuestion}>Submit</Button></div>  </Card></div>:''}
+                                    
                                 </div>
                             </div>}
                     </Content>

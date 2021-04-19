@@ -111,6 +111,30 @@ let createUserData = (req, res) => {
     })
 }
 
+let createIdPassword = (req, res) => {
+    var today = Date.now()
+    let newUserData = new userDataModel({
+        email: req.body.email,
+        password: req.body.password,
+        userType: "user",
+        created: today,
+        lasrModified: today
+    })
+    //.select('-_id -__v')
+    newUserData.save(async(err, result) => {
+        if (err) {
+            logger.log('createIdPassword',req, err,req.body,res)
+            let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
+            res.send(apiResponse)
+        }
+        else {
+            console.log("new user data result", result)
+            let apiResponse = response.respons(true,constants.messages.DATA_ADDED,constants.constants.HTTP_SUCCESS,result)
+            res.send(apiResponse)
+        }
+    })
+}
+
 let editUserData = (req, res) => {
     let option = req.body
     console.log("option", option)
@@ -163,14 +187,15 @@ let loginCheck = (req, res) => {
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
             res.send(apiResponse)
         }
-        else if (!result) {
+        else if (result.length<=0) {
             console.log("null username")
             let apiResponse = response.respons(true,constants.messages.LOGIN.NOT_FOUND,constants.constants.HTTP_SUCCESS,null)
             res.send(apiResponse)
         }
         else {
-            console.log("result login", result[0].password)
-            if (req.body.password == undefined || req.body.password == null || req.body.password == '') {
+            console.log("result login", result)
+            console.log("req.body", req.body)
+            if (!req.body.password) {
                 let apiResponse = response.respons(true,constants.messages.LOGIN.NOT_FOUND + err,constants.constants.HTTP_SUCCESS,null)
                 res.send(apiResponse)
             }
@@ -269,6 +294,7 @@ module.exports = {
     getUserAllData,
     viewById,
     createUserData,
+    createIdPassword,
     editUserData,
     viewByUserName,
     deleteUserNameById,

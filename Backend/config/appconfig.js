@@ -5,7 +5,7 @@ appConfig.port = process.env.PORT;
 appConfig.allowedCorsOrigin = "*";
 appConfig.env = "dev";
 appConfig.db = {
-    uri:'mongodb://127.0.0.1:27017/task'
+    uri:'mongodb+srv://admin:admin@cluster0.kxctn.mongodb.net/task?retryWrites=true&w=majority'
 }
 appConfig.apiVersion = '/api/v1';
 

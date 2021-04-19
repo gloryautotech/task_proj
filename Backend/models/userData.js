@@ -4,27 +4,27 @@ const Schema = mongoose.Schema
 let userDataSchema = new Schema({
     userFirstName: {
         type: String,
-        default: 'default name'
+        default: ''
     },
     userLastName: {
         type: String,
-        default: 'default name'
+        default: ''
     },
     email: {
         type: String,
-        default:'present'
+        default:''
     },
     phone: {
         type: String,
-        default:'present'
+        default:''
     },
     password: {
         type: String,
-        default:'present'
+        default:''
     },
     gender: {
         type: String,
-        default:'present'
+        default:''
     },
     userType: {
         type: String,
@@ -32,11 +32,11 @@ let userDataSchema = new Schema({
     },
     dateOfBirth: {
         type: Date,
-        default:'present'
+        default:''
     },
     organizationName: {
         type: String,
-        default:'present'
+        default:''
     },
     created: {
         type: Date,

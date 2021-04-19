@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const shortid = require('shortid')
 const questionBank = mongoose.model('questionBank')
-const questionBankOption = mongoose.model('questionBankOption')
+//const questionBankOption = mongoose.model('questionBankOption')
 const constants = require('../constants')
 const logger = require('../utils/logger')
 const response = require('../utils/common-helper')
@@ -35,6 +35,7 @@ let createQuestionBank = (req, res) => {
         questionBankQuestion: req.body.questionBankQuestion,
         questionBankOption: req.body.questionBankOption,
         questionBankAnswer: req.body.questionBankAnswer,
+        questionOption: req.body.questionOption,
         created: today,
         lasrModified: today
     })
@@ -52,28 +53,28 @@ let createQuestionBank = (req, res) => {
     })
 }
 
-let createQuestionBankOption = (req, res) => {
-    var today = Date.now()
-    console.log("question option bank creat body",req.body)
-    let newQuestionBankOption = new questionBankOption({
-        questionBankId: req.body.questionBankId,
-        questionBankAnswerOption: req.body.questionBankAnswerOption,
-        created: today,
-        lasrModified: today
-    })
-    newQuestionBankOption.save(async(err, result) => {
-        if (err) {
-            logger.log('createQuestionBankOption',req, err,req.body,res)
-            let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
-            res.send(apiResponse)
-        }
-        else {
-            console.log("new user data result", result)
-            let apiResponse = response.respons(true,constants.messages.DATA_ADDED,constants.constants.HTTP_SUCCESS,result)
-            res.send(apiResponse)
-        }
-    })
-}
+// let createQuestionBankOption = (req, res) => {
+//     var today = Date.now()
+//     console.log("question option bank creat body",req.body)
+//     let newQuestionBankOption = new questionBankOption({
+//         questionBankId: req.body.questionBankId,
+//         questionBankAnswerOption: req.body.questionBankAnswerOption,
+//         created: today,
+//         lasrModified: today
+//     })
+//     newQuestionBankOption.save(async(err, result) => {
+//         if (err) {
+//             logger.log('createQuestionBankOption',req, err,req.body,res)
+//             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
+//             res.send(apiResponse)
+//         }
+//         else {
+//             console.log("new user data result", result)
+//             let apiResponse = response.respons(true,constants.messages.DATA_ADDED,constants.constants.HTTP_SUCCESS,result)
+//             res.send(apiResponse)
+//         }
+//     })
+// }
 
 let viewByQuestionBankType = (req, res) => {
     var v = req.body.questionBankType;
@@ -98,6 +99,6 @@ let viewByQuestionBankType = (req, res) => {
 module.exports = {
     getAllQuestionList,
     createQuestionBank,
-    createQuestionBankOption,
+  //  createQuestionBankOption,
     viewByQuestionBankType
 }

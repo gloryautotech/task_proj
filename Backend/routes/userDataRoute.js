@@ -5,6 +5,7 @@ const technology = require('../controllers/technologyListController')
 const task = require ('../controllers/taskListController')
 const assignTask = require('../controllers/assignTaskController')
 const questionBank = require('../controllers/questionBankController')
+const assignQuestionBank = require('../controllers/assignQuestionBankController')
 const email = require('../mailService')
 
 //middle
@@ -26,6 +27,7 @@ app.get(baseUrl + '/userdata/viewuserlist/:userId', userData.viewById)
 app.put(baseUrl + '/userdata/edituserlist/:userId',auth.isAuthenticated, userData.editUserData)
 app.get(baseUrl + '/userdata/fetchuserlist/:username', userData.viewByUserName)
 app.delete(baseUrl + '/userdata/deleteuserlist/:userId',auth.isAuthenticated, userData.deleteUserNameById)
+app.post(baseUrl + '/userdata/createIdPassword',auth.isAuthenticated, userData.createIdPassword)
 
 //login user
 app.post(baseUrl + '/userdata/loginuser', userData.loginCheck)
@@ -59,8 +61,13 @@ app.post(baseUrl + '/assigntask/viewbyemailandid', assignTask.viewByEmailAndId)
 //Question Bank
 app.get(baseUrl + '/questionbank/allquestionlist',auth.isAuthenticated, questionBank.getAllQuestionList)
 app.post(baseUrl + '/questionbank/createquestionbank',auth.isAuthenticated, questionBank.createQuestionBank)
-app.post(baseUrl + '/questionbank/createquestionbankoption',auth.isAuthenticated, questionBank.createQuestionBankOption)
+//app.post(baseUrl + '/questionbank/createquestionbankoption',auth.isAuthenticated, questionBank.createQuestionBankOption)
 app.post(baseUrl + '/questionbank/viewbyquestionbanktype',auth.isAuthenticated, questionBank.viewByQuestionBankType)
+
+//assign Question Bank
+app.post(baseUrl + '/assignquestionbank/createassignquestionlist',auth.isAuthenticated, assignQuestionBank.createAssignQuestionList)
+app.get(baseUrl + '/assignquestionbank/viewquestionbankbyid/:id',auth.isAuthenticated, assignQuestionBank.viewQuestionBankById)
+
 }
 
 

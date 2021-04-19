@@ -60,6 +60,18 @@ function AddQuestionBank() {
         }
         else {
             seterror("")
+            console.log("values.fields",values.fields)
+            let questionOption = []
+             if(questionBankOption == 'true'){
+                 console.log("hel")
+                 values.fields.forEach(element => {
+                    questionOption.push(element)
+                 });
+            // for (let index = 0; index <= values.fields.length; index++) {
+            //     questionOption.push(values.fields[index].option)
+            // }
+        }
+            console.log("all option", questionOption)
             axios({
                 'method': 'post',
                 'url': 'http://localhost:4000/api/v1/questionbank/createquestionbank',
@@ -67,7 +79,8 @@ function AddQuestionBank() {
                     questionBankType: questionBankType,
                     questionBankOption: questionBankOption,
                     questionBankQuestion: question,
-                    questionBankAnswer: answer
+                    questionBankAnswer: answer,
+                    questionOption: questionOption
                 },
                 'headers': {
                     'token': localStorage.getItem('accessToken')
@@ -75,27 +88,6 @@ function AddQuestionBank() {
             })
                 .then(function (res) {
                     console.log("res", res)
-                    if (res.data.data.questionBankOption == 'true') {
-                        console.log("valuse field", values.fields)
-                        console.log("value length", values.fields.length)
-                        for (let index = 0; index <= values.fields.length; index++) {
-                            console.log("all option", values.fields[index].option)
-                            axios({
-                                'method': 'post',
-                                'url': 'http://localhost:4000/api/v1/questionbank/createquestionbankoption',
-                                'data': {
-                                    questionBankId: res.data.data._id,
-                                    questionBankAnswerOption: values.fields[index].option
-                                },
-                                'headers': {
-                                    'token': localStorage.getItem('accessToken')
-                                },
-                            }).then(response => {
-
-                            })
-
-                        }
-                    }
                     console.log("call null")
                     setanswer(null)
                     setquestionBankOption(null)

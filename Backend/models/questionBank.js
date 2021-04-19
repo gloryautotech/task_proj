@@ -14,6 +14,9 @@ let questionBank = new Schema({
     questionBankAnswer: {
         type: String
     },
+    questionOption:{
+        type: Array
+    },
     created: {
         type: Date,
         default: Date.now
@@ -26,21 +29,7 @@ let questionBank = new Schema({
 
 mongoose.model('questionBank',questionBank)
 
-let questionBankOption = new Schema({
-    questionBankId: {
-        type: String
-    },
-    questionBankAnswerOption: {
-        type: String
-    },
-    created: {
-        type: Date,
-        default: Date.now
-    },
-    lasrModified: {
-        type: Date,
-        default: Date.now
-    }
-},{ collection: 'questionBankOption' })
 
-mongoose.model('questionBankOption',questionBankOption)
+// ,{ collection: 'questionBankOption' })
+
+// mongoose.model('questionBankOption',questionBankOption)
