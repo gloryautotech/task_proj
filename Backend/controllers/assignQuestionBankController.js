@@ -35,8 +35,6 @@ let createAssignQuestionList = (req, res) => {
 }
 
 let viewQuestionBankById = (req, res) => {
-    var v = req.params.technologyType;
-    console.log(v)
     assignQuestionList.find({ '_id': req.params.id }, (err, result) => {
         if (err) {
             logger.log('viewQuestionBankById',req, err,req.body,res)
@@ -74,7 +72,29 @@ let viewQuestionBankById = (req, res) => {
     })
 }
 
+
+let viewAssignUserById = (req, res) => {
+    assignQuestionList.find({ '_id': req.params.id }, (err, result) => {
+        if (err) {
+            logger.log('viewAssignUserById', req, err, req.body, res)
+            let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
+            res.send(apiResponse)
+        }
+        else if (!result) {
+            let apiResponse = response.respons(true, constants.messages.NOT_FOUND, constants.constants.HTTP_SUCCESS, null)
+            res.send(apiResponse)
+        }
+        else {
+            console.log("resul of question", result)
+            let apiResponse = response.respons(true, constants.messages.SUCCESS, constants.constants.HTTP_SUCCESS, result)
+            res.send(apiResponse)
+        }
+
+    })
+}
+
 module.exports = {
     createAssignQuestionList,
-    viewQuestionBankById
+    viewQuestionBankById,
+    viewAssignUserById
 }

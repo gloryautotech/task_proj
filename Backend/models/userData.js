@@ -28,7 +28,7 @@ let userDataSchema = new Schema({
     },
     userType: {
         type: String,
-        default:'admin'
+        default:'sub-admin'
     },
     dateOfBirth: {
         type: Date,
