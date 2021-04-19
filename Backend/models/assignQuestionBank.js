@@ -9,6 +9,10 @@ let assignQuestionListSchema = new Schema({
         type: String
     },
     questionBankList: [questionBankSchema],
+    isSubmit: {
+        type: Boolean,
+        default: false
+    },
     created: {
         type: Date,
         default: Date.now

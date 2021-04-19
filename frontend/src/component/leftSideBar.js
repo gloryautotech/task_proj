@@ -7,21 +7,30 @@ import { HomeOutlined, PlusCircleOutlined } from '@ant-design/icons';
 function LeftSideBar(props) {
   const [isAdmin, setIsAdmin] = useState(false)
   const [isSubAdmin, setisSubAdmin] = useState(false)
+  const [isUser, setisUser] = useState(false)
   useEffect(() => {
     axios({
       'method': 'get',
       'url': (`http://localhost:4000/api/v1/userdata/viewuserlist/${sessionStorage.getItem("user_id")}`)
     }).then(response => {
-      console.log('Header Data ', response.data.data)
+      console.log('left side bar Data ', response.data.data)
       if (response.data.data.userType == 'admin') {
         setIsAdmin(true)
         setisSubAdmin(false)
+        setisUser(false)
       } else if(response.data.data.userType == 'sub-admin') {
         setisSubAdmin(true)
         setIsAdmin(false)
-      }else{
+        setisUser(false)
+      } else if(response.data.data.userType == 'user') {
         setisSubAdmin(false)
         setIsAdmin(false)
+        setisUser(true)
+      }
+      else{
+        setisSubAdmin(false)
+        setIsAdmin(false)
+        setisUser(false)
       }
 
     }).catch(err => {
@@ -72,14 +81,14 @@ function LeftSideBar(props) {
             <Link to="/assigntask" />
           </Menu.Item>
         </Menu>
-        :
+        :<div>{isUser?
         <Menu theme="dark" defaultSelectedKeys={[props.currentkey]} mode="inline">
         <Menu.Item key="1">
           <HomeOutlined />
           <span>Home</span>
           <Link to="/questionpaper" />
         </Menu.Item>
-      </Menu>
+      </Menu>:<div></div>}</div>
         }</div>
       }
     </div>
