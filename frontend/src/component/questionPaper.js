@@ -24,7 +24,7 @@ const defaultFormItemLayout = {
 function QuestionPaper() {
     const [collapsed, setcollapsed] = useState(false)
     const [questionList, setquestionList] = useState([])
-    const [answerList, setanswerList] = useState({ questionId: '', answer: '' })
+    const [answerList, setanswerList] = useState([])
 
     const [form] = Form.useForm();
 
@@ -53,15 +53,28 @@ function QuestionPaper() {
     }
 
     const createSubmitAnswerList = (answer,questionid) => {
-        console.log("questionid",questionid)
-        console.log("answer",answer)
-        setanswerList(prevData=>{
-            return {
-                ...prevData,
-                questionId: questionid,
-                answer: answer
-            }
-        })
+        var isFind = false
+        if(answerList.length>=0){
+            answerList.forEach((element,index) => {
+                if(element.questionid == questionid)
+                {
+                    isFind = true
+                    let newArray = [...answerList]
+                    newArray[index] = {...newArray[index], answer: answer}
+                    setanswerList(newArray)
+                }
+            });
+        }
+
+        if(!isFind){
+            setanswerList(answerList=>[...answerList,{questionid,answer}])
+            isFind=false
+        }
+        
+    }
+
+    const onSubmit = () =>{
+        console.log("Answer lis",answerList)
     }
 
     return (
@@ -93,7 +106,7 @@ function QuestionPaper() {
                                         <Card style={{ borderRadius: 20, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
                                         >{questionList.questionBankQuestion}{questionList.questionBankOption ? <div>
                                             {questionList.questionOption.map(questionOption => <div key={questionList._id}>
-                                                <Radio.Group name={questionList._id} onChange={e=>createSubmitAnswerList(e.target.value,questionList._id)}  value={questionList._id==answerList.questionId?answerList.Answer:''} key={questionList._id}>
+                                                <Radio.Group name={questionList._id} onChange={e=>createSubmitAnswerList(e.target.value,questionList._id)}  value={answerList.Answer} key={questionList._id}>
                                                     <Radio value={questionOption}>{questionOption}</Radio>
                                                 </Radio.Group></div>
                                             )}
@@ -101,10 +114,10 @@ function QuestionPaper() {
 
                                             {/* <li>{questionList.questionOption}</li>  */}
 
-                                        </div> : <Input />}</Card></div>)
+                                        </div> : <Input onChange={e=>createSubmitAnswerList(e.target.value,questionList._id)}/>}</Card></div>)
                                 }
                                 <div>
-                                    <Button style={{ marginTop: 50 }}>Submit</Button>
+                                    <Button style={{ marginTop: 50 }} onClick={onSubmit}>Submit</Button>
                                 </div>
                             </Card>
                         </div>

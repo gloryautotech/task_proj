@@ -18,6 +18,7 @@ let createAssignQuestionList = (req, res) => {
     let newQuestionBank = new assignQuestionList({
         assignUserEmail: req.body.assignEmail,
         questionBankList: questionlistId,
+        assignBy: req.body.assignBy,
         created: today,
         lasrModified: today
     })
@@ -93,8 +94,29 @@ let viewAssignUserById = (req, res) => {
     })
 }
 
+let viewAssignById = (req, res) => {
+    assignQuestionList.find({ 'assignBy': req.params.id }, (err, result) => {
+        if (err) {
+            logger.log('viewAssignById', req, err, req.body, res)
+            let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
+            res.send(apiResponse)
+        }
+        else if (!result) {
+            let apiResponse = response.respons(true, constants.messages.NOT_FOUND, constants.constants.HTTP_SUCCESS, null)
+            res.send(apiResponse)
+        }
+        else {
+            console.log("resul of question", result)
+            let apiResponse = response.respons(true, constants.messages.SUCCESS, constants.constants.HTTP_SUCCESS, result)
+            res.send(apiResponse)
+        }
+
+    })
+}
+
 module.exports = {
     createAssignQuestionList,
     viewQuestionBankById,
-    viewAssignUserById
+    viewAssignUserById,
+    viewAssignById
 }

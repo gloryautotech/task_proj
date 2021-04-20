@@ -68,6 +68,7 @@ app.post(baseUrl + '/questionbank/viewbyquestionbanktype',auth.isAuthenticated, 
 app.post(baseUrl + '/assignquestionbank/createassignquestionlist',auth.isAuthenticated, assignQuestionBank.createAssignQuestionList)
 app.get(baseUrl + '/assignquestionbank/viewquestionbankbyid/:id',auth.isAuthenticated, assignQuestionBank.viewQuestionBankById)
 app.get(baseUrl + '/assignquestionbank/viewassignuserbyid/:id',auth.isAuthenticated, assignQuestionBank.viewAssignUserById)
+app.get(baseUrl + '/assignquestionbank/viewassignByid/:id',auth.isAuthenticated, assignQuestionBank.viewAssignById)
 
 //submit answer Bank
 app.post(baseUrl + '/submitanswerbank/createsubmitanswerlist',auth.isAuthenticated, submitAnswerList.createSubmitAnswerList)
