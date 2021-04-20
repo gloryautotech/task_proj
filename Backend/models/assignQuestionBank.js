@@ -13,6 +13,9 @@ let assignQuestionListSchema = new Schema({
         type: Boolean,
         default: false
     },
+    assignBy: {
+        type: String
+    },
     created: {
         type: Date,
         default: Date.now

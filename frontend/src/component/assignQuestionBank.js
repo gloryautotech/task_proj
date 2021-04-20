@@ -77,7 +77,8 @@ function AssignQuestionBank() {
             'url': 'http://localhost:4000/api/v1/assignquestionbank/createassignquestionlist',
             'data': {
                 assignEmail: email,
-                questionListId: questionlist
+                questionListId: questionlist,
+                assignBy: sessionStorage.getItem("user_id")
             },
             'headers': {
                 'token': localStorage.getItem('accessToken')

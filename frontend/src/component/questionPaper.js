@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Input, Divider, Layout, Alert, Select, Card } from "antd";
+import { Form, Button, Input, Divider, Layout, Alert, Select, Card, Radio } from "antd";
 import DynamicField from "./dynamicField";
 import axios from 'axios';
 import PageHeader from './pageHeader';
@@ -8,6 +8,7 @@ import "antd/dist/antd.css";
 
 const { Option } = Select;
 const { Header, Sider, Content } = Layout;
+
 
 const defaultFormItemLayout = {
     labelCol: {
@@ -23,12 +24,13 @@ const defaultFormItemLayout = {
 function QuestionPaper() {
     const [collapsed, setcollapsed] = useState(false)
     const [questionList, setquestionList] = useState([])
+    const [answerList, setanswerList] = useState([])
 
     const [form] = Form.useForm();
 
 
     useEffect(() => {
-        console.log("question id",sessionStorage.getItem("Question_id"))
+        console.log("question id", sessionStorage.getItem("Question_id"))
         axios({
             'method': 'get',
             'url': `http://localhost:4000/api/v1/assignquestionbank/viewquestionbankbyid/${sessionStorage.getItem("Question_id")}`,
@@ -44,12 +46,36 @@ function QuestionPaper() {
                 console.log(error);
             });
 
-        }, [])
+    }, [])
 
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
     }
 
+    const createSubmitAnswerList = (answer,questionid) => {
+        var isFind = false
+        if(answerList.length>=0){
+            answerList.forEach((element,index) => {
+                if(element.questionid == questionid)
+                {
+                    isFind = true
+                    let newArray = [...answerList]
+                    newArray[index] = {...newArray[index], answer: answer}
+                    setanswerList(newArray)
+                }
+            });
+        }
+
+        if(!isFind){
+            setanswerList(answerList=>[...answerList,{questionid,answer}])
+            isFind=false
+        }
+        
+    }
+
+    const onSubmit = () =>{
+        console.log("Answer lis",answerList)
+    }
 
     return (
         <div>
@@ -78,17 +104,27 @@ function QuestionPaper() {
                                 {
                                     questionList.map(questionList => <div className="technology_card" key={questionList._id}>
                                         <Card style={{ borderRadius: 20, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
-                                        >{questionList.questionBankQuestion}{questionList.questionBankOption?<div><li>{questionList.questionOption}</li> </div>:<Input/>}</Card></div>)
+                                        >{questionList.questionBankQuestion}{questionList.questionBankOption ? <div>
+                                            {questionList.questionOption.map(questionOption => <div key={questionList._id}>
+                                                <Radio.Group name={questionList._id} onChange={e=>createSubmitAnswerList(e.target.value,questionList._id)}  value={answerList.Answer} key={questionList._id}>
+                                                    <Radio value={questionOption}>{questionOption}</Radio>
+                                                </Radio.Group></div>
+                                            )}
+
+
+                                            {/* <li>{questionList.questionOption}</li>  */}
+
+                                        </div> : <Input onChange={e=>createSubmitAnswerList(e.target.value,questionList._id)}/>}</Card></div>)
                                 }
                                 <div>
-                                    <Button style={{ marginTop: 50 }}>Submit</Button>
-                                    </div> 
-                                     </Card>
-                                     </div>
-                </Content>
-            </Layout>
-        </Layout >
-    </div >
+                                    <Button style={{ marginTop: 50 }} onClick={onSubmit}>Submit</Button>
+                                </div>
+                            </Card>
+                        </div>
+                    </Content>
+                </Layout>
+            </Layout >
+        </div >
     );
 }
 

@@ -21,6 +21,7 @@ function Home(props){
                 if(response.data.data[0]._id){
                     if(response.data.data[0].userType == 'user'){
                         sessionStorage.setItem("Question_id",response.data.data[0].password)
+                        sessionStorage.setItem("user_id",response.data.data[0]._id)
                         history.push('/questionpaper')
                     }else{
                 sessionStorage.setItem("user_id",response.data.data[0]._id)
