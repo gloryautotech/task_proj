@@ -24,6 +24,24 @@ let viewByuserId = (req, res) => {
     })
 }
 
+let viewById = (req, res) => {
+    assignTask.find({ '_id': req.params.id }, (err, result) => {
+        if (err) {
+            logger.log('viewById', req, err, req.body, res)
+            let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
+            res.send(apiResponse)
+        }
+        else if (!result) {
+            let apiResponse = response.respons(true, constants.messages.NOT_FOUND, constants.constants.HTTP_SUCCESS, null)
+            res.send(apiResponse)
+        }
+        else {
+            let apiResponse = response.respons(true, constants.messages.SUCCESS, constants.constants.HTTP_SUCCESS, result)
+            res.send(apiResponse)
+        }
+    })
+}
+
 let createassignTaskList = (req, res) => {
     var today = Date.now()
     let newUserData = new assignTask({
@@ -57,7 +75,7 @@ let editassignTask = (req, res) => {
             let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
             res.send(apiResponse)
         }
-        else if (result == undefined || result == null || result == '') {
+        else if (!result) {
             let apiResponse = response.respons(true, constants.messages.NOT_FOUND, constants.constants.HTTP_SUCCESS, null)
             res.send(apiResponse)
         }
@@ -161,5 +179,6 @@ module.exports = {
     createassignTaskList,
     editassignTask,
     viewByUserIdandTaskId,
-    viewByEmailAndId
+    viewByEmailAndId,
+    viewById
 }

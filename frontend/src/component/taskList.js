@@ -26,27 +26,27 @@ function DashBoard3(props) {
 
     useEffect(() => {
         if (!localStorage.getItem('accessToken')) {
-			console.log("Not login")
-			history.push("/")
-		}else{
+            console.log("Not login")
+            history.push("/")
+        } else {
             setisLoading(true)
-        console.log("technology id id ", sessionStorage.getItem("user_id"))
-        let technologyListId = props.location.state.technologyListId
-        console.log("technology nme", technologyListId)
-        axios({
-            'method': 'get',
-            'url': `http://localhost:4000/api/v1/tasklist/viewbytechnologylistid/${technologyListId}`,
-            'headers': {
-                'token': localStorage.getItem('accessToken')
-            },
-        }).then(response => {
-            console.log('response.data', response.data.data)
-            settaskList(response.data.data)
-            setisLoading(false)
-        }).catch(err => {
-            console.log("error", err)
-        })
-    }
+            console.log("technology id id ", sessionStorage.getItem("user_id"))
+            let technologyListId = props.location.state.technologyListId
+            console.log("technology nme", technologyListId)
+            axios({
+                'method': 'get',
+                'url': `http://localhost:4000/api/v1/tasklist/viewbytechnologylistid/${technologyListId}`,
+                'headers': {
+                    'token': localStorage.getItem('accessToken')
+                },
+            }).then(response => {
+                console.log('response.data', response.data.data)
+                settaskList(response.data.data)
+                setisLoading(false)
+            }).catch(err => {
+                console.log("error", err)
+            })
+        }
     }, [])
 
     const handleIndividual = async (id) => {
@@ -56,42 +56,56 @@ function DashBoard3(props) {
     const sendTask = (id) => {
         setExpanded(false)
         //let urlPathOfTask='http://localhost:4000/api/v1/userData/viewbytaskId/'
-        let urlOfGivenTask = 'http://localhost:3000/giventask/'
         axios({
             'method': 'post',
-            'url': 'http://localhost:4000/api/v1/email',
-            'data': { emailid: email, subject: 'Your Task is', text: 'Open this link to get your task    ' + urlOfGivenTask + '   or your id is ' + id },
+            'url': 'http://localhost:4000/api/v1/assigntask/createassigntasklist',
+            'data': {
+                userId: sessionStorage.getItem("user_id"),
+                emailIdOfReceiver: email,
+                assignTaskId: id,
+                assignTaskStatus: 'Receive',
+                assignTaskVerifiedStatus: 'send'
+            },
             'headers': {
                 'token': localStorage.getItem('accessToken')
             },
-        }).then(response => {
+        }).then(function (res) {
+            console.log("res of add assign task", res.data.data)
             axios({
                 'method': 'post',
-                'url': 'http://localhost:4000/api/v1/assigntask/createassigntasklist',
+                'url': 'http://localhost:4000/api/v1/userdata/createIdPassword',
                 'data': {
-                    userId: sessionStorage.getItem("user_id"),
-                    emailIdOfReceiver: email,
-                    assignTaskId: id,
-                    assignTaskStatus: 'Receive',
-                    assignTaskVerifiedStatus: 'send'
+                    email: email,
+                    password: res.data.data._id
                 },
                 'headers': {
                     'token': localStorage.getItem('accessToken')
-                },
+                }
+            }).then(response => {
+                axios({
+                    'method': 'post',
+                    'url': 'http://localhost:4000/api/v1/email',
+                    'data': { emailid: email, subject: 'Your Task is', text: 'Open this link to get your task    ' + '   or your id is ' + id },
+                    'headers': {
+                        'token': localStorage.getItem('accessToken')
+                    },
+                }).then(response => {
+                })
             })
-        }).catch(err => {
-            console.log("error", err)
-        })
-    }
-    const onEmailChangeHandle = (e) =>{
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })}
+        
+    const onEmailChangeHandle = (e) => {
         if (!/^.+@.+\..+$/.test(e.target.value)) {
             setisNotEmail(true)
             seterror("please Enter a Valid Email")
-          }else{
-              setisNotEmail(false)
-              setemail(e.target.value)
-              seterror("")
-          }
+        } else {
+            setisNotEmail(false)
+            setemail(e.target.value)
+            seterror("")
+        }
     }
 
     return (
@@ -109,37 +123,37 @@ function DashBoard3(props) {
                         <LeftSideBar currentkey={'1'} />
                     </Sider>
                     <Content style={{ padding: 20 }}>
-                    {isLoading?<Spin tip="Loading..."></Spin>:<div>
-                        <Title>Task List</Title>
-                        {taskList ? (
-                            taskList.map((taskList) => (
-                                <div style={{ blockSize: 250 }}>
+                        {isLoading ? <Spin tip="Loading..."></Spin> : <div>
+                            <Title>Task List</Title>
+                            {taskList ? (
+                                taskList.map((taskList) => (
+                                    <div style={{ blockSize: 250 }}>
 
-                                    <Card style={{ borderRadius: 20, backgroundColor: '#efefef', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)' }} >
+                                        <Card style={{ borderRadius: 20, backgroundColor: '#efefef', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)' }} >
 
-                                        <div style={{ display: 'block' }}>{taskList.taskName}</div>
-                                        <Space style={{ float: 'right', marginBottom:5 }}>
-                                            <Button style={{ borderRadius: 50 }} onClick={() => { setExpanded(true); handleIndividual(taskList._id) }}> Know more</Button>
+                                            <div style={{ display: 'block' }}>{taskList.taskName}</div>
+                                            <Space style={{ float: 'right', marginBottom: 5 }}>
+                                                <Button style={{ borderRadius: 50 }} onClick={() => { setExpanded(true); handleIndividual(taskList._id) }}> Know more</Button>
 
-                                            <Button style={{ borderRadius: 50 }} onClick={() => { setExpanded(false) }}>Close</Button>
-                                        </Space>
-                                        <div style={{ display: 'block' }}>
-                                            {
+                                                <Button style={{ borderRadius: 50 }} onClick={() => { setExpanded(false) }}>Close</Button>
+                                            </Space>
+                                            <div style={{ display: 'block' }}>
+                                                {
 
-                                                expanded ? taskList._id == single ? <li>Description: {taskList.tasDescription}
-                                            
+                                                    expanded ? taskList._id == single ? <li>Description: {taskList.tasDescription}
+
                                                         <Input onChange={onEmailChangeHandle}></Input>
-                                                        <h5 style={{color:'red'}} hidden={!isNotEmail}>{error}</h5>
-                                                        <Button type='primary' onClick={()=>{sendTask(taskList._id)}} disabled={isNotEmail}>Submit</Button>
-                                                    </li>: '' : ''
-                                            }
-                                        </div>
+                                                        <h5 style={{ color: 'red' }} hidden={!isNotEmail}>{error}</h5>
+                                                        <Button type='primary' onClick={() => { sendTask(taskList._id) }} disabled={isNotEmail}>Submit</Button>
+                                                    </li> : '' : ''
+                                                }
+                                            </div>
 
-                                    </Card>
-                                </div>
-                            ))
-                        ) : <div>No Data Found</div>}
-                                      </div>  }
+                                        </Card>
+                                    </div>
+                                ))
+                            ) : <div>No Data Found</div>}
+                        </div>}
                     </Content>
                 </Layout>
             </Layout>

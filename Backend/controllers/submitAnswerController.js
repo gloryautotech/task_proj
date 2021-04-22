@@ -11,7 +11,8 @@ let createSubmitAnswerList = (req, res) => {
     var today = Date.now()
     var answerlist = []
     req.body.answerBanklist.forEach(element => {
-        answerlist.push({ questionId: element.questionId, answer: element.answer })
+        console.log("element",element)
+        answerlist.push({ questionId: element.questionid, answer: element.answer })
     });
 
     let newAnswerBank = new submitAnswerList({

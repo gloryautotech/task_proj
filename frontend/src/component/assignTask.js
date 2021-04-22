@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import {Card, Button, Input, Form } from 'antd';
+import { Card, Button, Input, Form, Layout } from 'antd';
 import axios from 'axios';
 import styles from './styles/style.module.css';
 import { useForm } from 'antd/lib/form/Form';
+import PageHeader from './pageHeader';
+import LeftSideBar from "./leftSideBar";
+
+const { Header, Sider, Content } = Layout;
 
 function GivenTask(props) {
 
@@ -15,92 +19,97 @@ function GivenTask(props) {
     const [isStart, setisStart] = useState(false)
     const [currentUserTaskId, setcurrentUserTaskId] = useState('')
     const [adminEmail, setadminEmail] = useState('')
+    const [taskEnd, setTaskEnd] = useState(false)
+    const [allData, setallData] = useState([])
+    const [collapsed, setcollapsed] = useState(false)
     const [form] = useForm();
 
+
+    const onCollapse = (collapsed) => {
+        setcollapsed(collapsed)
+    }
+
     useEffect(() => {
-        console.log("assifn task user id", sessionStorage.getItem("user_id"))
+        console.log("assifn task user id", sessionStorage.getItem("assign_id"))
+        axios({
+            'method': 'get',
+            'url': `http://localhost:4000/api/v1/assigntask/viewbyid/${sessionStorage.getItem("assign_id")}`,
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            }
+        }).then(response => {
+            console.log('response viewbyemailandid', response.data.data)
+            setallData(response.data.data[0])
+            if (response.data.data[0].assignTaskStatus == 'End') {
+                setTaskEnd(true)
+            }
+            axios({
+                'method': 'get',
+                'url': `http://localhost:4000/api/v1/tasklist/viewbytaskId/${response.data.data[0].assignTaskId}`,
+                'headers': {
+                    'token': localStorage.getItem('accessToken')
+                }
+            }).then(response => {
+                console.log('response viewbytaskId', response)
+                settaskDetalis(response.data.data)
+                setisData(true)
+            }).catch(err => {
+                console.log("error", err)
+            })
+
+            axios({
+                'method': 'get',
+                'url': `http://localhost:4000/api/v1/userdata/viewuserlist/${response.data.data[0].userId}`,
+                'headers': {
+                    'token': localStorage.getItem('accessToken')
+                }
+            }).then(response => {
+                console.log('response viewuserlist ', response.data.data)
+                setadminEmail(response.data.data.email)
+                openSendEmail(response.data.data.email, 'Open task', email + ' open there task at ')
+            }).catch(err => {
+                console.log("error", err)
+            })
+
+            axios({
+                'method': 'post',
+                'url': 'http://localhost:4000/api/v1/assigntask/viewbyuseridandtaskid',
+                'data': {
+                    userId: response.data.data[0].userId,
+                    emailIdOfReceiver: response.data.data[0].emailIdOfReceiver,
+                    assignTaskId: response.data.data[0].assignTaskId
+                },
+                'headers': {
+                    'token': localStorage.getItem('accessToken')
+                }
+            }).then(res => {
+                console.log('response viewbyuseridandtaskid', res.data.data._id)
+                setcurrentUserTaskId(res.data.data._id)
+                if (!response.data.data[0].assignTaskStatus == 'End') {
+                    console.log("1")
+                    axios({
+                        'method': 'post',
+                        'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${res.data.data._id}`,
+                        'data': { assignTaskStatus: 'Open' },
+                        'headers': {
+                            'token': localStorage.getItem('accessToken')
+                        }
+                    }).then(response => {
+                        console.log('response editassigntask', response.data)
+                        setisStart(true)
+                    }).catch(err => {
+                        console.log("error", err)
+                    })
+                }
+            }).catch(err => {
+                console.log("error", err)
+            })
+
+        }).catch(err => {
+            console.log("error", err)
+        })
     }, [])
 
-    const viewbyemailandid = async () => {
-        console.log("viewbyemailandid")
-        await axios({
-            'method': 'post',
-            'url': `http://localhost:4000/api/v1/assigntask/viewbyemailandid/`,
-            'data': {
-                emailIdOfReceiver: email,
-                taskid: taskId
-            }
-        }).then(response => {
-            console.log('response viewbyemailandid', response.data.data.userId)
-            viewbytaskId(response.data.data.userId)
-        }).catch(err => {
-            console.log("error", err)
-        })
-    }
-
-    const viewbytaskId = async (id) => {
-        console.log("viewbytaskId")
-        await axios({
-            'method': 'get',
-            'url': (`http://localhost:4000/api/v1/tasklist/viewbytaskId/${taskId}`)
-        }).then(response => {
-            console.log('response viewbytaskId', response.data.data)
-            settaskDetalis(response.data.data)
-            viewuserlist(id)
-            setisData(true)
-        }).catch(err => {
-            console.log("error", err)
-        })
-    }
-
-    const viewuserlist = async (id) => {
-        console.log("viewuserlist")
-        console.log("adminId", id)
-        await axios({
-            'method': 'get',
-            'url': (`http://localhost:4000/api/v1/userdata/viewuserlist/${id}`)
-        }).then(response => {
-            console.log('response viewuserlist ', response.data.data)
-            setadminEmail(response.data.data.email)
-            openSendEmail(response.data.data.email, 'Open task', email + ' open there task at ')
-            viewbyuseridandtaskid(id)
-        }).catch(err => {
-            console.log("error", err)
-        })
-    }
-
-    const viewbyuseridandtaskid = async (id) => {
-        console.log("viewbyuseridandtaskid")
-        await axios({
-            'method': 'post',
-            'url': 'http://localhost:4000/api/v1/assigntask/viewbyuseridandtaskid',
-            'data': {
-                userId: id,
-                emailIdOfReceiver: email,
-                assignTaskId: taskId
-            }
-        }).then(response => {
-            console.log('response viewbyuseridandtaskid', response.data.data._id)
-            setcurrentUserTaskId(response.data.data._id)
-            editassigntask(response.data.data._id)
-        }).catch(err => {
-            console.log("error", err)
-        })
-    }
-
-    const editassigntask = async (id) => {
-        console.log("editassigntask", id)
-        await axios({
-            'method': 'post',
-            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${id}`,
-            'data': { assignTaskStatus: 'Open' },
-        }).then(response => {
-            console.log('response editassigntask', response.data)
-            setisStart(true)
-        }).catch(err => {
-            console.log("error", err)
-        })
-    }
 
     const openSendEmail = (email, subject, text) => {
         let nowDate = new Date()
@@ -108,20 +117,27 @@ function GivenTask(props) {
         axios({
             'method': 'post',
             'url': 'http://localhost:4000/api/v1/email',
-            'data': { emailid: email, subject: subject, text: text + nowDate }
+            'data': { emailid: email, subject: subject, text: text + nowDate },
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            }
         })
     }
     const onSubmitteDetalis = () => {
-        viewbyemailandid()
+
         console.log("taskId", taskId)
     }
 
     const startTask = () => {
-        console.log("admid id on start",currentUserTaskId )
+        console.log("admid id on start", currentUserTaskId)
+
         axios({
             'method': 'post',
             'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
             'data': { assignTaskStatus: 'Start' },
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            }
         }).then(response => {
             console.log('response.data', response.data.data)
             setisStart(true)
@@ -134,17 +150,39 @@ function GivenTask(props) {
     }
     const sumbitTask = () => {
         console.log("admid id on submit", adminEmail)
+        console.log("allData.assignTaskId", allData.assignTaskId)
         axios({
             'method': 'post',
             'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
             'data': { assignTaskStatus: 'End' },
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            }
         }).then(response => {
             setisStart(false)
+            setTaskEnd(true)
             console.log('response.data', response.data.data)
             openSendEmail(adminEmail, 'Complete task', 'user submit there task at ' + gitLink + 'on ')
         }).catch(err => {
             console.log("error", err)
         })
+
+        axios({
+            'method': 'post',
+            'url': `http://localhost:4000/api/v1/submitanswertask/createsubmittasklist`,
+            'data': {
+                assignTaskId: allData.assignTaskId,
+                AnswerList: gitLink
+            },
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            }
+        }).then(response => {
+            console.log('submitanswertask.data', response.data.data)
+        }).catch(err => {
+            console.log("error", err)
+        })
+
     }
 
     const stopTask = () => {
@@ -153,7 +191,10 @@ function GivenTask(props) {
         axios({
             'method': 'post',
             'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
-            'data': { assignTaskStatus: 'End' },
+            'data': { assignTaskStatus: 'Stop' },
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            }
         }).then(response => {
             setisStart(false)
             console.log('response.data', response.data.data)
@@ -161,10 +202,11 @@ function GivenTask(props) {
         }).catch(err => {
             console.log("error", err)
         })
+
     }
 
-    const formItemLayout ={
-        labelCol:{
+    const formItemLayout = {
+        labelCol: {
             xs: {
                 span: 20,
             },
@@ -184,78 +226,54 @@ function GivenTask(props) {
 
     return (
         <div>
-            {isData ? (
-                taskDetalis.map((taskDetalis) => (
-                    <div style={{ blockSize: 250 }}>
+            <Layout className="layout" style={{ minHeight: '100vh' }}>
+                <Header>
+                    <PageHeader />
+                </Header>
+                <Layout>
+                    <Sider
+                        collapsible
+                        collapsed={collapsed}
+                        onCollapse={onCollapse}>
+                        <div className="logo" />
+                        <LeftSideBar currentkey={'1'} />
+                    </Sider>
+                    <Content style={{ padding: 20 }}>
+                        <div>{allData.assignTaskStatus == 'End' ?
+                            <Card style={{
+                                borderRadius: 20,
+                                backgroundColor: '#efefef',
+                                width: 160,
+                                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
+                            }} >
+                                Already Submited
+                        </Card> : <div>
+                                {isData ? (
+                                    taskDetalis.map((taskDetalis) => (
+                                        <div style={{ blockSize: 250 }}>
 
-                        <Card style={{ borderRadius: 20, backgroundColor: '#efefef', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)' }} >
+                                            <Card style={{ borderRadius: 20, backgroundColor: '#efefef', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)' }} >
 
-                            <div style={{ float: 'left' }}>{taskDetalis.taskName}</div>
+                                                <div style={{ float: 'left' }}>{taskDetalis.taskName}</div>
 
-                            <div style={{ float: 'left' }}>
-                                {
+                                                <div style={{ float: 'left' }}>
+                                                    {
 
-                                    <li>{taskDetalis.tasDescription}
-                                    </li>}
-                                {isStart ? <div><Input onChange={(e) => { setgitLink(e.target.value) }}></Input>
-                                    <Button onClick={sumbitTask}>Submit</Button><Button onClick={stopTask}>Stop</Button>
-                                </div> : <Button onClick={startTask}>Start</Button>}
-                            </div>
+                                                        <li>{taskDetalis.tasDescription}
+                                                        </li>}
+                                                    {isStart ? <div><Input onChange={(e) => { setgitLink(e.target.value) }}></Input>
+                                                        <Button onClick={sumbitTask}>Submit</Button><Button onClick={stopTask}>Stop</Button>
+                                                    </div> : <Button onClick={startTask}>Start</Button>}
+                                                </div>
 
-                        </Card>
-                    </div>
-                ))
-            )
-                :
-                <div className={styles}>
-                    <div className={styles.background}>
-                        <div className={styles.container} style={{height:250}}>
-                            <div className={styles.heading}>Glory Autotech</div>
-                            <Form {...formItemLayout} form={form} name="giventask" onFinish={onSubmitteDetalis}scrollToFirstError>
-                                <Form.Item
-                                    label='Unique Id'
-                                    name='uniqueid'
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please enter your Unique Id'
-                                        }
-                                    ]}>
-                                    <Input
-                                        style={{width:250, borderRadius:10, borderWidth:2,borderColor:"#191919",height:40}}
-                                        value={taskId}
-                                        onChange={(e) => { settaskId(e.target.value) }}
-                                        placeholder="Enter Your Unique Id"
-                                        className={styles.input}
-                                    />
-                                </Form.Item>
-                                <Form.Item
-                                    label='Email'
-                                    name='email'
-                                    rules={[
-                                        {
-                                            type: "email",
-                                            message: 'Please Enter a Valid Email'
-                                        },
-                                        {
-                                            required: true,
-                                            message: 'Please enter your Email'
-                                        }
-                                    ]}>
-                                    <Input
-                                        style={{width:250, borderRadius:10, borderWidth:2,borderColor:"#191919",height:40}}
-                                        value={email}
-                                        onChange={(e) => { setemail(e.target.value) }}
-                                        placeholder="Enter the Email"
-                                    /></Form.Item>
-                                <Form.Item>
-                                    <button type='primary' htmlType="submit" className={styles.submit} style={{marginTop:-5,marginRight:60}}>
-                                        Submit
-                </button></Form.Item>
-                            </Form>
-                        </div>
-                    </div>
-                </div>}
+                                            </Card>
+                                        </div>
+                                    ))
+                                ) : <div>No Data</div>}</div>
+                        }</div>
+                    </Content>
+                </Layout>
+            </Layout>
         </div>
     )
 

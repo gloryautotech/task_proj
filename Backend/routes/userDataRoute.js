@@ -7,6 +7,7 @@ const assignTask = require('../controllers/assignTaskController')
 const questionBank = require('../controllers/questionBankController')
 const assignQuestionBank = require('../controllers/assignQuestionBankController')
 const submitAnswerList = require("../controllers/submitAnswerController");
+const submitTask = require("../controllers/submitTaskControll")
 const email = require('../mailService')
 
 //middle
@@ -55,6 +56,7 @@ app.post(baseUrl + '/email', email.sendEmail)
 //Assign Task
 app.post(baseUrl + '/assigntask/createassigntasklist',auth.isAuthenticated, assignTask.createassignTaskList)
 app.get(baseUrl + '/assigntask/viewbyuserid/:userid',auth.isAuthenticated, assignTask.viewByuserId)
+app.get(baseUrl + '/assigntask/viewbyid/:id',auth.isAuthenticated, assignTask.viewById)
 app.post(baseUrl + '/assigntask/viewbyuseridandtaskid', assignTask.viewByUserIdandTaskId)
 app.post(baseUrl + '/assigntask/editassigntask/:assignid', assignTask.editassignTask)
 app.post(baseUrl + '/assigntask/viewbyemailandid', assignTask.viewByEmailAndId)
@@ -74,6 +76,11 @@ app.get(baseUrl + '/assignquestionbank/viewassignByid/:id',auth.isAuthenticated,
 app.post(baseUrl + '/submitanswerbank/createsubmitanswerlist',auth.isAuthenticated, submitAnswerList.createSubmitAnswerList)
 app.get(baseUrl + '/submitanswerbank/viewanswerbankbyid/:id',auth.isAuthenticated, submitAnswerList.viewAnswerBankById)
 app.get(baseUrl + '/submitanswerbank/viewbyassignquestionuserid/:assignQuestionUserId',auth.isAuthenticated, submitAnswerList.viewByassignQuestionUserId)
+
+//submit answer Task
+app.post(baseUrl + '/submitanswertask/createsubmittasklist',auth.isAuthenticated, submitTask.createSubmitTaskList)
+app.get(baseUrl + '/submitanswertask/viewbyassigntaskid/:id',auth.isAuthenticated, submitTask.viewByAssignTaskId)
+app.get(baseUrl + '/submitanswertask/viewbyid/:id',auth.isAuthenticated, submitTask.viewById)
 
 }
 
