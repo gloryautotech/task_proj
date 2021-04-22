@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Layout, Card, Spin, Form, Input, Select, Button } from 'antd';
+import {  Col, Row } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import style from "./styles/style.common.css";
 import axios from 'axios';
@@ -130,7 +131,9 @@ function AssignQuestionBank() {
                             <div className="site-layout-content">
                                 <Title >Round</Title>
                                 <div className="technology_card" style={{ flexDirection: 'column' }}>
+                                    <Row gutter={16}>
                                     <div style={{ borderRadius: 50 }}>
+                                    <Col gutter={8}>
                                         <Card
                                             style={{
                                                 width: 300,
@@ -189,8 +192,11 @@ function AssignQuestionBank() {
                                                 </Form.Item>
                                             </Form>
                                         </Card>
+                                        </Col>
                                     </div>
-                                    {isQuestionList?<div>
+                                    {isQuestionList?
+                                    <div>
+                                    <Col gutter={8}>
                                     <Card
                                         style={{
                                             borderRadius: 40,
@@ -204,8 +210,8 @@ function AssignQuestionBank() {
                                                 <Card style={{ borderRadius: 20, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
                                                 >{questionList.questionBankQuestion}</Card></div>)
                                         }
-                                  <div><Button style={{marginTop:50}} onClick={sumbitQuestion}>Submit</Button></div>  </Card></div>:''}
-                                    
+                                  <div><Button style={{marginTop:50}} onClick={sumbitQuestion}>Submit</Button></div>  </Card></Col></div>:''}
+                                  </Row>   
                                 </div>
                             </div>}
                     </Content>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles/style.module.css';
-import { Radio, Input, Form, Spin } from 'antd';
+import { Radio, Input, Form, Spin, Button } from 'antd';
 import { useHistory } from "react-router";
 import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
@@ -174,6 +174,7 @@ function LoginPage(props) {
 						<Form.Item
 							label='UserName'
 							name='userName'
+							style={{marginLeft:10, marginTop:10,marginBottom:8}}
 							rules={[
 								{
 									required: true,
@@ -190,14 +191,14 @@ function LoginPage(props) {
 						</Form.Item>
 						<Form.Item
 							style={{flex:1,justifyContent:"center"}}
-							name='opction'
+							name='option'
 							rules={[
 								{
 									required: true,
 									message: 'Please Select one'
 								}
 							]}>
-							<Radio.Group onChange={onChange} value={value}>
+							<Radio.Group style={{marginLeft:90}} onChange={onChange} value={value}>
 								<Radio value={'password'}>Password</Radio>
 								<Radio value={"otp"}>OTP</Radio>
 							</Radio.Group>
@@ -206,6 +207,7 @@ function LoginPage(props) {
 							<Form.Item
 								label='Password'
 								name='password'
+								style={{marginLeft:10,verticalAlign:'top',marginTop:-15}}
 								rules={[
 									{
 										required: true,
@@ -220,9 +222,11 @@ function LoginPage(props) {
 									
 								/></Form.Item> : ''}
 						{
-							isConfirmOtp ?						<Form.Item
+							isConfirmOtp ?						
+							<Form.Item
 							label='OTP'
 							name='otp'
+							style={{marginLeft:10,verticalAlign:'top',marginTop:-15}}
 							rules={[
 								{
 									required: true,
@@ -245,7 +249,7 @@ function LoginPage(props) {
 						{isConfirmOtp ? <button onClick={confirmOtp} className={styles.submit}>
 							Confirm OTP
 					</button> : ''}
-						{isPassword ? <button onClick={login} className={styles.submit}>
+						{isPassword ? <button  onClick={login} className={styles.submit}>
 							Login
 					</button> : ''}
 					</Form>

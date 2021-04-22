@@ -6,6 +6,7 @@ import styles1 from "./styles/style.header.css";
 import { UserOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router";
 import axios from 'axios';
+import Title from 'antd/lib/typography/Title';
 
 const { Header, Content } = Layout;
 
@@ -32,10 +33,14 @@ useEffect(() => {
 	return (
 		<div>
 			
-				<Header>
+				<Header >
+					{/* <Title level={2}>Glory Autotech</Title> */}
+					<div style={{display:'flex', height:'100vh'}}>
+						<label style={{color:'#ffffff', marginRight:400	,fontSize:20,alignSelf:'center'}} >Glory Autotech</label>
+					</div>
 					<label style={{color:'#ffffff',fontWeight:30,fontSize:20,marginRight:10}}>{userData.userFirstName +' '+ userData.userLastName}</label>
 				<UserOutlined className="user_icon"/>
-				<Button onClick={logoutHandelChnage}>Logout</Button>
+				<Button onClick={logoutHandelChnage} type='default' style={{borderRadius:10}}>Logout</Button>
 				</Header>
 				<Content style={{ padding: '0 50px' }}>
 				</Content>
