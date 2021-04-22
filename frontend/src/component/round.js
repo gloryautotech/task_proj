@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Layout, Card, Spin } from 'antd';
+import {  Col, Row } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import style from "./styles/style.common.css";
 import axios from 'axios';
@@ -44,8 +45,10 @@ function Round() {
                     <Content style={{ padding: 20 }}>
 
                         <div className="site-layout-content">
-                            <Title >Round</Title>
+                            <Title >Round</Title> 
                             <div className="technology_card">
+                            <Row gutter={16}>
+                                <Col gutter={8}>
                                 <div style={{ borderRadius: 50 }}>
                                     <Card
                                         style={{
@@ -58,6 +61,8 @@ function Round() {
                                         onClick={() => history.push('/assignquestionbank')}>
                                         Question Bank</Card>
                                 </div>
+                                </Col>
+                                <Col gutter={8}>
                                 <div style={{ borderRadius: 50 }}>
                                     <Card
                                         style={{
@@ -70,6 +75,8 @@ function Round() {
                                         onClick={() => history.push('/technologylist')}>
                                         Coding</Card>
                                 </div>
+                                </Col>
+                                <Col gutter={8}>
                                 <div style={{ borderRadius: 50 }}>
                                     <Card
                                         style={{
@@ -82,6 +89,8 @@ function Round() {
                                         onClick={() => history.push('/technologylist')}>
                                         Face-to-Face</Card>
                                 </div>
+                                </Col>
+                            </Row>
                             </div>
                         </div>
                     </Content>
