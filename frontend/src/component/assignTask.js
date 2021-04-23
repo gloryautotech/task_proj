@@ -123,10 +123,7 @@ function GivenTask(props) {
             }
         })
     }
-    const onSubmitteDetalis = () => {
 
-        console.log("taskId", taskId)
-    }
 
     const startTask = () => {
         console.log("admid id on start", currentUserTaskId)
@@ -171,7 +168,7 @@ function GivenTask(props) {
             'method': 'post',
             'url': `http://localhost:4000/api/v1/submitanswertask/createsubmittasklist`,
             'data': {
-                assignTaskId: allData.assignTaskId,
+                assignTaskId: allData._id,
                 AnswerList: gitLink
             },
             'headers': {

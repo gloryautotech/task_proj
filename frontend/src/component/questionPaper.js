@@ -125,6 +125,22 @@ function QuestionPaper() {
         })
             .then(function (res) {
                 console.log("res of assign question paper list", res.data.data)
+                axios({
+                    'method': 'post',
+                    'url': `http://localhost:4000/api/v1/assignquestionbank/editassignquestion/${sessionStorage.getItem("Question_id")}`,
+                    'data': {
+                        isSubmit: true
+                    } ,
+                    'headers': {
+                        'token': localStorage.getItem('accessToken')
+                    }
+                })
+                    .then(function (res) {
+                        console.log("res of assign question paper list", res.data.data)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             })
             .catch(function (error) {
                 console.log(error);
@@ -174,7 +190,7 @@ function QuestionPaper() {
                                         </div> : <Input onChange={e=>createSubmitAnswerList(e.target.value,questionList._id)}/>}</Card></div>)}
                               
                                 <div>
-                                    <Button style={{ marginTop: 50 }} onClick={onSubmit}>Submit</Button>
+                                    <Button style={{ marginTop: 50 }} onClick={e=>onSubmit()}>Submit</Button>
                                 </div></div>}
                             </Card>
                         }

@@ -41,7 +41,7 @@ function DashBoard1() {
                     'token': localStorage.getItem('accessToken')
                 }
             }).then(response => {
-                console.log('response.data', response.data.data)
+                console.log('response.data assign task', response.data.data)
                 if (response.data.data) {
                     console.log("call")
                     setisData(false)
@@ -98,19 +98,20 @@ function DashBoard1() {
             });
     }
 
-    const viewSubmitLink = () => {
+    const viewSubmitLink = (id) => {
+        console.log("viewSubmitLink id",id)
         axios({
             'method': 'get',
-            'url': `http://localhost:4000/api/v1/submitanswertask/viewbyassigntaskid/${assignTasklist.assignTaskId}`,
+            'url': `http://localhost:4000/api/v1/submitanswertask/viewbyassigntaskid/${id}`,
             'headers': {
                 'token': localStorage.getItem('accessToken')
             }
         })
             .then(function (res) {
-                console.log("res of SubmitLink", res.data.data)
+                console.log("res of SubmitLink", res.data.data[0])
                 setIsModalVisible(true)
                 setanswerTask(true)
-                setassignTasklist(res.data.data)
+                setanswerList(res.data.data[0])
             })
             .catch(function (error) {
                 console.log(error);
@@ -137,7 +138,7 @@ function DashBoard1() {
                             {assignTasklist ? <div>
                                 {
                                     assignTasklist.map(assignTasklist => <div className="technology_card" style={{ borderRadius: 50 }} key={assignTasklist._id}><Card style={{ width: 200, borderRadius: 10, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
-                                    ><div><div>Assign Task:</div>{assignTasklist.emailIdOfReceiver}<div><span>Task Status: </span>{assignTasklist.assignTaskStatus}{assignTasklist.assignTaskStatus == 'End'?<Button onClick={e => viewAnswer(assignQuestionList._id)}>View</Button>:''}</div><div><span>Your Status: </span>{assignTasklist.assignTaskVerifiedStatus}</div></div></Card></div>)
+                                    ><div><div>Assign Task:</div>{assignTasklist.emailIdOfReceiver}<div><span>Task Status: </span>{assignTasklist.assignTaskStatus}{assignTasklist.assignTaskStatus == 'End'?<Button onClick={e => viewSubmitLink(assignTasklist._id)}>View</Button>:''}</div><div><span>Your Status: </span>{assignTasklist.assignTaskVerifiedStatus}</div></div></Card></div>)
                                 }
                             </div> : ''}
                             {assignQuestionList ? <div>
@@ -151,7 +152,7 @@ function DashBoard1() {
                                 <Modal title="Answer List" visible={isModalVisible} onOk={e => setIsModalVisible(false)} onCancel={e => setIsModalVisible(false)}>
                                   <div>
                                    {answerTask?
-                                   <div>{assignTasklist.AnswerList}</div>
+                                   <div>Answer: {answerList.AnswerList}</div>
                                    :
                                     <Card
                                         style={{

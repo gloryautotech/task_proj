@@ -29,7 +29,6 @@ function Home(props){
                             },
                         })
                             .then(function (res) {
-                                console.log("res of assign_id home",res.data.data[0]._id)
                                 if(res.data.data.length>0){
                                     sessionStorage.setItem("assign_id",res.data.data[0]._id)
                                     history.push('/giventask')
@@ -37,7 +36,7 @@ function Home(props){
                                 else{
                                     axios({
                                         'method': 'get',
-                                        'url': `http://localhost:4000/api/v1/assigntask/viewbyid/${response.data.data[0].password}`,
+                                        'url': `http://localhost:4000/api/v1/assignquestionbank/viewassignuserbyid/${response.data.data[0].password}`,
                                         'headers': {
                                             'token':localStorage.getItem('accessToken')
                                         },
