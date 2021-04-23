@@ -19,12 +19,41 @@ function Home(props){
             }else{
                 
                 if(response.data.data[0]._id){
+                    sessionStorage.setItem("user_id",response.data.data[0]._id)
                     if(response.data.data[0].userType == 'user'){
-                        sessionStorage.setItem("Question_id",response.data.data[0].password)
-                        sessionStorage.setItem("user_id",response.data.data[0]._id)
-                        history.push('/questionpaper')
+                        axios({
+                            'method': 'get',
+                            'url': `http://localhost:4000/api/v1/assigntask/viewbyid/${response.data.data[0].password}`,
+                            'headers': {
+                                'token':localStorage.getItem('accessToken')
+                            },
+                        })
+                            .then(function (res) {
+                                if(res.data.data.length>0){
+                                    sessionStorage.setItem("assign_id",res.data.data[0]._id)
+                                    history.push('/giventask')
+                                }
+                                else{
+                                    axios({
+                                        'method': 'get',
+                                        'url': `http://localhost:4000/api/v1/assignquestionbank/viewassignuserbyid/${response.data.data[0].password}`,
+                                        'headers': {
+                                            'token':localStorage.getItem('accessToken')
+                                        },
+                                    })
+                                        .then(function (res) {
+                                            console.log("res of questionpaper home",res)
+                                            if(res.data.data.length>0){
+                                                sessionStorage.setItem("Question_id",response.data.data[0].password)
+                                                history.push('/questionpaper')
+                                            }
+                                        })
+                                }
+                            })
+                        
+                       
                     }else{
-                sessionStorage.setItem("user_id",response.data.data[0]._id)
+                
                 history.push('/round') }
             }
                 

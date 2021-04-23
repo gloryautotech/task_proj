@@ -114,9 +114,30 @@ let viewAssignById = (req, res) => {
     })
 }
 
+let editassignQuestion = (req, res) => {
+    let option = req.body
+    console.log("option", option)
+    assignQuestionList.update({ '_id': req.params.id }, option, { multi: true }).exec((err, result) => {
+        if (err) {
+            logger.log('editassignQuestion', req, err, req.body, res)
+            let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
+            res.send(apiResponse)
+        }
+        else if (!result) {
+            let apiResponse = response.respons(true, constants.messages.NOT_FOUND, constants.constants.HTTP_SUCCESS, null)
+            res.send(apiResponse)
+        }
+        else {
+            let apiResponse = response.respons(true, constants.messages.SUCCESS, constants.constants.HTTP_SUCCESS, result)
+            res.send(apiResponse)
+        }
+    })
+}
+
 module.exports = {
     createAssignQuestionList,
     viewQuestionBankById,
     viewAssignUserById,
-    viewAssignById
+    viewAssignById,
+    editassignQuestion
 }

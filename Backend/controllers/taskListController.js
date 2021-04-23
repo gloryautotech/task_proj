@@ -71,7 +71,7 @@ let viewBytaskId = (req, res) => {
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
             res.send(apiResponse)
         }
-        else if (result == undefined || result == null || result == '') {
+        else if (!result) {
             let apiResponse = response.respons(true,constants.messages.NOT_FOUND,constants.constants.HTTP_SUCCESS,null)
             res.send(apiResponse)
         }

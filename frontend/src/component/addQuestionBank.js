@@ -152,7 +152,7 @@ function AddQuestionBank() {
                         <Form.Item
                             name="questionBankAnswer"
                             label="Answer"
-                            rules={[{ required: true, message: "Plese Enter Answer" }]}
+                            rules={[{ required: isQuestionOptionTrue, message: "Plese Enter Answer" }]}
                         >
                             <Input value={answer} defaultValue={answer} placeholder="Enter your Answer" onChange={(e) => { setanswer(e.target.value) }} />
                         </Form.Item>
