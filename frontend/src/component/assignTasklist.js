@@ -150,11 +150,12 @@ function DashBoard1() {
                      <div>
                          {isData?<div>No Data Found</div>:''}
                      </div>
-
+                    </div>
                     </Content>
                 </Layout>
             </Layout>
         </div>
+    
     )
 
 }
