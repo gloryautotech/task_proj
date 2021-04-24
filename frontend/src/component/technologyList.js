@@ -35,7 +35,7 @@ function DashBoard1() {
                 'token': localStorage.getItem('accessToken')
             }
         }).then(response => {
-            console.log('response.data', response.data.data)
+            console.log('response.data of', response.data.data)
             setTechnologyList(response.data.data)
             setisLoading(false)
         })

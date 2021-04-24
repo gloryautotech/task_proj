@@ -10,12 +10,14 @@ const logger = require("./models/apierrorlog")
 const questionBank = require("./models/questionBank")
 const answerBank = require("./models/submitAnswer")
 const assignQuestionBank = require("./models/assignQuestionBank")
+const answerTask = require("./models/submitTask")
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./docs/swagger.json');
 const app = express ()
+var compiler = require('compilex');
 
 //middle
 app.use(cors({credentials: true, origin:'http://localhost:3000'}))
