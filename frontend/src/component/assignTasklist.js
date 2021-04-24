@@ -79,13 +79,13 @@ function DashBoard1(){
                     <Title >Assign Task</Title>
                     {assignTasklist?<div>              
                     {
-                        assignTasklist.map(assignTasklist=><div className="technology_card" style={{borderRadius:50}} key={assignTasklist._id}><Card  style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}
+                        assignTasklist.map(assignTasklist=><div className="technology_card" style={{borderRadius:50}} key={assignTasklist._id}><Card hoverable style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}
                         ><div><div>Assign Task:</div>{assignTasklist.emailIdOfReceiver}<div><span>Task Status: </span>{assignTasklist.assignTaskStatus}</div><div><span>Your Status: </span>{assignTasklist.assignTaskVerifiedStatus}</div></div></Card></div>)
                     } 
                      </div> :''}
                      {assignQuestionList?<div>              
                       {
-                        assignQuestionList.map(assignQuestionList=><div className="technology_card" style={{borderRadius:50}} key={assignQuestionList._id}><Card  style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}
+                        assignQuestionList.map(assignQuestionList=><div className="technology_card" style={{borderRadius:50}} key={assignQuestionList._id}><Card hoverable  style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}
                         ><div><div>Assign Task:</div>{assignQuestionList.assignUserEmail}<div><span>Submit Task Status: </span>{assignQuestionList.isSubmit?<span>Submited</span>:<span>Not Submited</span>}</div></div></Card></div>)
                     }
                      </div> :''}

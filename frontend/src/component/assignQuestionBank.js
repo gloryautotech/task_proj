@@ -137,7 +137,7 @@ function AssignQuestionBank() {
                                         <Card
                                             style={{
                                                 width: 300,
-                                                borderRadius: 40,
+                                                borderRadius: 10,
                                                 justifyContent: 'center',
                                                 display: 'flex',
                                                 alignItems: 'center'
@@ -145,7 +145,7 @@ function AssignQuestionBank() {
                                         >
                                             <Form form={form} name="assignQuestion" onFinish={submit}>
                                                 <Form.Item
-                                                    label='Email'
+                                                    
                                                     name='email'
                                                     rules={[
                                                         {
@@ -158,13 +158,14 @@ function AssignQuestionBank() {
                                                         }
                                                     ]}>
                                                     <Input
-                                                        style={{ borderRadius: 10, borderWidth: 2, borderColor: "#191919" }}
+                                                        placeholder='Enter Email'
+                                                        
                                                         onChange={(e) => { setemail(e.target.value) }}></Input>
                                                 </Form.Item>
-                                                <Form.Item name="questionBankType" label="QuestionBank Type" rules={[{ required: true, message: "Plese Select QuestionBank Type" }]} >
+                                                <Form.Item name="questionBankType"  rules={[{ required: true, message: "Plese Select QuestionBank Type" }]} >
                                                     <Select
                                                         defaultValue={questionBankType}
-                                                        placeholder="Select"
+                                                        placeholder="QuestionBank Type"
                                                         onChange={(e) => { questionBankTypeHandleChange(e) }}>
                                                         <Option value="Logical">Logical</Option>
                                                         <Option value="screening">screening</Option>
@@ -172,7 +173,7 @@ function AssignQuestionBank() {
                                                     </Select>
                                                 </Form.Item>
                                                 <Form.Item
-                                                    label='No of Question'
+                                                    
                                                     name='no-ofquestion'
                                                     rules={[
                                                         {
@@ -185,10 +186,11 @@ function AssignQuestionBank() {
                                                         }
                                                     ]}>
                                                     <Input
+                                                        placeholder='No of Question'
                                                         onChange={(e) => { setnoOfQuestion(e.target.value) }}></Input>
                                                 </Form.Item>
                                                 <Form.Item>
-                                                    <Button type='primary' htmlType="submit">Submit</Button>
+                                                    <Button style={{marginLeft:50}} type='primary' htmlType="submit">Submit</Button>
                                                 </Form.Item>
                                             </Form>
                                         </Card>
@@ -199,7 +201,7 @@ function AssignQuestionBank() {
                                     <Col gutter={8}>
                                     <Card
                                         style={{
-                                            borderRadius: 40,
+                                            borderRadius: 10,
                                             justifyContent: 'center',
                                             display: 'flex',
                                             alignItems: 'center'
