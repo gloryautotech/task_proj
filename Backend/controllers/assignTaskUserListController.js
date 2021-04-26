@@ -4,27 +4,20 @@ const shortid = require('shortid')
 const response = require('../utils/common-helper')
 const constants = require('../constants')
 const logger = require('../utils/logger')
-const assignQuestionList = mongoose.model('assignQuestionListSchema')
-const questionBank = mongoose.model('questionBank')
-//const questionBankOption = mongoose.model('questionBankOption')
+const assignTaskUserList = mongoose.model('assignTaskUserList')
 
-let createAssignQuestionList = (req, res) => {
+let createAssignTaskUserList = (req, res) => {
     var today = Date.now()
-    var questionlistId=[]
-    req.body.questionListId.forEach(element => {
-        questionlistId.push({questionId: element.questionId})
-    });
 
-    let newQuestionBank = new assignQuestionList({
-        assignUserEmail: req.body.assignEmail,
-        questionBankList: questionlistId,
+    let newAssignTaskUserList = new assignTaskUserList({
+        assignUserEmail: req.body.assignUserEmail,
         assignBy: req.body.assignBy,
         created: today,
         lasrModified: today
     })
-    newQuestionBank.save((err, result) => {
+    newAssignTaskUserList.save((err, result) => {
         if (err) {
-            logger.log('createAssignQuestionList',req, err,req.body,res)
+            logger.log('createAssignTaskUserList',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
             res.send(apiResponse)
         }
@@ -35,36 +28,11 @@ let createAssignQuestionList = (req, res) => {
     })
 }
 
-let viewQuestionBankById = (req, res) => {
-    console.log("req.body.questionBankList",req.body.questionBankList)
-    let questionList = []
-    req.body.questionBankList.forEach(element => {
-        questionList.push(element.questionId)
-    });
-    console.log("questionList",questionList)
-    questionBank.find({ '_id': { $in : questionList} }, (err, result) => {
-        if (err) {
-            logger.log('viewByQuestionBankType',req, err,req.body,res)
-            let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
-            res.send(apiResponse)
-        }
-        else if (!result) {
-            let apiResponse = response.respons(true,constants.messages.NOT_FOUND,constants.constants.HTTP_SUCCESS,null)
-            res.send(apiResponse)
-        }
-        else {
-            console.log("resul of question",result)
-            let apiResponse = response.respons(true,constants.messages.SUCCESS,constants.constants.HTTP_SUCCESS,result)
-            res.send(apiResponse)
-        }
-    })
-}
 
-
-let viewAssignUserById = (req, res) => {
-    assignQuestionList.find({ '_id': req.params.id }, (err, result) => {
+let viewById = (req, res) => {
+    assignTaskUserList.find({ '_id': req.params.id }, (err, result) => {
         if (err) {
-            logger.log('viewAssignUserById', req, err, req.body, res)
+            logger.log('viewById', req, err, req.body, res)
             let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
             res.send(apiResponse)
         }
@@ -73,7 +41,6 @@ let viewAssignUserById = (req, res) => {
             res.send(apiResponse)
         }
         else {
-            console.log("resul of question", result)
             let apiResponse = response.respons(true, constants.messages.SUCCESS, constants.constants.HTTP_SUCCESS, result)
             res.send(apiResponse)
         }
@@ -81,10 +48,10 @@ let viewAssignUserById = (req, res) => {
     })
 }
 
-let viewAssignById = (req, res) => {
-    assignQuestionList.find({ 'assignBy': req.params.id }, (err, result) => {
+let viewByAssignUserEmail = (req, res) => {
+    assignTaskUserList.find({ 'assignUserEmail': req.params.email }, (err, result) => {
         if (err) {
-            logger.log('viewAssignById', req, err, req.body, res)
+            logger.log('viewByAssignUserEmail', req, err, req.body, res)
             let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
             res.send(apiResponse)
         }
@@ -93,7 +60,6 @@ let viewAssignById = (req, res) => {
             res.send(apiResponse)
         }
         else {
-            console.log("resul of question", result)
             let apiResponse = response.respons(true, constants.messages.SUCCESS, constants.constants.HTTP_SUCCESS, result)
             res.send(apiResponse)
         }
@@ -101,12 +67,32 @@ let viewAssignById = (req, res) => {
     })
 }
 
-let editassignQuestion = (req, res) => {
+let viewByAssignByEmail = (req, res) => {
+    assignTaskUserList.find({$and: [{"assignUserEmail":req.body.assignUserEmail},{"assignBy":req.body.assignBy}] }, (err, result) => {
+        if (err) {
+            logger.log('viewByAssignByEmail', req, err, req.body, res)
+            let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
+            res.send(apiResponse)
+        }
+        else if (!result) {
+            let apiResponse = response.respons(true, constants.messages.NOT_FOUND, constants.constants.HTTP_SUCCESS, null)
+            res.send(apiResponse)
+        }
+        else {
+            let apiResponse = response.respons(true, constants.messages.SUCCESS, constants.constants.HTTP_SUCCESS, result)
+            res.send(apiResponse)
+        }
+
+    })
+}
+
+
+let editAssignTaskUserList = (req, res) => {
     let option = req.body
     console.log("option", option)
-    assignQuestionList.update({ '_id': req.params.id }, option, { multi: true }).exec((err, result) => {
+    assignTaskUserList.update({ '_id': req.params.id }, option, { multi: true }).exec((err, result) => {
         if (err) {
-            logger.log('editassignQuestion', req, err, req.body, res)
+            logger.log('editAllAssignTaskList', req, err, req.body, res)
             let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
             res.send(apiResponse)
         }
@@ -122,9 +108,9 @@ let editassignQuestion = (req, res) => {
 }
 
 module.exports = {
-    createAssignQuestionList,
-    viewQuestionBankById,
-    viewAssignUserById,
-    viewAssignById,
-    editassignQuestion
+    createAssignTaskUserList,
+    viewByAssignByEmail,
+    viewById,
+    editAssignTaskUserList,
+    viewByAssignUserEmail
 }

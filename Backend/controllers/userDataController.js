@@ -135,6 +135,27 @@ let createIdPassword = (req, res) => {
     })
 }
 
+let viewByUserTypeEmail = (req, res) => {
+    var v = req.params.userId;
+    console.log(v)
+    console.log("username",req.params.username)
+    userDataModel.find({ $and :[{'email':req.params.username}, {'userType': 'user'} ]}, (err, result) => {
+        if (err) {
+            logger.log('viewByUserTypeEmail',req, err,req.body,res)
+            let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
+                res.send(apiResponse)
+        }
+        else if (!result) {
+            let apiResponse = response.respons(true,constants.messages.NOT_FOUND,constants.constants.HTTP_SUCCESS,null)
+                res.send(apiResponse)
+        }
+        else {
+            let apiResponse = response.respons(true,constants.messages.SUCCESS,constants.constants.HTTP_SUCCESS,result)
+            res.send(apiResponse)
+        }
+    })
+}
+
 let editUserData = (req, res) => {
     let option = req.body
     console.log("option", option)
@@ -300,5 +321,6 @@ module.exports = {
     deleteUserNameById,
     loginCheck,
     sendOTP,
-    verifyOTP
+    verifyOTP,
+    viewByUserTypeEmail
 }

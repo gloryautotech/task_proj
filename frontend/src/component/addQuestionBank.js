@@ -25,6 +25,7 @@ function AddQuestionBank() {
     const [questionBankType, setquestionBankType] = useState()
     const [question, setquestion] = useState()
     const [answer, setanswer] = useState()
+    const [questionLevel, setquestionLevel] = useState('')
     const [error, seterror] = useState('')
     const [questionBankOption, setquestionBankOption] = useState()
     const [form] = Form.useForm();
@@ -41,6 +42,11 @@ function AddQuestionBank() {
     const questionBankTypeHandleChange = (value) => {
         console.log('questionBankType', value)
         setquestionBankType(value)
+    }
+
+    const questionBankLevelHandleChange = (value) => {
+        console.log('questionBankLevel', value)
+        setquestionLevel(value)
     }
 
     const questionBankOptionHandleChange = (value) => {
@@ -80,7 +86,8 @@ function AddQuestionBank() {
                     questionBankOption: questionBankOption,
                     questionBankQuestion: question,
                     questionBankAnswer: answer,
-                    questionOption: questionOption
+                    questionOption: questionOption,
+                    questionLevel : questionLevel
                 },
                 'headers': {
                     'token': localStorage.getItem('accessToken')
@@ -122,74 +129,57 @@ function AddQuestionBank() {
                         <div style={{ width: 212, position: "absolute", right: 0, zIndex: 9999 }}>
                             <Alert message="Success Text" type="success" />
                         </div> : ''}
-                    <Row  justify="center" align="middle" style={{minHeight: '80vh'}}>
-                        <Col>
-                            <Card  style={{boxShadow: "5px 8px 24px 5px rgba(208, 216, 243, 0.6)",borderRadius:20,width:700 }}>
-                            
-                                <Form form={form} {...defaultFormItemLayout} onFinish={handleFinish} style={{alignItems:'center'}}>
-                                <Image style={{marginLeft:350,marginBottom:30}} width={300} preview={false} src='https://i.pinimg.com/564x/b7/5e/a5/b75ea5711edc04b818145f49eb565958.jpg'></Image>
-                                    <Form.Item 
-                                        name="questionBankType" 
-                                    
-                                        style={{ marginTop:-300 }}
-                                        rules={[
-                                            { 
-                                                required: true, message: "Plese Select QuestionBank Type"
-                                             }
-                                            ]} 
-                                        >
-                                        <Select
-                                            defaultValue={questionBankType}
-                                            placeholder="QuestionBank Type"
-                                            onChange={(e) => { questionBankTypeHandleChange(e) }}>
-                                            <Option value="Logical">Logical</Option>
-                                            <Option value="screening">Screening</Option>
-                                            <Option value="Technical">Technical</Option>
-                                        </Select>
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="questionBankQuestion"
-                                    
-                                        rules={[{ required: true, message: "Plese Enter Question" }]}
-                                    >
-                                        <Input value={question} placeholder="Enter your Question" onChange={(e) => { setquestion(e.target.value) }} />
-                                    </Form.Item>
-                                    <Form.Item name="questionBankOption"  rules={[{ required: true, message: "Plese Select QuestionBank Option" }]} >
-                                        <Select
-                                            value={questionBankOption}
-                                            placeholder="QuestionBank Option"
-                                            onChange={(e) => { questionBankOptionHandleChange(e) }}>
-                                            <Option value="true">True</Option>
-                                            <Option value="false">False</Option>
-                                        </Select>
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="questionBankAnswer"
-                                        
-                                        rules={[{ required: true, message: "Plese Enter Answer" }]}
-                                    >
-                                        <Input value={answer} defaultValue={answer} placeholder="Enter your Answer" onChange={(e) => { setanswer(e.target.value) }} />
-                                    </Form.Item>
-                                    {/* <Form.Item
-                            hidden={!isQuestionOptionTrue}
-                            name="option"
-                            label="Option"
-                            rules={[{ required: true, message: "Plese Enter Option" }]}
+                    <Form form={form} {...defaultFormItemLayout} onFinish={handleFinish}>
+                        <Form.Item name="questionBankType" label="QuestionBank Type" rules={[{ required: true, message: "Plese Select QuestionBank Type" }]} >
+                            <Select
+                                defaultValue={questionBankType}
+                                placeholder="Select"
+                                onChange={(e) => { questionBankTypeHandleChange(e) }}>
+                                <Option value="Logical">Logical</Option>
+                                <Option value="screening">screening</Option>
+                                <Option value="Technical">Technical</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name="questionBankLevel" label="QuestionBank Level" rules={[{ required: true, message: "Plese Select QuestionBank Level" }]} >
+                            <Select
+                                placeholder="Select"
+                                onChange={(e) => { questionBankLevelHandleChange(e) }}>
+                                <Option value="Basic">Basic</Option>
+                                <Option value="intermediate">intermediate</Option>
+                                <Option value="Advance">Advance</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            name="questionBankQuestion"
+                            label="Question"
+                            rules={[{ required: true, message: "Plese Enter Question" }]}
                         >
-                            <Input />
-                        </Form.Item> */}
-                                    {/* <Divider dashed>Additional Fields</Divider> */}
-                                    {isQuestionOptionTrue ? <DynamicField /> : ''}
-                                    <h5 style={{ color: 'red' }}>{error}</h5>
-                                    <Form.Item>
-                                        <Button style={{marginLeft:110}} type="primary" htmlType="submit">
-                                            Submit
-                                        </Button>
-                                    </Form.Item>
-                                </Form>
-                            </Card>
-                        </Col>
-                    </Row>
+                            <Input value={question} placeholder="Enter your Question" onChange={(e) => { setquestion(e.target.value) }} />
+                        </Form.Item>
+                        <Form.Item name="questionBankOption" label="QuestionBank Option" rules={[{ required: true, message: "Plese Select QuestionBank Option" }]} >
+                            <Select
+                                value={questionBankOption}
+                                placeholder="Select"
+                                onChange={(e) => { questionBankOptionHandleChange(e) }}>
+                                <Option value="true">True</Option>
+                                <Option value="false">false</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            name="questionBankAnswer"
+                            label="Answer"
+                            rules={[{ required: isQuestionOptionTrue, message: "Plese Enter Answer" }]}
+                        >
+                            <Input value={answer} defaultValue={answer} placeholder="Enter your Answer" onChange={(e) => { setanswer(e.target.value) }} />
+                        </Form.Item>
+                        {isQuestionOptionTrue ? <DynamicField /> : ''}
+                        <h5 style={{ color: 'red' }}>{error}</h5>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+          </Button>
+                        </Form.Item>
+                    </Form>
                 </Content>
             </Layout>
         </Layout>

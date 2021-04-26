@@ -9,6 +9,8 @@ const assignQuestionBank = require('../controllers/assignQuestionBankController'
 const submitAnswerList = require("../controllers/submitAnswerController");
 const submitTask = require("../controllers/submitTaskControll")
 const compilerCode = require("../controllers/compilerController")
+const allAssignTaskList = require("../controllers/allAssignTaskListController")
+const assignTaskUserList = require("../controllers/assignTaskUserListController")
 const email = require('../mailService')
 
 //middle
@@ -31,6 +33,7 @@ app.put(baseUrl + '/userdata/edituserlist/:userId',auth.isAuthenticated, userDat
 app.get(baseUrl + '/userdata/fetchuserlist/:username', userData.viewByUserName)
 app.delete(baseUrl + '/userdata/deleteuserlist/:userId',auth.isAuthenticated, userData.deleteUserNameById)
 app.post(baseUrl + '/userdata/createIdPassword',auth.isAuthenticated, userData.createIdPassword)
+app.get(baseUrl + '/userdata/viewbyusertypeemail/:username', userData.viewByUserTypeEmail)
 
 //login user
 app.post(baseUrl + '/userdata/loginuser', userData.loginCheck)
@@ -69,7 +72,7 @@ app.post(baseUrl + '/questionbank/viewbyquestionbanktype',auth.isAuthenticated, 
 
 //assign Question Bank
 app.post(baseUrl + '/assignquestionbank/createassignquestionlist',auth.isAuthenticated, assignQuestionBank.createAssignQuestionList)
-app.get(baseUrl + '/assignquestionbank/viewquestionbankbyid/:id',auth.isAuthenticated, assignQuestionBank.viewQuestionBankById)
+app.post(baseUrl + '/assignquestionbank/viewquestionbankbyid',auth.isAuthenticated, assignQuestionBank.viewQuestionBankById)
 app.get(baseUrl + '/assignquestionbank/viewassignuserbyid/:id',auth.isAuthenticated, assignQuestionBank.viewAssignUserById)
 app.get(baseUrl + '/assignquestionbank/viewassignByid/:id',auth.isAuthenticated, assignQuestionBank.viewAssignById)
 app.post(baseUrl + '/assignquestionbank/editassignquestion/:id',auth.isAuthenticated, assignQuestionBank.editassignQuestion)
@@ -85,8 +88,22 @@ app.get(baseUrl + '/submitanswertask/viewbyassigntaskid/:id',auth.isAuthenticate
 app.get(baseUrl + '/submitanswertask/viewbyid/:id',auth.isAuthenticated, submitTask.viewById)
 
 //Compiler
-
 app.post(baseUrl + '/compiler/compilercode',auth.isAuthenticated, compilerCode.compilerCode)
+
+//assignTaskUserList
+app.post(baseUrl + '/assigntaskuserlist/createassigntaskuserlist',auth.isAuthenticated, assignTaskUserList.createAssignTaskUserList)
+app.get(baseUrl + '/assigntaskuserlist/viewbyid/:id',auth.isAuthenticated, assignTaskUserList.viewById)
+app.post(baseUrl + '/assigntaskuserlist/viewbyassignbyemail',auth.isAuthenticated, assignTaskUserList.viewByAssignByEmail)
+app.put(baseUrl + '/assigntaskuserlist/editassigntaskuserlist/:id',auth.isAuthenticated, assignTaskUserList.editAssignTaskUserList)
+app.get(baseUrl + '/assigntaskuserlist/viewbyassignuseremail/:email',auth.isAuthenticated, assignTaskUserList.viewByAssignUserEmail)
+
+//allAssignTaskList
+app.post(baseUrl + '/allassigntasklist/createallassigntasklist',auth.isAuthenticated, allAssignTaskList.createAllAssignTaskList)
+app.post(baseUrl + '/allassigntasklist/allviewbyid',auth.isAuthenticated, allAssignTaskList.allViewById)
+app.get(baseUrl + '/allassigntasklist/viewbyassigntaskuserlistid/:id',auth.isAuthenticated, allAssignTaskList.viewByAssignTaskUserListId)
+app.put(baseUrl + '/allassigntasklist/editallassigntasklist/:id',auth.isAuthenticated, allAssignTaskList.editAllAssignTaskList)
+app.get(baseUrl + '/allassigntasklist/viewbyid/:id',auth.isAuthenticated, allAssignTaskList.viewById)
+
 }
 
 

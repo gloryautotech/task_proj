@@ -13,6 +13,10 @@ let taskListSchema = new Schema({
         type: String,
         default: 'default name'
     },
+    taskType: {
+        type: String,
+        default: 'Project'
+    },
     created: {
         type: Date,
         default: Date.now

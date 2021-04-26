@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+
 let questionBank = new Schema({
     questionBankType: {
         type: String
@@ -16,6 +17,9 @@ let questionBank = new Schema({
     },
     questionOption:{
         type: Array
+    },
+    questionLevel: {
+        type: String
     },
     created: {
         type: Date,

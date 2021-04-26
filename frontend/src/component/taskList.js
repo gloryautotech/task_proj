@@ -7,7 +7,7 @@ import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
 import { useHistory } from "react-router";
 const { Header, Sider, Content } = Layout;
-
+var shortid = require('shortid');
 
 function DashBoard3(props) {
     let history = useHistory()
@@ -55,47 +55,98 @@ function DashBoard3(props) {
     }
     const sendTask = (id) => {
         setExpanded(false)
-        //let urlPathOfTask='http://localhost:4000/api/v1/userData/viewbytaskId/'
         axios({
-            'method': 'post',
-            'url': 'http://localhost:4000/api/v1/assigntask/createassigntasklist',
-            'data': {
-                userId: sessionStorage.getItem("user_id"),
-                emailIdOfReceiver: email,
-                assignTaskId: id,
-                assignTaskStatus: 'Receive',
-                assignTaskVerifiedStatus: 'send'
-            },
+            'method': 'get',
+            'url': `http://localhost:4000/api/v1/userdata/viewbyusertypeemail/${email}`,
             'headers': {
                 'token': localStorage.getItem('accessToken')
             },
-        }).then(function (res) {
-            console.log("res of add assign task", res.data.data)
-            axios({
-                'method': 'post',
-                'url': 'http://localhost:4000/api/v1/userdata/createIdPassword',
-                'data': {
-                    email: email,
-                    password: res.data.data._id
-                },
-                'headers': {
-                    'token': localStorage.getItem('accessToken')
-                }
-            }).then(response => {
+        }).then(response => {
+            if(response.data.data.length<=0){
                 axios({
                     'method': 'post',
-                    'url': 'http://localhost:4000/api/v1/email',
-                    'data': { emailid: email, subject: 'Your Task is', text: 'Open this link to get your task    ' + '   or your id is ' + id },
+                    'url': `http://localhost:4000/api/v1/userdata/createIdPassword`,
+                    'data': {
+                        email: email,
+                        password: shortid.generate()
+                    },
                     'headers': {
                         'token': localStorage.getItem('accessToken')
                     },
                 }).then(response => {
+
                 })
-            })
                 .catch(function (error) {
                     console.log(error);
                 });
-        })}
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+        axios({
+            'method': 'post',
+            'url': `http://localhost:4000/api/v1/assigntaskuserlist/viewbyassignbyemail`,
+            'data': {
+                assignUserEmail: email,
+                assignBy: sessionStorage.getItem("user_id")
+            },
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            },
+        }).then(response => {
+            console.log("viewbyassignbyemail",response.data.data.length)
+            if(response.data.data.length<=0){
+                console.log("if")
+                axios({
+                    'method': 'post',
+                    'url': `http://localhost:4000/api/v1/assigntaskuserlist/createassigntaskuserlist`,
+                    'data': {
+                        assignUserEmail: email,
+                        assignBy: sessionStorage.getItem("user_id")
+                    },
+                    'headers': {
+                        'token': localStorage.getItem('accessToken')
+                    },
+                }).then(response => {
+                    console.log("createassigntaskuserlist",response.data.data)
+                    addAssignTaskList(response.data.data._id,id)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }else{
+                console.log("else")
+                addAssignTaskList(response.data.data[0]._id,id)
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+       
+       }
+
+       const addAssignTaskList = (id,taskId) =>{
+        axios({
+            'method': 'post',
+            'url': `http://localhost:4000/api/v1/allassigntasklist/createallassigntasklist`,
+            'data': {
+                assignTaskUserListId: id,
+                assignTaskId: taskId,
+                isSubmit:false
+            },
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            },
+        }).then(response => {
+            console.log("createallassigntasklist",response.data.data)       
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+       }
         
     const onEmailChangeHandle = (e) => {
         if (!/^.+@.+\..+$/.test(e.target.value)) {

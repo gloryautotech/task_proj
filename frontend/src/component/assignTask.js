@@ -6,11 +6,12 @@ import styles from './styles/style.module.css';
 import { useForm } from 'antd/lib/form/Form';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
+import { useHistory } from "react-router";
 
 const { Header, Sider, Content } = Layout;
 
 function GivenTask(props) {
-
+    let history = useHistory()
     const [isData, setisData] = useState(false)
     const [taskId, settaskId] = useState('')
     const [email, setemail] = useState('')
@@ -21,7 +22,9 @@ function GivenTask(props) {
     const [adminEmail, setadminEmail] = useState('')
     const [taskEnd, setTaskEnd] = useState(false)
     const [allData, setallData] = useState([])
+    const [isSubmited, setisSubmited] = useState(false)
     const [collapsed, setcollapsed] = useState(false)
+    const [taskID, settaskID] = useState('')
     const [form] = useForm();
 
 
@@ -30,84 +33,44 @@ function GivenTask(props) {
     }
 
     useEffect(() => {
-        console.log("assifn task user id", sessionStorage.getItem("assign_id"))
+        console.log("assifn task user id", props.assignTasklistid)
         axios({
             'method': 'get',
-            'url': `http://localhost:4000/api/v1/assigntask/viewbyid/${sessionStorage.getItem("assign_id")}`,
+            'url': `http://localhost:4000/api/v1/allassigntasklist/viewbyid/${props.assignTasklistid}`,
             'headers': {
                 'token': localStorage.getItem('accessToken')
             }
         }).then(response => {
-            console.log('response viewbyemailandid', response.data.data)
-            setallData(response.data.data[0])
-            if (response.data.data[0].assignTaskStatus == 'End') {
-                setTaskEnd(true)
+            console.log('response viewbyid', response.data.data[0].assignTaskId)
+            setcurrentUserTaskId(response.data.data[0]._id)
+            if (response.data.data[0].isSubmit) {
+                setisSubmited(true)
             }
-            axios({
-                'method': 'get',
-                'url': `http://localhost:4000/api/v1/tasklist/viewbytaskId/${response.data.data[0].assignTaskId}`,
-                'headers': {
-                    'token': localStorage.getItem('accessToken')
-                }
-            }).then(response => {
-                console.log('response viewbytaskId', response)
-                settaskDetalis(response.data.data)
-                setisData(true)
-            }).catch(err => {
-                console.log("error", err)
-            })
-
-            axios({
-                'method': 'get',
-                'url': `http://localhost:4000/api/v1/userdata/viewuserlist/${response.data.data[0].userId}`,
-                'headers': {
-                    'token': localStorage.getItem('accessToken')
-                }
-            }).then(response => {
-                console.log('response viewuserlist ', response.data.data)
-                setadminEmail(response.data.data.email)
-                openSendEmail(response.data.data.email, 'Open task', email + ' open there task at ')
-            }).catch(err => {
-                console.log("error", err)
-            })
-
-            axios({
-                'method': 'post',
-                'url': 'http://localhost:4000/api/v1/assigntask/viewbyuseridandtaskid',
-                'data': {
-                    userId: response.data.data[0].userId,
-                    emailIdOfReceiver: response.data.data[0].emailIdOfReceiver,
-                    assignTaskId: response.data.data[0].assignTaskId
-                },
-                'headers': {
-                    'token': localStorage.getItem('accessToken')
-                }
-            }).then(res => {
-                console.log('response viewbyuseridandtaskid', res.data.data._id)
-                setcurrentUserTaskId(res.data.data._id)
-                if (!response.data.data[0].assignTaskStatus == 'End') {
-                    console.log("1")
-                    axios({
-                        'method': 'post',
-                        'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${res.data.data._id}`,
-                        'data': { assignTaskStatus: 'Open' },
-                        'headers': {
-                            'token': localStorage.getItem('accessToken')
-                        }
-                    }).then(response => {
-                        console.log('response editassigntask', response.data)
-                        setisStart(true)
-                    }).catch(err => {
-                        console.log("error", err)
-                    })
-                }
-            }).catch(err => {
-                console.log("error", err)
-            })
+            else {
+                setisSubmited(false)
+                axios({
+                    'method': 'get',
+                    'url': `http://localhost:4000/api/v1/tasklist/viewbytaskId/${response.data.data[0].assignTaskId}`,
+                    'headers': {
+                        'token': localStorage.getItem('accessToken')
+                    }
+                }).then(response => {
+                    console.log('response viewbytaskId', response)
+                    settaskDetalis(response.data.data)
+                    setisData(true)
+                }).catch(err => {
+                    console.log("error", err)
+                })
+            }
+            if(response.data.data[0].assignTaskId)
+            {
+                settaskID(response.data.data[0].assignTaskId)
+            }
 
         }).catch(err => {
             console.log("error", err)
         })
+
     }, [])
 
 
@@ -127,80 +90,33 @@ function GivenTask(props) {
 
     const startTask = () => {
         console.log("admid id on start", currentUserTaskId)
-
-        axios({
-            'method': 'post',
-            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
-            'data': { assignTaskStatus: 'Start' },
-            'headers': {
-                'token': localStorage.getItem('accessToken')
-            }
-        }).then(response => {
-            console.log('response.data', response.data.data)
-            setisStart(true)
-            openSendEmail(adminEmail, 'Start task', 'user start there task at ')
-        }).catch(err => {
-            console.log("error", err)
-        })
-
-
+        setisStart(true)
     }
     const sumbitTask = () => {
-        console.log("admid id on submit", adminEmail)
-        console.log("allData.assignTaskId", allData.assignTaskId)
-        axios({
-            'method': 'post',
-            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
-            'data': { assignTaskStatus: 'End' },
-            'headers': {
-                'token': localStorage.getItem('accessToken')
-            }
-        }).then(response => {
-            setisStart(false)
-            setTaskEnd(true)
-            console.log('response.data', response.data.data)
-            openSendEmail(adminEmail, 'Complete task', 'user submit there task at ' + gitLink + 'on ')
-        }).catch(err => {
-            console.log("error", err)
-        })
 
+        console.log("currentUserTaskId",currentUserTaskId)
         axios({
-            'method': 'post',
-            'url': `http://localhost:4000/api/v1/submitanswertask/createsubmittasklist`,
-            'data': {
-                assignTaskId: allData._id,
-                AnswerList: gitLink
+            'method': 'put',
+            'url': `http://localhost:4000/api/v1/allassigntasklist/editallassigntasklist/${currentUserTaskId}`,
+            'data': { isSubmit: true,
+                    answer : {
+                        questionid: taskID,
+                        answer: gitLink
+                    }
             },
             'headers': {
                 'token': localStorage.getItem('accessToken')
             }
         }).then(response => {
-            console.log('submitanswertask.data', response.data.data)
+            history.push('/usertask')
+            console.log("response update",response)
         }).catch(err => {
             console.log("error", err)
         })
 
-    }
-
-    const stopTask = () => {
-        setisStart(false)
-        console.log("admid id on submit", adminEmail)
-        axios({
-            'method': 'post',
-            'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
-            'data': { assignTaskStatus: 'Stop' },
-            'headers': {
-                'token': localStorage.getItem('accessToken')
-            }
-        }).then(response => {
-            setisStart(false)
-            console.log('response.data', response.data.data)
-            openSendEmail(adminEmail, 'Stop task', 'user stop there task at ')
-        }).catch(err => {
-            console.log("error", err)
-        })
 
     }
+
 
     const formItemLayout = {
         labelCol: {
@@ -223,7 +139,7 @@ function GivenTask(props) {
 
     return (
         <div>
-            <Layout className="layout" style={{ minHeight: '100vh' }}>
+            {/* <Layout className="layout" style={{ minHeight: '100vh' }}>
                 <Header>
                     <PageHeader />
                 </Header>
@@ -235,42 +151,42 @@ function GivenTask(props) {
                         <div className="logo" />
                         <LeftSideBar currentkey={'1'} />
                     </Sider>
-                    <Content style={{ padding: 20 }}>
-                        <div>{allData.assignTaskStatus == 'End' ?
-                            <Card style={{
-                                borderRadius: 20,
-                                backgroundColor: '#efefef',
-                                width: 160,
-                                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
-                            }} >
-                                Already Submited
+                    <Content style={{ padding: 20 }}> */}
+            <div>{isSubmited ?
+                <Card style={{
+                    borderRadius: 20,
+                    backgroundColor: '#efefef',
+                    width: 160,
+                    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
+                }} >
+                    Already Submited
                         </Card> : <div>
-                                {isData ? (
-                                    taskDetalis.map((taskDetalis) => (
-                                        <div style={{ blockSize: 250 }}>
+                    {isData ? (
+                        taskDetalis.map((taskDetalis) => (
+                            <div style={{ blockSize: 250 }}>
 
-                                            <Card style={{ borderRadius: 20, backgroundColor: '#efefef', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)' }} >
+                                <Card style={{ borderRadius: 20, backgroundColor: '#efefef', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)' }} >
 
-                                                <div style={{ float: 'left' }}>{taskDetalis.taskName}</div>
+                                    <div style={{ float: 'left' }}>{taskDetalis.taskName}</div>
 
-                                                <div style={{ float: 'left' }}>
-                                                    {
+                                    <div style={{ float: 'left' }}>
+                                        {
 
-                                                        <li>{taskDetalis.tasDescription}
-                                                        </li>}
-                                                    {isStart ? <div><Input onChange={(e) => { setgitLink(e.target.value) }}></Input>
-                                                        <Button onClick={sumbitTask}>Submit</Button><Button onClick={stopTask}>Stop</Button>
-                                                    </div> : <Button onClick={startTask}>Start</Button>}
-                                                </div>
+                                            <li>{taskDetalis.tasDescription}
+                                            </li>}
+                                        {isStart ? <div>{taskDetalis.taskType == 'Project' ?<div><Input onChange={(e) => { setgitLink(e.target.value) }}></Input>
+                                            <Button onClick={e=>sumbitTask()}>Submit</Button></div>:<div></div>}
+                                        </div> : <Button onClick={e=>startTask()}>Start</Button>}
+                                    </div>
 
-                                            </Card>
-                                        </div>
-                                    ))
-                                ) : <div>No Data</div>}</div>
-                        }</div>
-                    </Content>
+                                </Card>
+                            </div>
+                        ))
+                    ) : <div>No Data</div>}</div>
+            }</div>
+            {/* </Content>
                 </Layout>
-            </Layout>
+            </Layout> */}
         </div>
     )
 
