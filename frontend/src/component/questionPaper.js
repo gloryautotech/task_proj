@@ -91,6 +91,7 @@ function QuestionPaper() {
 
     const createSubmitAnswerList = (answer,questionid) => {
         var isFind = false
+        console.log("isFind",isFind)
         if(answerList.length>=0){
             answerList.forEach((element,index) => {
                 if(element.questionid == questionid)
