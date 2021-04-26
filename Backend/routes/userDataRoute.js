@@ -11,6 +11,7 @@ const submitTask = require("../controllers/submitTaskControll")
 const compilerCode = require("../controllers/compilerController")
 const allAssignTaskList = require("../controllers/allAssignTaskListController")
 const assignTaskUserList = require("../controllers/assignTaskUserListController")
+const faceToFace = require("../controllers/genrateMeetController")
 const email = require('../mailService')
 
 //middle
@@ -104,6 +105,8 @@ app.get(baseUrl + '/allassigntasklist/viewbyassigntaskuserlistid/:id',auth.isAut
 app.put(baseUrl + '/allassigntasklist/editallassigntasklist/:id',auth.isAuthenticated, allAssignTaskList.editAllAssignTaskList)
 app.get(baseUrl + '/allassigntasklist/viewbyid/:id',auth.isAuthenticated, allAssignTaskList.viewById)
 
+//Meet Create
+app.post(baseUrl + '/facetoface/createmeetinglink',auth.isAuthenticated, faceToFace.createMeetingLink)
 }
 
 
