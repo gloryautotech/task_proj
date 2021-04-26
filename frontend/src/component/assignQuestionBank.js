@@ -12,6 +12,7 @@ import { useForm } from 'antd/lib/form/Form';
 
 const { Header, Sider, Content } = Layout;
 const { Option } = Select;
+var shortid = require('shortid');
 
 function AssignQuestionBank() {
 
@@ -74,44 +75,98 @@ function AssignQuestionBank() {
         });
         console.log("questionlist",questionlist)
         axios({
+            'method': 'get',
+            'url': `http://localhost:4000/api/v1/userdata/viewbyusertypeemail/${email}`,
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            },
+        }).then(response => {
+            if(response.data.data.length<=0){
+                axios({
+                    'method': 'post',
+                    'url': `http://localhost:4000/api/v1/userdata/createIdPassword`,
+                    'data': {
+                        email: email,
+                        password: shortid.generate()
+                    },
+                    'headers': {
+                        'token': localStorage.getItem('accessToken')
+                    },
+                }).then(response => {
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+        axios({
             'method': 'post',
-            'url': 'http://localhost:4000/api/v1/assignquestionbank/createassignquestionlist',
+            'url': `http://localhost:4000/api/v1/assigntaskuserlist/viewbyassignbyemail`,
             'data': {
-                assignEmail: email,
-                questionListId: questionlist,
+                assignUserEmail: email,
                 assignBy: sessionStorage.getItem("user_id")
             },
             'headers': {
                 'token': localStorage.getItem('accessToken')
-            }
-        })
-            .then(function (res) {
-                console.log("res of assign question bank list", res.data.data)
+            },
+        }).then(response => {
+            console.log("viewbyassignbyemail",response.data.data.length)
+            if(response.data.data.length<=0){
+                console.log("if")
                 axios({
                     'method': 'post',
-                    'url': 'http://localhost:4000/api/v1/userdata/createIdPassword',
+                    'url': `http://localhost:4000/api/v1/assigntaskuserlist/createassigntaskuserlist`,
                     'data': {
-                        email: email,
-                        password: res.data.data._id
+                        assignUserEmail: email,
+                        assignBy: sessionStorage.getItem("user_id")
                     },
                     'headers': {
                         'token': localStorage.getItem('accessToken')
-                    }
+                    },
+                }).then(response => {
+                    console.log("createassigntaskuserlist",response.data.data)
+                    addAssignTaskList(response.data.data._id,questionlist)
                 })
-                    .then(function (res) {
-                        console.log("res of assign question bank list", res.data.data)
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }else{
+                console.log("else")
+                addAssignTaskList(response.data.data[0]._id,questionlist)
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
         
     }
 
-
+    const addAssignTaskList = (id,questionlist) =>{
+        axios({
+            'method': 'post',
+            'url': `http://localhost:4000/api/v1/allassigntasklist/createallassigntasklist`,
+            'data': {
+                assignTaskUserListId: id,
+                questionListId: questionlist,
+                isSubmit:false
+            },
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+            },
+        }).then(response => {
+            console.log("createallassigntasklist",response.data.data)       
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+       }
+        
     return (
         <div>
             <Layout className="layout" style={{ minHeight: '100vh' }}>
@@ -210,7 +265,7 @@ function AssignQuestionBank() {
                                                 <Card style={{ borderRadius: 20, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
                                                 >{questionList.questionBankQuestion}</Card></div>)
                                         }
-                                  <div><Button style={{marginTop:50}} onClick={sumbitQuestion}>Submit</Button></div>  </Card></Col></div>:''}
+                                  <div><Button style={{marginTop:50}} onClick={e=>sumbitQuestion()}>Submit</Button></div>  </Card></Col></div>:''}
                                   </Row>   
                                 </div>
                             </div>}
