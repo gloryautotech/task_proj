@@ -118,71 +118,44 @@ function DashBoard1() {
             });
     }
 
-    return (
-        <div>
-            <Layout className="layout" style={{ minHeight: '100vh' }}>
-                <Header>
-                    <PageHeader />
-                </Header>
-                <Layout>
-                    <Sider
-                        collapsible
-                        collapsed={collapsed}
-                        onCollapse={onCollapse}>
-                        <div className="logo" />
-                        <LeftSideBar currentkey={'4'} />
-                    </Sider>
-                    <Content style={{ padding: 20 }}>
-                        <div className="site-layout-content">
-                            <Title >Assign Task</Title>
-                            {assignTasklist ? <div>
-                                {
-                                    assignTasklist.map(assignTasklist => <div className="technology_card" style={{ borderRadius: 50 }} key={assignTasklist._id}><Card style={{ width: 200, borderRadius: 10, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
-                                    ><div><div>Assign Task:</div>{assignTasklist.emailIdOfReceiver}<div><span>Task Status: </span>{assignTasklist.assignTaskStatus}{assignTasklist.assignTaskStatus == 'End'?<Button onClick={e => viewSubmitLink(assignTasklist._id)}>View</Button>:''}</div><div><span>Your Status: </span>{assignTasklist.assignTaskVerifiedStatus}</div></div></Card></div>)
-                                }
-                            </div> : ''}
-                            {assignQuestionList ? <div>
-                                {
-                                    assignQuestionList.map(assignQuestionList => <div className="technology_card" style={{ borderRadius: 50 }} key={assignQuestionList._id}><Card style={{ width: 200, borderRadius: 10, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
-                                    ><div><div>Assign Task:</div>{assignQuestionList.assignUserEmail}<div><span>Submit Task Status: </span>{assignQuestionList.isSubmit ? <div><span>Submited</span><Button onClick={e => viewAnswer(assignQuestionList._id)}>View</Button></div> : <span>Not Submited</span>}</div></div></Card></div>)
-                                }
-                            </div> : ''}
-                            <div>
-                                {isData ? <div>No Data Found</div> : ''}
-                                <Modal title="Answer List" visible={isModalVisible} onOk={e => setIsModalVisible(false)} onCancel={e => setIsModalVisible(false)}>
-                                  <div>
-                                   {answerTask?
-                                   <div>Answer: {answerList.AnswerList}</div>
-                                   :
-                                    <Card
-                                        style={{
-                                            borderRadius: 40,
-                                            justifyContent: 'center',
-                                            display: 'flex',
-                                            alignItems: 'center'
-                                        }}
-                                    >
-                                        {
-                                            questionList.map(questionList => <div className="technology_card" key={questionList._id}>
-                                                <Card style={{ borderRadius: 20, justifyContent: 'center', display: 'flex', alignItems: 'center' }}
-                                                ><div style={{ display: "block" }}>Question: {questionList.questionBankQuestion}</div><div style={{ display: "flex" }}> Answer: {questionList.questionBankOption ? <div>
-
-                                                    <li>{answerList.map(answerList => <div>{questionList._id == answerList.questionId ?
-                                                        <div>{questionList.questionBankAnswer == answerList.answer ? <div>Right</div> : <div>Wrong</div>}</div> : ''}</div>)}</li>
-
-                                                </div> : <li>{answerList.map(answerList => <div>{questionList.questionBankAnswer?<div>{questionList._id == answerList.questionId ?
-                                                    <div>{questionList.questionBankAnswer == answerList.answer ? <div>Right</div> : <div>Wrong</div>}</div> : ''}</div>:<div>{answerList.answer}</div>}</div>)}</li>}</div></Card></div>)
-                                        }
-                                    </Card>}</div>
-                                </Modal>
-                            </div>
-
-                        </div>
-
+    return(
+        <div>   
+             <Layout className="layout" style={{ minHeight: '100vh' }}>
+        <Header>
+            <PageHeader />
+        </Header>
+        <Layout>
+            <Sider
+                collapsible
+                collapsed={collapsed}
+                onCollapse={onCollapse}>
+                <div className="logo" />
+                <LeftSideBar currentkey={'4'}/>
+            </Sider>
+            <Content style={{ padding: 20 }}>
+                <div className="site-layout-content">
+                    <Title >Assign Task</Title>
+                    {assignTasklist?<div>              
+                    {
+                        assignTasklist.map(assignTasklist=><div className="technology_card" style={{borderRadius:50}} key={assignTasklist._id}><Card hoverable style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}
+                        ><div><div>Assign Task:</div>{assignTasklist.emailIdOfReceiver}<div><span>Task Status: </span>{assignTasklist.assignTaskStatus}</div><div><span>Your Status: </span>{assignTasklist.assignTaskVerifiedStatus}</div></div></Card></div>)
+                    } 
+                     </div> :''}
+                     {assignQuestionList?<div>              
+                      {
+                        assignQuestionList.map(assignQuestionList=><div className="technology_card" style={{borderRadius:50}} key={assignQuestionList._id}><Card hoverable  style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}
+                        ><div><div>Assign Task:</div>{assignQuestionList.assignUserEmail}<div><span>Submit Task Status: </span>{assignQuestionList.isSubmit?<span>Submited</span>:<span>Not Submited</span>}</div></div></Card></div>)
+                    }
+                     </div> :''}
+                     <div>
+                         {isData?<div>No Data Found</div>:''}
+                     </div>
+                    </div>
                     </Content>
                 </Layout>
             </Layout>
         </div>
+    
     )
 
 }

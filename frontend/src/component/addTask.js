@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import {Form, Input, Button, Select, Layout, Alert} from 'antd';
+import { Form, Input, Button, Select, Layout, Alert,Row,Col,Card,Image } from 'antd';
 import axios from 'axios';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
@@ -21,15 +21,15 @@ function AddTask() {
     const[technologyList,setTechnologyList]=useState([])
     const [istechtype, setistechtype] = useState(true)
     const [istechlevel, setistechlevel] = useState(true)
-    const [technologyListLevel, settechnologyListLevel] = useState([])   
+    const [technologyListLevel, settechnologyListLevel] = useState([])
     const [collapsed, setcollapsed] = useState(false)
-    const [issubmit, setissubmit] = useState(false)  
+    const [issubmit, setissubmit] = useState(false)
     const [form] = useForm();
 
     const timeId = setTimeout(() => {
         // After 3 seconds set the show value to false
         setissubmit(false)
-      }, 8000)
+    }, 8000)
 
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
@@ -42,13 +42,13 @@ function AddTask() {
 
     const technologyTypeHandleChange = (value) => {
         axios({
-            'method':'GET',
-            'url':`http://localhost:4000/api/v1/technologylist/viewbytechnologytype/${value}`,
+            'method': 'GET',
+            'url': `http://localhost:4000/api/v1/technologylist/viewbytechnologytype/${value}`,
             'headers': {
-                'token':localStorage.getItem('accessToken')
+                'token': localStorage.getItem('accessToken')
             }
-        }).then(response=>{
-            console.log('response.data',response.data.data)
+        }).then(response => {
+            console.log('response.data', response.data.data)
             setTechnologyList(response.data.data)
             setissubmit(true)
         })
@@ -59,18 +59,18 @@ function AddTask() {
 
     const technologyNameHandleChange = (value) => {
         axios({
-            'method':'GET',
-            'url':`http://localhost:4000/api/v1/technologylist/viewByTechnologyname/${value}`,
+            'method': 'GET',
+            'url': `http://localhost:4000/api/v1/technologylist/viewByTechnologyname/${value}`,
             'headers': {
-                'token':localStorage.getItem('accessToken')
+                'token': localStorage.getItem('accessToken')
             }
-        }).then(response=>{
-            console.log('response.data',response.data.data[0].technologyLevel)
+        }).then(response => {
+            console.log('response.data', response.data.data[0].technologyLevel)
             settechnologyListLevel(response.data.data[0].technologyLevel)
         })
         console.log('Name', value)
         settechnologyName(value)
-       setistechlevel(false)
+        setistechlevel(false)
     }
 
     const technologyLevelHandleChange = (value) => {
@@ -79,32 +79,31 @@ function AddTask() {
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         if (!localStorage.getItem('accessToken')) {
-			console.log("Not login")
-			history.push("/")
-		}
-        console.log("User_id",sessionStorage.getItem("user_id"))
+            console.log("Not login")
+            history.push("/")
+        }
+        console.log("User_id", sessionStorage.getItem("user_id"))
 
-    },[])
+    }, [])
 
     const submit = () => {
-
         axios({
             'method': 'post',
             'url': 'http://localhost:4000/api/v1/tasklist/createtasklist',
             'data': {
-                technologyListId:technologyListId,
+                technologyListId: technologyListId,
                 taskName: taskName,
                 tasDescription: taskDescription,
                 taskType: taskType
             } ,
             'headers': {
-                'token':localStorage.getItem('accessToken')
+                'token': localStorage.getItem('accessToken')
             },
         })
             .then(function (res) {
-                console.log("res of add task",res)
+                console.log("res of add task", res)
             })
             .catch(function (error) {
                 console.log(error);
@@ -113,7 +112,7 @@ function AddTask() {
 
     return (
         <div>
-             <Layout className="layout" style={{ minHeight: '100vh' }}>
+            <Layout className="layout" style={{ minHeight: '100vh' }}>
                 <Header>
                     <PageHeader />
                 </Header>
