@@ -17,6 +17,7 @@ function AddTask() {
     const [technologyName, settechnologyName] = useState('')
     const [taskDescription, settaskDescription] = useState('')
     const [technologyListId, settechnologyListId] = useState('')
+    const [taskType, settaskType] = useState('')
     const[technologyList,setTechnologyList]=useState([])
     const [istechtype, setistechtype] = useState(true)
     const [istechlevel, setistechlevel] = useState(true)
@@ -32,6 +33,11 @@ function AddTask() {
 
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
+    }
+
+    const taskTypeHandleChange = (value) => {
+        console.log('taskTypeHandleChange', value)
+        settaskType(value)
     }
 
     const technologyTypeHandleChange = (value) => {
@@ -83,16 +89,15 @@ function AddTask() {
     },[])
 
     const submit = () => {
-        console.log("technologyListId",technologyListId)
-        console.log("taskName",taskName)
-        console.log("tasDescription",taskDescription)
+
         axios({
             'method': 'post',
             'url': 'http://localhost:4000/api/v1/tasklist/createtasklist',
             'data': {
                 technologyListId:technologyListId,
                 taskName: taskName,
-                tasDescription: taskDescription
+                tasDescription: taskDescription,
+                taskType: taskType
             } ,
             'headers': {
                 'token':localStorage.getItem('accessToken')
@@ -159,6 +164,14 @@ function AddTask() {
                     
                 </Select>
             </Form.Item>
+            <Form.Item name="taskType" label="Task Type" rules={[{ required: true, message: "Plese Select Task Type" }]} >
+                            <Select
+                                placeholder="Select"
+                                onChange={(e) => { taskTypeHandleChange(e) }}>
+                                <Option value="Project">Project</Option>
+                                <Option value="Code">Code</Option>
+                            </Select>
+                        </Form.Item>
             <Form.Item
                 label='Task Name'
                 name='taskName'

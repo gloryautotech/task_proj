@@ -24,6 +24,7 @@ function GivenTask(props) {
     const [allData, setallData] = useState([])
     const [isSubmited, setisSubmited] = useState(false)
     const [collapsed, setcollapsed] = useState(false)
+    const [taskID, settaskID] = useState('')
     const [form] = useForm();
 
 
@@ -61,6 +62,10 @@ function GivenTask(props) {
                     console.log("error", err)
                 })
             }
+            if(response.data.data[0].assignTaskId)
+            {
+                settaskID(response.data.data[0].assignTaskId)
+            }
 
         }).catch(err => {
             console.log("error", err)
@@ -86,46 +91,19 @@ function GivenTask(props) {
     const startTask = () => {
         console.log("admid id on start", currentUserTaskId)
         setisStart(true)
-        // axios({
-        //     'method': 'post',
-        //     'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
-        //     'data': { assignTaskStatus: 'Start' },
-        //     'headers': {
-        //         'token': localStorage.getItem('accessToken')
-        //     }
-        // }).then(response => {
-        //     console.log('response.data', response.data)
-            
-        //     //  openSendEmail(adminEmail, 'Start task', 'user start there task at ')
-        // }).catch(err => {
-        //     console.log("error", err)
-        // })
-
-
     }
     const sumbitTask = () => {
-        // console.log("admid id on submit", adminEmail)
-        // console.log("allData.assignTaskId", allData.assignTaskId)
-        // axios({
-        //     'method': 'post',
-        //     'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
-        //     'data': { assignTaskStatus: 'End' },
-        //     'headers': {
-        //         'token': localStorage.getItem('accessToken')
-        //     }
-        // }).then(response => {
-        //     setisStart(false)
-        //     setTaskEnd(true)
-        //     console.log('response.data', response.data.data)
-        //     openSendEmail(adminEmail, 'Complete task', 'user submit there task at ' + gitLink + 'on ')
-        // }).catch(err => {
-        //     console.log("error", err)
-        // })
+
         console.log("currentUserTaskId",currentUserTaskId)
         axios({
             'method': 'put',
             'url': `http://localhost:4000/api/v1/allassigntasklist/editallassigntasklist/${currentUserTaskId}`,
-            'data': { isSubmit: true },
+            'data': { isSubmit: true,
+                    answer : {
+                        questionid: taskID,
+                        answer: gitLink
+                    }
+            },
             'headers': {
                 'token': localStorage.getItem('accessToken')
             }
@@ -136,43 +114,9 @@ function GivenTask(props) {
             console.log("error", err)
         })
 
-        // axios({
-        //     'method': 'post',
-        //     'url': `http://localhost:4000/api/v1/submitanswertask/createsubmittasklist`,
-        //     'data': {
-        //         assignTaskId: allData._id,
-        //         AnswerList: gitLink
-        //     },
-        //     'headers': {
-        //         'token': localStorage.getItem('accessToken')
-        //     }
-        // }).then(response => {
-        //     console.log('submitanswertask.data', response.data.data)
-        // }).catch(err => {
-        //     console.log("error", err)
-        // })
 
     }
 
-    // const stopTask = () => {
-    //     setisStart(false)
-    //     console.log("admid id on submit", adminEmail)
-    //     axios({
-    //         'method': 'post',
-    //         'url': `http://localhost:4000/api/v1/assigntask/editassigntask/${currentUserTaskId}`,
-    //         'data': { assignTaskStatus: 'Stop' },
-    //         'headers': {
-    //             'token': localStorage.getItem('accessToken')
-    //         }
-    //     }).then(response => {
-    //         setisStart(false)
-    //         console.log('response.data', response.data.data)
-    //         openSendEmail(adminEmail, 'Stop task', 'user stop there task at ')
-    //     }).catch(err => {
-    //         console.log("error", err)
-    //     })
-
-    // }
 
     const formItemLayout = {
         labelCol: {
@@ -230,9 +174,8 @@ function GivenTask(props) {
 
                                             <li>{taskDetalis.tasDescription}
                                             </li>}
-                                        {isStart ? <div><Input onChange={(e) => { setgitLink(e.target.value) }}></Input>
-                                            <Button onClick={e=>sumbitTask()}>Submit</Button>
-                                            {/* <Button onClick={e=>stopTask()}>Stop</Button> */}
+                                        {isStart ? <div>{taskDetalis.taskType == 'Project' ?<div><Input onChange={(e) => { setgitLink(e.target.value) }}></Input>
+                                            <Button onClick={e=>sumbitTask()}>Submit</Button></div>:<div></div>}
                                         </div> : <Button onClick={e=>startTask()}>Start</Button>}
                                     </div>
 

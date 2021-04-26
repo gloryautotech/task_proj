@@ -23,6 +23,7 @@ function AssignQuestionBank() {
     const [confirmQuestionList, setconfirmQuestionList] = useState([])
     const [isQuestionList, setisQuestionList] = useState(false)
     const [noOfQuestion, setnoOfQuestion] = useState('')
+    const [questionLevel, setquestionLevel] = useState('')
     const [isLoading, setisLoading] = useState(false)
     const [questionList, setquestionList] = useState([])
     const [form] = useForm();
@@ -34,6 +35,11 @@ function AssignQuestionBank() {
     const questionBankTypeHandleChange = (value) => {
         console.log('questionBankType', value)
         setquestionBankType(value)
+    }
+
+    const questionBankLevelHandleChange = (value) => {
+        console.log('questionBankLevel', value)
+        setquestionLevel(value)
     }
 
     useEffect(() => {
@@ -50,6 +56,7 @@ function AssignQuestionBank() {
             'url': 'http://localhost:4000/api/v1/questionbank/viewbyquestionbanktype',
             'data': {
                 questionBankType: questionBankType,
+                questionBankLevel: questionLevel,
                 limit: noOfQuestion
             },
             'headers': {
@@ -224,6 +231,15 @@ function AssignQuestionBank() {
                                                         <Option value="Logical">Logical</Option>
                                                         <Option value="screening">screening</Option>
                                                         <Option value="Technical">Technical</Option>
+                                                    </Select>
+                                                </Form.Item>
+                                                <Form.Item name="questionBankLevel" label="QuestionBank Level" rules={[{ required: true, message: "Plese Select QuestionBank Level" }]} >
+                                                    <Select
+                                                        placeholder="Select"
+                                                        onChange={(e) => { questionBankLevelHandleChange(e) }}>
+                                                         <Option value="Basic">Basic</Option>
+                                <Option value="intermediate">intermediate</Option>
+                                <Option value="Advance">Advance</Option>
                                                     </Select>
                                                 </Form.Item>
                                                 <Form.Item

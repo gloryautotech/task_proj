@@ -88,6 +88,7 @@ let createTaskList = (req, res) => {
         technologyListId: req.body.technologyListId,
         taskName: req.body.taskName,
         tasDescription: req.body.tasDescription,
+        taskType: req.body.taskType,
         created: today,
         lasrModified: today
     })

@@ -25,6 +25,7 @@ function AddQuestionBank() {
     const [questionBankType, setquestionBankType] = useState()
     const [question, setquestion] = useState()
     const [answer, setanswer] = useState()
+    const [questionLevel, setquestionLevel] = useState('')
     const [error, seterror] = useState('')
     const [questionBankOption, setquestionBankOption] = useState()
     const [form] = Form.useForm();
@@ -41,6 +42,11 @@ function AddQuestionBank() {
     const questionBankTypeHandleChange = (value) => {
         console.log('questionBankType', value)
         setquestionBankType(value)
+    }
+
+    const questionBankLevelHandleChange = (value) => {
+        console.log('questionBankLevel', value)
+        setquestionLevel(value)
     }
 
     const questionBankOptionHandleChange = (value) => {
@@ -80,7 +86,8 @@ function AddQuestionBank() {
                     questionBankOption: questionBankOption,
                     questionBankQuestion: question,
                     questionBankAnswer: answer,
-                    questionOption: questionOption
+                    questionOption: questionOption,
+                    questionLevel : questionLevel
                 },
                 'headers': {
                     'token': localStorage.getItem('accessToken')
@@ -133,6 +140,15 @@ function AddQuestionBank() {
                                 <Option value="Technical">Technical</Option>
                             </Select>
                         </Form.Item>
+                        <Form.Item name="questionBankLevel" label="QuestionBank Level" rules={[{ required: true, message: "Plese Select QuestionBank Level" }]} >
+                            <Select
+                                placeholder="Select"
+                                onChange={(e) => { questionBankLevelHandleChange(e) }}>
+                                <Option value="Basic">Basic</Option>
+                                <Option value="intermediate">intermediate</Option>
+                                <Option value="Advance">Advance</Option>
+                            </Select>
+                        </Form.Item>
                         <Form.Item
                             name="questionBankQuestion"
                             label="Question"
@@ -156,15 +172,6 @@ function AddQuestionBank() {
                         >
                             <Input value={answer} defaultValue={answer} placeholder="Enter your Answer" onChange={(e) => { setanswer(e.target.value) }} />
                         </Form.Item>
-                        {/* <Form.Item
-                            hidden={!isQuestionOptionTrue}
-                            name="option"
-                            label="Option"
-                            rules={[{ required: true, message: "Plese Enter Option" }]}
-                        >
-                            <Input />
-                        </Form.Item> */}
-                        {/* <Divider dashed>Additional Fields</Divider> */}
                         {isQuestionOptionTrue ? <DynamicField /> : ''}
                         <h5 style={{ color: 'red' }}>{error}</h5>
                         <Form.Item>

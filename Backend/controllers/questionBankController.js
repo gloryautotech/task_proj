@@ -36,6 +36,7 @@ let createQuestionBank = (req, res) => {
         questionBankOption: req.body.questionBankOption,
         questionBankAnswer: req.body.questionBankAnswer,
         questionOption: req.body.questionOption,
+        questionLevel : req.body.questionLevel,
         created: today,
         lasrModified: today
     })
@@ -79,7 +80,7 @@ let createQuestionBank = (req, res) => {
 let viewByQuestionBankType = (req, res) => {
     var v = req.body.questionBankType;
     console.log("questionBankType",v)
-    questionBank.find({ 'questionBankType': req.body.questionBankType }, (err, result) => {
+    questionBank.find({ $and :[{'questionBankType': req.body.questionBankType},{'questionLevel': req.body.questionBankLevel}] }, (err, result) => {
         if (err) {
             logger.log('viewByQuestionBankType',req, err,req.body,res)
             let apiResponse = response.respons(false,constants.messages.INTERNAL500 + err,constants.constants.HTTP_SERVER_ERROR,null)
