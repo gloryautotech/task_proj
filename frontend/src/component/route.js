@@ -15,7 +15,7 @@ import assignTasklist from "./assignTasklist";
 import addQuestionBank from "./addQuestionBank";
 import assignQuestionBank from "./assignQuestionBank";
 import questionPaper from "./questionPaper";
-import compiler from "./Compiler/Compiler";
+import compiler from "./compiler";
 import round from "./round";
 const {Content } = Layout;
 

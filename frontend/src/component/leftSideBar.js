@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Menu } from 'antd';
 import axios from 'axios';
-import { HomeOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { HomeOutlined, PlusCircleOutlined,CarryOutOutlined } from '@ant-design/icons';
 
 function LeftSideBar(props) {
   const [isAdmin, setIsAdmin] = useState(false)
@@ -58,7 +58,7 @@ function LeftSideBar(props) {
             <Link to="/addtask" />
           </Menu.Item>
           <Menu.Item key="4">
-            <PlusCircleOutlined />
+            <CarryOutOutlined />
             <span>Assign Task</span>
             <Link to="/assigntask" />
           </Menu.Item>
