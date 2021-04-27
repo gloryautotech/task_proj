@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Form, Button, Input, Divider, Layout, Alert, Select,Row,Col,Card,Image } from "antd";
+import React, { useState, useEffect } from "react";
+import { Form, Button, Input, Divider, Layout, Alert, Select, Row, Col, Card, Image } from "antd";
 import DynamicField from "./dynamicField";
 import axios from 'axios';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
+import { useHistory } from "react-router";
 import "antd/dist/antd.css";
 
 const { Option } = Select;
@@ -19,6 +20,7 @@ const defaultFormItemLayout = {
 };
 
 function AddQuestionBank() {
+    let history = useHistory()
     const [issubmit, setissubmit] = useState(false)
     const [collapsed, setcollapsed] = useState(false)
     const [isQuestionOptionTrue, setisQuestionOptionTrue] = useState(false)
@@ -29,6 +31,38 @@ function AddQuestionBank() {
     const [error, seterror] = useState('')
     const [questionBankOption, setquestionBankOption] = useState()
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        if (!localStorage.getItem('accessToken')) {
+            console.log("Not login")
+            history.push("/")
+        } else {
+            let userId
+            function parseJwt(token) {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                userId = JSON.parse(jsonPayload).userId
+            };
+            parseJwt(localStorage.getItem('accessToken'))
+            axios({
+                'method': 'get',
+                'url': `http://localhost:4000/api/v1/userdata/viewuserlist/${userId}`,
+                'headers': {
+                    'token': localStorage.getItem('accessToken')
+                },
+            }).then(response => {
+                console.log('response.data', response.data.data)
+                if (response.data.data.userType != 'admin') {
+                    history.push('/home')
+                }
+            }).catch(err => {
+                console.log("error", err)
+            })
+        }
+    }, [])
 
     const timeId = setTimeout(() => {
         // After 3 seconds set the show value to false
@@ -66,17 +100,15 @@ function AddQuestionBank() {
         }
         else {
             seterror("")
-            console.log("values.fields",values.fields)
+            console.log("values.fields", values.fields)
             let questionOption = []
-             if(questionBankOption == 'true'){
-                 console.log("hel")
-                 values.fields.forEach(element => {
+            if (questionBankOption == 'true') {
+                console.log("hel")
+                values.fields.forEach(element => {
                     questionOption.push(element)
-                 });
-            // for (let index = 0; index <= values.fields.length; index++) {
-            //     questionOption.push(values.fields[index].option)
-            // }
-        }
+                });
+
+            }
             console.log("all option", questionOption)
             axios({
                 'method': 'post',
@@ -87,7 +119,7 @@ function AddQuestionBank() {
                     questionBankQuestion: question,
                     questionBankAnswer: answer,
                     questionOption: questionOption,
-                    questionLevel : questionLevel
+                    questionLevel: questionLevel
                 },
                 'headers': {
                     'token': localStorage.getItem('accessToken')

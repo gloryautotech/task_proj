@@ -33,10 +33,19 @@ function DashBoard1() {
             console.log("Not login")
             history.push("/")
         } else {
-            console.log("user_id", sessionStorage.getItem("user_id"))
+            let userid
+            function parseJwt (token) {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+               userid = JSON.parse(jsonPayload).userId
+            };
+            parseJwt(localStorage.getItem('accessToken'))
             axios({
                 'method': 'GET',
-                'url': `http://localhost:4000/api/v1/assigntask/viewbyuserid/${sessionStorage.getItem("user_id")}`,
+                'url': `http://localhost:4000/api/v1/assigntask/viewbyuserid/${userid}`,
                 'headers': {
                     'token': localStorage.getItem('accessToken')
                 }
@@ -50,7 +59,7 @@ function DashBoard1() {
             })
             axios({
                 'method': 'GET',
-                'url': `http://localhost:4000/api/v1/assignquestionbank/viewassignByid/${sessionStorage.getItem("user_id")}`,
+                'url': `http://localhost:4000/api/v1/assignquestionbank/viewassignByid/${userid}`,
                 'headers': {
                     'token': localStorage.getItem('accessToken')
                 }

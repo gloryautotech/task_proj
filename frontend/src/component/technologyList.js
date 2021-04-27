@@ -27,7 +27,6 @@ function DashBoard1() {
 			history.push("/")
         }else{
             setisLoading(true)
-        console.log("user_id", sessionStorage.getItem("user_id"))
         axios({
             'method': 'GET',
             'url': 'http://localhost:4000/api/v1/technologylist/alltechnologylist',
