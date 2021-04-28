@@ -25,6 +25,7 @@ function AssignQuestionBank() {
     const [noOfQuestion, setnoOfQuestion] = useState('')
     const [questionLevel, setquestionLevel] = useState('')
     const [isLoading, setisLoading] = useState(false)
+    const [mainUserId, setmainUserId] = useState('')
     const [questionList, setquestionList] = useState([])
     const [form] = useForm();
 
@@ -46,6 +47,32 @@ function AssignQuestionBank() {
         if (!localStorage.getItem('accessToken')) {
             console.log("Not login")
             history.push("/")
+        }else {
+            let userId
+            function parseJwt (token) {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                userId = JSON.parse(jsonPayload).userId
+                setmainUserId(JSON.parse(jsonPayload).userId)
+            };
+            parseJwt(localStorage.getItem('accessToken'))
+            axios({
+                'method': 'get',
+                'url': `http://localhost:4000/api/v1/userdata/viewuserlist/${userId}`,
+                'headers': {
+                    'token': localStorage.getItem('accessToken')
+                },
+            }).then(response => {
+                console.log('response.data', response.data.data)
+               if( response.data.data.userType == 'user'){
+                history.push('/home')
+               }
+            }).catch(err => {
+                console.log("error", err)
+            })
         }
     }, [])
 
@@ -116,7 +143,7 @@ function AssignQuestionBank() {
             'url': `http://localhost:4000/api/v1/assigntaskuserlist/viewbyassignbyemail`,
             'data': {
                 assignUserEmail: email,
-                assignBy: sessionStorage.getItem("user_id")
+                assignBy: mainUserId
             },
             'headers': {
                 'token': localStorage.getItem('accessToken')
@@ -130,7 +157,7 @@ function AssignQuestionBank() {
                     'url': `http://localhost:4000/api/v1/assigntaskuserlist/createassigntaskuserlist`,
                     'data': {
                         assignUserEmail: email,
-                        assignBy: sessionStorage.getItem("user_id")
+                        assignBy: mainUserId
                     },
                     'headers': {
                         'token': localStorage.getItem('accessToken')

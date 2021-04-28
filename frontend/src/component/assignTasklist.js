@@ -40,13 +40,34 @@ function DashBoard1() {
         if (!localStorage.getItem('accessToken')) {
             console.log("Not login")
             history.push("/")
-        } 
-        else
-        {
-            console.log("user_id", sessionStorage.getItem("user_id"))
+        } else {
+            let userid
+            function parseJwt (token) {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+               userid = JSON.parse(jsonPayload).userId
+            };
+            parseJwt(localStorage.getItem('accessToken'))
             axios({
-                'method':'get',
-                'url': `http://localhost:4000/api/v1/assigntaskuserlist/viewbyassignid/${sessionStorage.getItem("user_id")}`,
+                'method': 'GET',
+                'url': `http://localhost:4000/api/v1/assigntask/viewbyuserid/${userid}`,
+                'headers': {
+                    'token': localStorage.getItem('accessToken')
+                }
+            }).then(response => {
+                console.log('response.data assign task', response.data.data)
+                if (response.data.data) {
+                    console.log("call")
+                    setisData(false)
+                }
+                setassignTasklist(response.data.data)
+            })
+            axios({
+                'method': 'GET',
+                'url': `http://localhost:4000/api/v1/assignquestionbank/viewassignByid/${userid}`,
                 'headers': {
                             'token': localStorage.getItem('accessToken')
                 }
@@ -83,94 +104,12 @@ function DashBoard1() {
             })
             
             
-            // axios({
-            //     'method': 'GET',
-            //     'url': `http://localhost:4000/api/v1/assigntask/viewbyuserid/${sessionStorage.getItem("user_id")}`,
-            //     'headers': {
-            //         'token': localStorage.getItem('accessToken')
-            //     }
-            // }).then(response => {
-            //     console.log('response.data assign task', response.data.data)
-            //     if (response.data.data) {
-            //         console.log("call")
-            //         setisData(false)
-            //     }
-            //     setassignTasklist(response.data.data)
-            // })
-            // axios({
-            //     'method': 'GET',
-            //     'url': `http://localhost:4000/api/v1/assignquestionbank/viewassignByid/${sessionStorage.getItem("user_id")}`,
-            //     'headers': {
-            //         'token': localStorage.getItem('accessToken')
-            //     }
-            // }).then(response => {
-            //     console.log("user_id 2", sessionStorage.getItem("user_id"))
-            //     console.log('response.data', response.data.data)
-            //     console.log('response.data.data[0].assignby',response.data.data[0].assignBy)
-            //     if (response.data.data.length > 0) {
-            //         console.log("call")
-            //         setisData(false)
-            //     }
-            //     setassignQuestionList(response.data.data)
-               
-            // })
+            
         }
 
             
     }, [])
-    // const viewAnswer = (id) => {
-    //     console.log("id", id)
-    //     axios({
-    //         'method': 'get',
-    //         'url': `http://localhost:4000/api/v1/assignquestionbank/viewquestionbankbyid/${id}`,
-    //         'headers': {
-    //             'token': localStorage.getItem('accessToken')
-    //         }
-    //     })
-    //         .then(function (res) {
-    //             console.log("res of assign question paper list", res.data.data)
-    //             setquestionList(res.data.data)
-    //             axios({
-    //                 'method': 'get',
-    //                 'url': `http://localhost:4000/api/v1/submitanswerbank/viewbyassignquestionuserid/${id}`,
-    //                 'headers': {
-    //                     'token': localStorage.getItem('accessToken')
-    //                 }
-    //             })
-    //                 .then(function (res) {
-    //                     console.log("res of AnswerList", res.data.data[0].AnswerList)
-    //                     setanswerList(res.data.data[0].AnswerList)
-    //                     setIsModalVisible(true)
-    //                     setanswerTask(false)
-    //                 })
-    //                 .catch(function (error) {
-    //                     console.log(error);
-    //                 });
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // }
-
-    // const viewSubmitLink = (id) => {
-    //     console.log("viewSubmitLink id",id)
-    //     axios({
-    //         'method': 'get',
-    //         'url': `http://localhost:4000/api/v1/submitanswertask/viewbyassigntaskid/${id}`,
-    //         'headers': {
-    //             'token': localStorage.getItem('accessToken')
-    //         }
-    //     })
-    //         .then(function (res) {
-    //             console.log("res of SubmitLink", res.data.data[0])
-    //             setIsModalVisible(true)
-    //             setanswerTask(true)
-    //             setanswerList(res.data.data[0])
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // }
+ 
 
     const handleView=()=>{
         console.log("user_id 1", sessionStorage.getItem("user_id"))

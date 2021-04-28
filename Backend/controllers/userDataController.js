@@ -199,7 +199,7 @@ let deleteUserNameById = (req, res) => {
 let loginCheck = (req, res) => {
     console.log("username", req.body.username)
     console.log("constat",constants.constants.HTTP_SUCCESS)
-    userDataModel.find({ $or: [{ 'email': req.body.username }, { 'phone': req.body.username }] },async(err, result) => {
+    userDataModel.find({ $and: [{$or: [{ 'email': req.body.username }, { 'phone': req.body.username }]},{'password': req.body.password}] },async(err, result) => {
         console.log("result",result)
         if (err) {
             // logger.log('LoginCeck', req, err,  req.body.username, req.body)
@@ -214,14 +214,7 @@ let loginCheck = (req, res) => {
             res.send(apiResponse)
         }
         else {
-            console.log("result login", result)
-            console.log("req.body", req.body)
-            if (!req.body.password) {
-                let apiResponse = response.respons(true,constants.messages.LOGIN.NOT_FOUND + err,constants.constants.HTTP_SUCCESS,null)
-                res.send(apiResponse)
-            }
-            else if (result[0].password == req.body.password) {
-                console.log("result._id",result[0]._id)
+            console.log("result._id",result[0]._id)
                 let accessToken = await response.createAccessToken(result[0]._id , result[0].userFirstName, req.models); 
 				console.log("accestoken",accessToken)
                 logger.log('LoginCeck',req, result, req.body.username,req.body)
@@ -229,11 +222,6 @@ let loginCheck = (req, res) => {
                 result = {result,accessToken}
                 let apiResponse = response.respons(true, constants.messages.LOGIN.SUCCESS, constants.constants.HTTP_SUCCESS, result )
                 res.send(apiResponse)
-            }
-            else {
-                let apiResponse = response.respons(true,constants.messages.LOGIN.FAILURE,constants.constants.HTTP_SUCCESS,null)
-                res.send(apiResponse)
-            }
         }
     })
 }

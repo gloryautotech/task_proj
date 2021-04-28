@@ -32,7 +32,6 @@ function QuestionPaper(props) {
 
 
     useEffect(() => {
-        console.log("question id", sessionStorage.getItem("Question_id"))
         axios({
             'method': 'get',
             'url': `http://localhost:4000/api/v1/allassigntasklist/viewbyid/${props.assignTasklistid}`,
@@ -96,40 +95,6 @@ function QuestionPaper(props) {
 
     const onSubmit = () => {
         console.log("Answer lis", answerList)
-        // axios({
-        //     'method': 'post',
-        //     'url': `http://localhost:4000/api/v1/submitanswerbank/createsubmitanswerlist`,
-        //     'data': {
-        //         assignQuestionUserId: sessionStorage.getItem("Question_id"),
-        //         answerBanklist: answerList
-        //     },
-        //     'headers': {
-        //         'token': localStorage.getItem('accessToken')
-        //     }
-        // })
-        //     .then(function (res) {
-        //         console.log("res of assign question paper list", res.data.data)
-        //         axios({
-        //             'method': 'post',
-        //             'url': `http://localhost:4000/api/v1/assignquestionbank/editassignquestion/${sessionStorage.getItem("Question_id")}`,
-        //             'data': {
-        //                 isSubmit: true
-        //             },
-        //             'headers': {
-        //                 'token': localStorage.getItem('accessToken')
-        //             }
-        //         })
-        //             .then(function (res) {
-        //                 console.log("res of assign question paper list", res.data.data)
-        //             })
-        //             .catch(function (error) {
-        //                 console.log(error);
-        //             });
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
-
             axios({
                 'method': 'put',
                 'url': `http://localhost:4000/api/v1/allassigntasklist/editallassigntasklist/${currentUserTaskId}`,

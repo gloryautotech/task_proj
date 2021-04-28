@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Select, Layout, Alert,Row,Col,Card,Image } from 'antd';
+import { Form, Input, Button, Select, Layout, Alert, Row, Col, Card, Image } from 'antd';
 import axios from 'axios';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
@@ -18,7 +18,7 @@ function AddTask() {
     const [taskDescription, settaskDescription] = useState('')
     const [technologyListId, settechnologyListId] = useState('')
     const [taskType, settaskType] = useState('')
-    const[technologyList,setTechnologyList]=useState([])
+    const [technologyList, setTechnologyList] = useState([])
     const [istechtype, setistechtype] = useState(true)
     const [istechlevel, setistechlevel] = useState(true)
     const [technologyListLevel, settechnologyListLevel] = useState([])
@@ -83,8 +83,32 @@ function AddTask() {
         if (!localStorage.getItem('accessToken')) {
             console.log("Not login")
             history.push("/")
+        } else {
+            let userId
+            function parseJwt(token) {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                userId = JSON.parse(jsonPayload).userId
+            };
+            parseJwt(localStorage.getItem('accessToken'))
+            axios({
+                'method': 'get',
+                'url': `http://localhost:4000/api/v1/userdata/viewuserlist/${userId}`,
+                'headers': {
+                    'token': localStorage.getItem('accessToken')
+                },
+            }).then(response => {
+                console.log('response.data', response.data.data)
+                if (response.data.data.userType != 'admin') {
+                    history.push('/home')
+                }
+            }).catch(err => {
+                console.log("error", err)
+            })
         }
-        console.log("User_id", sessionStorage.getItem("user_id"))
 
     }, [])
 
@@ -97,7 +121,7 @@ function AddTask() {
                 taskName: taskName,
                 tasDescription: taskDescription,
                 taskType: taskType
-            } ,
+            },
             'headers': {
                 'token': localStorage.getItem('accessToken')
             },
@@ -125,81 +149,81 @@ function AddTask() {
                         <LeftSideBar currentkey={'3'} />
                     </Sider>
                     <Content style={{ padding: 20 }}>
-                    {issubmit?
-                       <div style={{width:212,position:"absolute",right:0,zIndex:9999}}> 
-           <Alert message="Success Text" type="success" />
-           </div>:''}
-                    <Form form={form} name="addtechnology" onFinish={submit} style={{width:400}} scrollToFirstError>
-                        <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true, message:"Please select Technology Type" }]} style={{ display: 'inline-list-item' }}>
-                <Select
-                    placeholder="Select"
-                    onChange={(e) => { technologyTypeHandleChange(e) }}>
-                    <Option value="frontend">Front End</Option>
-                    <Option value="backend">Back End</Option>
-                </Select>
-            </Form.Item>
-            <Form.Item name="technoloyName" label="Technology Name" rules={[{ required: true,message:"Please select Technology Name" }]} style={{ display: 'inline-list-item' }}>
-                <Select
-                    placeholder="Select"
-                    disabled={istechtype}
-                    onChange={(e)=>{technologyNameHandleChange(e)}}>
-                                        {
-                        technologyList.map(technologyList=><Option value={technologyList.technologyName}>
-                        {technologyList.technologyName}</Option>)
-                    } 
-                    
-                </Select>
-            </Form.Item>
-            <Form.Item name="technoloyLevel" label="Technology Level" rules={[{ required: true,message:"Please select Technology Level" }]} style={{ display: 'inline-list-item' }}>
-                <Select
-                    placeholder="Select"
-                    disabled={istechlevel}
-                    onChange={(e)=>{technologyLevelHandleChange(e)}}
-                    >
-                                        {
-                        technologyListLevel.map(technologyListLevel=><Option value={technologyListLevel._id}>
-                        {technologyListLevel.technologyLevelName}</Option>)
-                    } 
-                    
-                </Select>
-            </Form.Item>
-            <Form.Item name="taskType" label="Task Type" rules={[{ required: true, message: "Plese Select Task Type" }]} >
-                            <Select
-                                placeholder="Select"
-                                onChange={(e) => { taskTypeHandleChange(e) }}>
-                                <Option value="Project">Project</Option>
-                                <Option value="Code">Code</Option>
-                            </Select>
-                        </Form.Item>
-            <Form.Item
-                label='Task Name'
-                name='taskName'
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please enter your Task Name'
-                    }
-                ]}>
-                <Input placeholder={"Enter Task Name"} onChange={(e) => { settaskName(e.target.value) }}></Input>
-            </Form.Item>
-            <Form.Item
-                label='Task Description'
-                name='taskdescription'
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please enter your Task Description'
-                    }
-                ]}>
-                <Input placeholder={"Enter Task Description"} onChange={(e) => { settaskDescription(e.target.value) }}></Input>
-            </Form.Item>
+                        {issubmit ?
+                            <div style={{ width: 212, position: "absolute", right: 0, zIndex: 9999 }}>
+                                <Alert message="Success Text" type="success" />
+                            </div> : ''}
+                        <Form form={form} name="addtechnology" onFinish={submit} style={{ width: 400 }} scrollToFirstError>
+                            <Form.Item name="technoloyType" label="Technology Type" rules={[{ required: true, message: "Please select Technology Type" }]} style={{ display: 'inline-list-item' }}>
+                                <Select
+                                    placeholder="Select"
+                                    onChange={(e) => { technologyTypeHandleChange(e) }}>
+                                    <Option value="frontend">Front End</Option>
+                                    <Option value="backend">Back End</Option>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item name="technoloyName" label="Technology Name" rules={[{ required: true, message: "Please select Technology Name" }]} style={{ display: 'inline-list-item' }}>
+                                <Select
+                                    placeholder="Select"
+                                    disabled={istechtype}
+                                    onChange={(e) => { technologyNameHandleChange(e) }}>
+                                    {
+                                        technologyList.map(technologyList => <Option value={technologyList.technologyName}>
+                                            {technologyList.technologyName}</Option>)
+                                    }
 
-            <Form.Item>
-                <Button type='primary' htmlType='submit'>Submit</Button>
-            </Form.Item>
-            </Form>
-            </Content>
-            </Layout>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item name="technoloyLevel" label="Technology Level" rules={[{ required: true, message: "Please select Technology Level" }]} style={{ display: 'inline-list-item' }}>
+                                <Select
+                                    placeholder="Select"
+                                    disabled={istechlevel}
+                                    onChange={(e) => { technologyLevelHandleChange(e) }}
+                                >
+                                    {
+                                        technologyListLevel.map(technologyListLevel => <Option value={technologyListLevel._id}>
+                                            {technologyListLevel.technologyLevelName}</Option>)
+                                    }
+
+                                </Select>
+                            </Form.Item>
+                            <Form.Item name="taskType" label="Task Type" rules={[{ required: true, message: "Plese Select Task Type" }]} >
+                                <Select
+                                    placeholder="Select"
+                                    onChange={(e) => { taskTypeHandleChange(e) }}>
+                                    <Option value="Project">Project</Option>
+                                    <Option value="Code">Code</Option>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item
+                                label='Task Name'
+                                name='taskName'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please enter your Task Name'
+                                    }
+                                ]}>
+                                <Input placeholder={"Enter Task Name"} onChange={(e) => { settaskName(e.target.value) }}></Input>
+                            </Form.Item>
+                            <Form.Item
+                                label='Task Description'
+                                name='taskdescription'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please enter your Task Description'
+                                    }
+                                ]}>
+                                <Input placeholder={"Enter Task Description"} onChange={(e) => { settaskDescription(e.target.value) }}></Input>
+                            </Form.Item>
+
+                            <Form.Item>
+                                <Button type='primary' htmlType='submit'>Submit</Button>
+                            </Form.Item>
+                        </Form>
+                    </Content>
+                </Layout>
             </Layout>
         </div>
     )

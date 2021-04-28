@@ -15,6 +15,7 @@ import assignTasklist from "./assignTasklist";
 import addQuestionBank from "./addQuestionBank";
 import assignQuestionBank from "./assignQuestionBank";
 import questionPaper from "./questionPaper";
+import faceToFace from "./faceToFace";
 import userTask from "./userTask";
 import round from "./round";
 const {Content } = Layout;
@@ -43,6 +44,7 @@ function RouteJs() {
 				<Route path="/assignquestionbank" exact component={assignQuestionBank} />
 				<Route path="/questionpaper" exact component={questionPaper} />
 				<Route path="/usertask" exact component={userTask} />
+				<Route path="/facetoface" exact component={faceToFace} />
 				</div>
 			</Content>
 </Router>
