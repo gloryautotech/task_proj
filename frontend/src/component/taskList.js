@@ -18,6 +18,7 @@ function DashBoard3(props) {
     const [collapsed, setcollapsed] = useState(false)
     const [isNotEmail, setisNotEmail] = useState(true)
     const [error, seterror] = useState('')
+    const [mainUserId, setmainUserId] = useState('')
     const [isLoading, setisLoading] = useState(false)
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
@@ -29,8 +30,16 @@ function DashBoard3(props) {
             console.log("Not login")
             history.push("/")
         } else {
+            function parseJwt (token) {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+               setmainUserId(JSON.parse(jsonPayload).userId)
+            };
+            parseJwt(localStorage.getItem('accessToken'))
             setisLoading(true)
-            console.log("technology id id ", sessionStorage.getItem("user_id"))
             let technologyListId = props.location.state.technologyListId
             console.log("technology nme", technologyListId)
             axios({
@@ -90,7 +99,7 @@ function DashBoard3(props) {
             'url': `http://localhost:4000/api/v1/assigntaskuserlist/viewbyassignbyemail`,
             'data': {
                 assignUserEmail: email,
-                assignBy: sessionStorage.getItem("user_id")
+                assignBy: mainUserId
             },
             'headers': {
                 'token': localStorage.getItem('accessToken')
@@ -104,7 +113,7 @@ function DashBoard3(props) {
                     'url': `http://localhost:4000/api/v1/assigntaskuserlist/createassigntaskuserlist`,
                     'data': {
                         assignUserEmail: email,
-                        assignBy: sessionStorage.getItem("user_id")
+                        assignBy: mainUserId
                     },
                     'headers': {
                         'token': localStorage.getItem('accessToken')

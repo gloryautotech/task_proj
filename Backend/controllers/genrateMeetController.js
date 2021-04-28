@@ -11,8 +11,6 @@ let createMeetingLink = (req, res1) => {
   console.log("req.body.startDate", req.body.startDate)
   console.log("req.body.endDate", req.body.endDate)
   console.log("req.body.email", req.body.email)
-  console.log("req.body.summary", req.body.summary)
-  console.log("req.body.location", req.body.location)
   console.log("req.body.description", req.body.description)
 
 
@@ -36,13 +34,13 @@ let createMeetingLink = (req, res1) => {
   const calendar = google.calendar({ version: 'v3', auth: oAuth2Client })
 
   // Create a new event start date instance for temp uses in our calendar.
-  const eventStartTime = new Date()//req.body.startDate
-  eventStartTime.setDate(eventStartTime.getDay() + 2)
+  const eventStartTime = new Date(req.body.startDate)//req.body.startDate
+  //eventStartTime.setDate(eventStartTime.getDay() + 2)
 
   // Create a new event end date instance for temp uses in our calendar.
-  const eventEndTime = new Date()//req.body.endDate
-   eventEndTime.setDate(eventEndTime.getDay() + 4)
-   eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
+  const eventEndTime = new Date(req.body.endDate)//req.body.endDate
+  //  eventEndTime.setDate(eventEndTime.getDay() + 4)
+  //  eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
 
   // Create a dummy event for temp uses in our calendar
   const event = {
@@ -55,17 +53,16 @@ let createMeetingLink = (req, res1) => {
     attendees: [
       { 'email': req.body.email }
     ],
-    summary: req.body.summary,
-    location: req.body.location,
+    summary: 'Interview Schedule - Glory AutoTech',
     description: req.body.description,
     colorId: 1,
     start: {
       dateTime: eventStartTime,
-      timeZone: 'Asia/Jakarta',
+      timeZone: 'Asia/Kolkata',
     },
     end: {
       dateTime: eventEndTime,
-      timeZone: 'Asia/Jakarta',
+      timeZone: 'Asia/Kolkata',
     },
   }
 
@@ -75,7 +72,7 @@ let createMeetingLink = (req, res1) => {
       resource: {
         timeMin: eventStartTime,
         timeMax: eventEndTime,
-        timeZone: 'Asia/Jakarta',
+        timeZone: 'Asia/Kolkata',
         items: [{ id: 'primary' }],
       },
     },

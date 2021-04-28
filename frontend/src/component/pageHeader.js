@@ -23,9 +23,19 @@ function PageHeader() {
 	}
 
 useEffect(() => {
+	let userid
+	function parseJwt (token) {
+		var base64Url = token.split('.')[1];
+		var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+		var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+			return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+		}).join(''));
+	   userid = JSON.parse(jsonPayload).userId
+	};
+	parseJwt(localStorage.getItem('accessToken'))
 	axios({
 		'method': 'get',
-		'url': (`http://localhost:4000/api/v1/userdata/viewuserlist/${sessionStorage.getItem("user_id")}`)
+		'url': (`http://localhost:4000/api/v1/userdata/viewuserlist/${userid}`)
 	}).then(response => {
 		console.log('Header Data ', response.data.data)
 		setuserData(response.data.data)

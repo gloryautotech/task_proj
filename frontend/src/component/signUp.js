@@ -66,9 +66,6 @@ function SignUp() {
             .then(function (res) {
                 console.log("accessToken", res.data.data);
                 localStorage.setItem("accessToken", res.data.data.accessToken.accessToken)
-                if (res.data.data.result._id) {
-                    sessionStorage.setItem("user_id", res.data.data.result._id)
-                }
                 history.push('/round')
             })
             .catch(function (error) {

@@ -94,7 +94,7 @@ function Round() {
                                             alignItems: 'center'
                                         }}
                                         hoverable
-                                        onClick={() => history.push('/technologylist')}>
+                                        onClick={() => history.push('/facetoface')}>
                                         Face-to-Face</Card>
                                 </div>
                                 </Col>
