@@ -85,7 +85,7 @@ function DashBoard1() {
         <div>
             <Layout className="layout" style={{ minHeight: '100vh' }}>
                 <Header>
-                    <PageHeader />
+                    <PageHeader/>
                 </Header>
                 <Layout>
                     <Sider

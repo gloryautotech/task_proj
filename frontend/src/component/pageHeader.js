@@ -16,6 +16,8 @@ const { SubMenu } = Menu;
 
 function PageHeader() {
 	const [userData, setuserData] = useState('')
+	const [isUser,setIsuser]=useState(false)
+
 	let history = useHistory()
 	const logoutHandelChnage = () =>{
 		localStorage.removeItem("accessToken")
@@ -39,6 +41,10 @@ useEffect(() => {
 	}).then(response => {
 		console.log('Header Data ', response.data.data)
 		setuserData(response.data.data)
+		if(response.data.data.userType == 'user'){
+			setIsuser(true)
+		}
+
 	}).catch(err => {
 		console.log("error", err)
 	})
@@ -47,10 +53,22 @@ useEffect(() => {
 		<div>
 			
 				<Header >
-					{/* <Title level={2}>Glory Autotech</Title> */}
-					<div style={{display:'flex', height:'100vh'}}>
-						<label style={{color:'#ffffff', marginRight:400	,fontSize:20,alignSelf:'center'}} >Glory Autotech</label>
-					</div>
+					{
+						isUser
+						?
+						<div style={{display:'flex', height:'100vh'}}>
+							<label style={{color:'#ffffff', marginRight:500	,fontSize:20,alignSelf:'center',position:'initial'}} >Glory Autotech</label>
+						</div>
+						:
+						<div style={{display:'flex', height:'100vh'}}>
+							<label style={{color:'#ffffff', marginRight:400	,fontSize:20,alignSelf:'center',position:'initial'}} >Glory Autotech</label>
+						</div>
+
+					}
+					
+					{/* <div style={{display:'flex', height:'100vh'}}>
+						<label style={{color:'#ffffff', marginRight:400	,fontSize:20,alignSelf:'center',position:'initial'}} >Glory Autotech</label>
+					</div> */}
 					<label style={{color:'#ffffff',fontWeight:30,fontSize:20,marginRight:10}}>{userData.userFirstName +' '+ userData.userLastName}</label>
 					<Menu mode='horizontal' style={{backgroundColor:'#001529'}} >
 					

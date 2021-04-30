@@ -141,7 +141,7 @@ function AddTechnology() {
                             <Col>
                                 <Card style={{ boxShadow: "5px 8px 24px 5px rgba(208, 216, 243, 0.6)", borderRadius: 20, width: 800, }}>
                                     <Form form={form} name="addtechnology" onFinish={submit} style={{ width: 400, }} scrollToFirstError>
-                                        <Image style={{ marginLeft: 450 }} width={300} src='https://i.pinimg.com/564x/8c/22/2c/8c222c3f4bc0a92105d90564f0abac4b.jpg' preview={false}></Image>
+                                        <Image style={{ marginLeft: 450 }} width={300} src={require('../img/addTechnology.jpg')} preview={false}></Image>
                                         <Form.Item
                                             name="technoloyType"
                                             style={{ marginTop: -300 }}

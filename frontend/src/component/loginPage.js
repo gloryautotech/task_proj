@@ -4,6 +4,8 @@ import { Radio, Input, Form, Spin, Button,Image } from 'antd';
 import { useHistory } from "react-router";
 import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
+import img from "../img/HR.jpg";
+import Title from 'antd/lib/typography/Title';
 
 function LoginPage(props) {
 	let history = useHistory()
@@ -167,26 +169,27 @@ function LoginPage(props) {
 		<div className={styles}>
 			<div className={styles.background}>
 				<div className={styles.container}>
+					
 					<div className={styles.heading}>Glory Autotech</div>
 					<div className={styles.error}>{error.error}</div>
 					<div className={styles.success}>{error.success}</div>
-					<Image style={{marginLeft:10}} width={300} src={'https://i.pinimg.com/564x/ce/98/9c/ce989c0dd688b3b99a31400129d2d211.jpg'} preview={false}></Image>
+					<Image style={{marginLeft:10}} width={300} src={require('../img/HR.jpg')} preview={false}></Image>
 					<Form {...formItemLayout} form={form} name="login" style={{float:'right', width: 400 }} scrollToFirstError>
 						<Form.Item
 						
 							name='userName'
-							style={{marginLeft:80, marginTop:50,marginBottom:8}}
+							style={{marginLeft:80, marginTop:40,marginBottom:8}}
 							rules={[
 								{
 									required: true,
-									message: 'Please enter UserName'
+									message: 'Please enter Email/Phone'
 								}
 							]}>
 							<Input
-								style={{width:270, borderRadius:5, borderWidth:2}}
+								style={{width:270, borderRadius:5, }}
 								value={userName}
 								onChange={setUserName}
-								placeholder="Enter the Email-id/Phone number"
+								placeholder="Email or Phone number"
 								className={styles.input}
 							/>
 						</Form.Item>
@@ -216,10 +219,10 @@ function LoginPage(props) {
 									}
 								]}>
 								<Input.Password
-									style={{width:270, borderRadius:5, borderWidth:2,height:40}}
+									style={{width:270, borderRadius:5, height:40}}
 									value={password}
 									onChange={setPassword}
-									placeholder="Enter the Password"
+									placeholder="Password"
 									
 								/></Form.Item> : ''}
 						{
@@ -235,7 +238,7 @@ function LoginPage(props) {
 								}
 							]}>
 								 <Input
-								style={{width:270, borderRadius:5, borderWidth:2,height:40}}
+								style={{width:270, borderRadius:5, height:40}}
 								value={otp}
 								onChange={setOtp}
 								placeholder="Enter the 6 digits OTP"
@@ -243,14 +246,14 @@ function LoginPage(props) {
 							/></Form.Item> : ''
 						}
 
-						{isOtpSend ? <Button type='primary' style={{borderRadius:5}} onClick={sendOtp} className={styles.submit}>
+						{isOtpSend ? <Button type='primary' style={{marginLeft:81,borderRadius:5,width:270,marginRight:50,marginTop:-10,background:'#023047',borderColor:'#023047'}} onClick={sendOtp} className={styles.submit}>
 							Send OTP
 					</Button> : ''
 						}
-						{isConfirmOtp ? <Button type='primary' style={{width:110,borderRadius:5}} onClick={confirmOtp} className={styles.submit}>
+						{isConfirmOtp ? <Button type='primary' style={{width:270,borderRadius:5,marginRight:50,background:'#023047',borderColor:'#023047'}} onClick={confirmOtp} className={styles.submit}>
 							Confirm OTP
 					</Button> : ''}
-						{isPassword ? <Button type='primary' style={{float:'right', marginRight:30,borderRadius:5}} onClick={login} >
+						{isPassword ? <Button type='primary' style={{marginLeft:81,borderRadius:5,width:270,background:'#023047',borderColor:'#023047'}} onClick={login} >
 							Login
 					</Button> : ''}
 					</Form>

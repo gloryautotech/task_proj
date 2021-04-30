@@ -49,25 +49,28 @@ function DashBoard1() {
                     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                 }).join(''));
                userid = JSON.parse(jsonPayload).userId
+               
             };
             parseJwt(localStorage.getItem('accessToken'))
+            // axios({
+            //     'method': 'GET',
+            //     'url': `http://localhost:4000/api/v1/assigntask/viewbyuserid/${userid}`,
+            //     'headers': {
+            //         'token': localStorage.getItem('accessToken')
+            //     }
+            // }).then(response => {
+            //     console.log('response.data assign task', response.data.data)
+            //     if (response.data.data) {
+            //         console.log("call")
+            //         setisData(false)
+            //     }
+            //     setassignTasklist(response.data.data)
+            // })
+            console.log('userID11',userid)
             axios({
+                
                 'method': 'GET',
-                'url': `http://localhost:4000/api/v1/assigntask/viewbyuserid/${userid}`,
-                'headers': {
-                    'token': localStorage.getItem('accessToken')
-                }
-            }).then(response => {
-                console.log('response.data assign task', response.data.data)
-                if (response.data.data) {
-                    console.log("call")
-                    setisData(false)
-                }
-                setassignTasklist(response.data.data)
-            })
-            axios({
-                'method': 'GET',
-                'url': `http://localhost:4000/api/v1/assignquestionbank/viewassignByid/${userid}`,
+                'url': `http://localhost:4000/api/v1/assigntaskuserlist/viewbyid/${userid}`,
                 'headers': {
                             'token': localStorage.getItem('accessToken')
                 }
@@ -75,6 +78,7 @@ function DashBoard1() {
 
             })
             .then(response=>{
+                console.log('userID',userid)
                 console.log('RRResponse',response.data.data)
                 let assignTaskUserListIdList = []
                 setAssignTaskUserList(response.data.data)
