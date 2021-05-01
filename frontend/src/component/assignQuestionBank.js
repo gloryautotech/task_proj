@@ -257,17 +257,17 @@ function AssignQuestionBank() {
                                                         placeholder="QuestionBank Type"
                                                         onChange={(e) => { questionBankTypeHandleChange(e) }}>
                                                         <Option value="Logical">Logical</Option>
-                                                        <Option value="screening">screening</Option>
+                                                        <Option value="screening">Screening</Option>
                                                         <Option value="Technical">Technical</Option>
                                                     </Select>
                                                 </Form.Item>
-                                                <Form.Item name="questionBankLevel" label="QuestionBank Level" rules={[{ required: true, message: "Plese Select QuestionBank Level" }]} >
+                                                <Form.Item name="questionBankLevel"  rules={[{ required: true, message: "Plese Select QuestionBank Level" }]} >
                                                     <Select
                                                         placeholder="Select"
                                                         onChange={(e) => { questionBankLevelHandleChange(e) }}>
                                                          <Option value="Basic">Basic</Option>
-                                <Option value="intermediate">intermediate</Option>
-                                <Option value="Advance">Advance</Option>
+                                                        <Option value="intermediate">Intermediate</Option>
+                                                        <Option value="Advance">Advance</Option>
                                                     </Select>
                                                 </Form.Item>
                                                 <Form.Item

@@ -95,15 +95,15 @@ function SignUp() {
     return (
         <div className={styles}>
             <div className={styles.background}>
-                <div style={{backgroundColor: "#ffffff",borderRadius: 20,}}>
+                <div style={{backgroundColor: "#ffffff",borderRadius: 10}}>
                     <div className={styles.heading}>Glory Autotech</div>
                     <div className={styles.error}>{error.error}</div>
                     <div className={styles.success}>{error.success}</div>
                     <div style={{padding: 20}}>
                         
-                            <Form {...formItemLayout} form={form} name="signUp" onFinish={submit} style={{width:400}} scrollToFirstError>
+                        <Form {...formItemLayout} form={form} name="signUp" onFinish={submit} style={{width:400}} scrollToFirstError>
                         <Form.Item
-                            label='First Name'
+                        
                             name='firstName'
                             rules={[
                                 {
@@ -116,11 +116,12 @@ function SignUp() {
                                 }
                             ]}>
                             <Input 
-                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            placeholder='First Name'
+                            style={{width:300, borderRadius:5,marginLeft:50}}
                             onChange={(e) => { setfirstName(e.target.value) }}></Input>
                         </Form.Item>
                         <Form.Item
-                            label='Last Name'
+                            
                             name='lastName'
                             rules={[
                                 {
@@ -133,12 +134,13 @@ function SignUp() {
                                 }
                             ]}>
                             <Input 
-                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            placeholder='Last Name'
+                            style={{width:300, borderRadius:5,marginLeft:50}}
                             onChange={(e) => { setlastName(e.target.value) }}></Input>
                         </Form.Item>
                        
                         <Form.Item
-                            label='Email'
+                            
                             name='email'
                             rules={[
                                 {
@@ -151,11 +153,12 @@ function SignUp() {
                                 }
                             ]}>
                             <Input 
-                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            placeholder='Email'
+                            style={{width:300, borderRadius:5,marginLeft:50}}
                             onChange={(e) => { setemail(e.target.value) }}></Input>
                         </Form.Item>
                         <Form.Item
-                            label='Phone'
+                    
                             name='phone'
                             rules={[
                                 {
@@ -168,11 +171,12 @@ function SignUp() {
                                 }
                             ]}>
                             <Input 
-                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            placeholder='Phone'
+                            style={{width:300, borderRadius:5,marginLeft:50}}
                             onChange={(e) => { setphone(e.target.value) }}></Input>
                         </Form.Item>
                         <Form.Item
-                            label='Password'
+                            
                             name='password'
                             rules={[
                                 {
@@ -183,30 +187,32 @@ function SignUp() {
                             hasFeedback
                             >
                             <Input.Password 
-                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            placeholder='Password'
+                            style={{width:300, borderRadius:5,marginLeft:50}}
                             onChange={(e) => { setpassword(e.target.value) }}></Input.Password>
                         </Form.Item>
-                        <Form.Item name="gender" label="Gender" rules={[{ required: true }]} >
+                        <Form.Item name="gender"  rules={[{ required: true }]} >
                             <Select
-                                style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
-                                placeholder="Select a option and change input text above"
+                                style={{width:300, borderRadius:5,marginLeft:50}}
+                                placeholder='Gender'
                                 onChange={(e) => { genderHandleChange(e) }}
-                                defaultValue={gender}>
-                                <Option value="male">male</Option>
-                                <Option value="female">female</Option>
-                                <Option value="other">other</Option>
+                                >
+                                <Option value="male">Male</Option>
+                                <Option value="female">Female</Option>
+                                <Option value="other">Other</Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item name="dateOfBirth" label="Date Of Birth">
+                        <Form.Item name="dateOfBirth" >
                             <DatePicker
-                                style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
-                                defaultValue={moment(Date.now())}
+                                style={{width:300, borderRadius:5,marginLeft:50}}
+                                placeholder='DOB'
+                                // defaultValue={moment(Date.now())}
                                 disabledDate={disabledDate}
                                 format={'YYYY/MM/DD'}
                                 onChange={(date, dateString) => { setdateofBirth(dateString) }} />
                         </Form.Item>
                         <Form.Item
-                            label='Organization'
+                        
                             name='organizationName'
                             rules={[
                                 {
@@ -215,11 +221,12 @@ function SignUp() {
                                 }
                             ]}>
                             <Input
-                            style={{width:270, borderRadius:10, borderWidth:2,borderColor:"#191919"}}
+                            placeholder='Organization Name'
+                            style={{width:300, borderRadius:5,marginLeft:50}}
                             onChange={(e) => { setorganizationName(e.target.value) }}></Input>
                         </Form.Item>
-                        <Form.Item {...formItemLayout} style={{marginLeft:300}}>
-                            <Button type='primary' htmlType="submit" className={styles.submit} >Submit</Button>
+                        <Form.Item {...formItemLayout} >
+                            <Button  type='primary' htmlType="submit"  style={{marginLeft:50,borderRadius:5,width:300,background:'#023047',borderColor:'#023047'}} >Submit</Button>
                         </Form.Item>
                         </Form>
                     </div>

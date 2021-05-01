@@ -7,20 +7,28 @@ import axios from 'axios';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
 import { useHistory } from "react-router";
+import AssignTask from './assignTask';
 
 const { Header, Sider, Content } = Layout;
 
 function DashBoard1() {
     let history = useHistory()
     const [assignTasklist, setassignTasklist] = useState([])
-    const [assignQuestionList, setassignQuestionList] = useState([])
     const [collapsed, setcollapsed] = useState(false)
     const [isData, setisData] = useState(true)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [questionList, setquestionList] = useState([])
-    const [answerList, setanswerList] = useState([])
+    const [questionBankId,setQuestionBankId]=useState('')
+    const [questionBankAnswer, setQuestionBankAnswer]=useState('')
     const [answerTask, setanswerTask] = useState(false)
     const [taskAnswerList, settaskAnswerList] = useState('')
+    const [currentId,setCurrentId]=useState('')
+    const [assignTaskUserList,setAssignTaskUserList]=useState([])
+    const [userIdArray,setUserIdArray]=useState([])
+    const [allassigntask,setAllAssignTask]=useState([])
+    const [assignQuestionList,setassignQuestionList]=useState([]);
+    const [answerList,setAnswerList]=useState([])
+    
 
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
@@ -41,92 +49,144 @@ function DashBoard1() {
                     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                 }).join(''));
                userid = JSON.parse(jsonPayload).userId
+               
             };
             parseJwt(localStorage.getItem('accessToken'))
+            // axios({
+            //     'method': 'GET',
+            //     'url': `http://localhost:4000/api/v1/assigntask/viewbyuserid/${userid}`,
+            //     'headers': {
+            //         'token': localStorage.getItem('accessToken')
+            //     }
+            // }).then(response => {
+            //     console.log('response.data assign task', response.data.data)
+            //     if (response.data.data) {
+            //         console.log("call")
+            //         setisData(false)
+            //     }
+            //     setassignTasklist(response.data.data)
+            // })
+            console.log('userID11',userid)
             axios({
+                
                 'method': 'GET',
-                'url': `http://localhost:4000/api/v1/assigntask/viewbyuserid/${userid}`,
+                'url': `http://localhost:4000/api/v1/assigntaskuserlist/viewbyid/${userid}`,
                 'headers': {
-                    'token': localStorage.getItem('accessToken')
+                            'token': localStorage.getItem('accessToken')
                 }
-            }).then(response => {
-                console.log('response.data assign task', response.data.data)
-                if (response.data.data) {
-                    console.log("call")
-                    setisData(false)
-                }
-                setassignTasklist(response.data.data)
+               
+
             })
-            axios({
-                'method': 'GET',
-                'url': `http://localhost:4000/api/v1/assignquestionbank/viewassignByid/${userid}`,
-                'headers': {
-                    'token': localStorage.getItem('accessToken')
-                }
-            }).then(response => {
-                console.log('response.data', response.data.data)
-                if (response.data.data.length > 0) {
-                    console.log("call")
-                    setisData(false)
-                }
-                setassignQuestionList(response.data.data)
-            })
-        }
-    }, [])
-    const viewAnswer = (id) => {
-        console.log("id", id)
-        axios({
-            'method': 'get',
-            'url': `http://localhost:4000/api/v1/assignquestionbank/viewquestionbankbyid/${id}`,
-            'headers': {
-                'token': localStorage.getItem('accessToken')
-            }
-        })
-            .then(function (res) {
-                console.log("res of assign question paper list", res.data.data)
-                setquestionList(res.data.data)
+            .then(response=>{
+                console.log('userID',userid)
+                console.log('RRResponse',response.data.data)
+                let assignTaskUserListIdList = []
+                setAssignTaskUserList(response.data.data)
+                response.data.data.forEach(element => {
+                    assignTaskUserListIdList.push(element._id)
+                });
                 axios({
-                    'method': 'get',
-                    'url': `http://localhost:4000/api/v1/submitanswerbank/viewbyassignquestionuserid/${id}`,
+                    'method':'post',
+                    'url':`http://localhost:4000/api/v1/allassigntasklist/allviewbyid`,
+                    'data': {
+                        id: assignTaskUserListIdList
+                    },
                     'headers': {
                         'token': localStorage.getItem('accessToken')
                     }
                 })
-                    .then(function (res) {
-                        console.log("res of AnswerList", res.data.data[0].AnswerList)
-                        setanswerList(res.data.data[0].AnswerList)
-                        setIsModalVisible(true)
-                        setanswerTask(false)
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+                .then(response=>{
+                    console.log('allassigntask',response.data.data)
+                    // response.data.data.forEach(element=>{
+                    //     console.log('element.answer',element.answer)
+                    //     setAnswerList(element.answer)
+                    // })
+                    
+                    setAllAssignTask(response.data.data)
+                })
 
-    const viewSubmitLink = (id) => {
-        console.log("viewSubmitLink id",id)
+            })
+            
+            
+            
+        }
+
+            
+    }, [])
+ 
+
+    const handleView=()=>{
+        console.log("user_id 1", sessionStorage.getItem("user_id"))
         axios({
-            'method': 'get',
-            'url': `http://localhost:4000/api/v1/submitanswertask/viewbyassigntaskid/${id}`,
-            'headers': {
+            'method':'get',
+            'url':`http://localhost:4000/api/v1/assigntaskuserlist/viewbyid/${sessionStorage.getItem("user_id")}`,
+            'headers':{
                 'token': localStorage.getItem('accessToken')
             }
         })
-            .then(function (res) {
-                console.log("res of SubmitLink", res.data.data[0])
-                setIsModalVisible(true)
-                setanswerTask(true)
-                setanswerList(res.data.data[0])
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        .then(function(res){
+            console.log('View data',res.data)
+        })
+        .catch(function(error){
+            console.log(error)
+        })
     }
 
+    const handleOk = () => {
+        setIsModalVisible(false)     
+    }
+
+    const handleCancel=()=>{    
+        setIsModalVisible(false)
+    }
+    
+    const viewResult = (answer) =>{
+        console.log("answer",answer.answer)
+        let allQuestionList = []
+        
+        answer.answer.forEach(element => {
+            
+            console.log('element.answer',element.answer)
+            setAnswerList(element.answer)
+            // setassignQuestionList(assignQuestionList.push({"id":element.questionid,"answer":element.answer}))
+        });
+        if(answer.questionBankList.length>0){
+  
+            axios({
+                'method':'post',
+                'url':`http://localhost:4000/api/v1/questionbank/allviewbyid`,
+                'data': {
+                    id: allQuestionList
+                }, 
+                'headers':{
+                    'token': localStorage.getItem('accessToken')
+                }
+            })
+            .then(function(res){
+
+                console.log('View data',res.data.data)
+                res.data.data.forEach(element=>{
+                    console.log('questionbanklist',element._id)
+                    setQuestionBankId(element._id)
+                    setQuestionBankAnswer(element._questionBankAnswer)
+                })
+                setquestionList(res.data.data)
+                setIsModalVisible(true)
+
+
+            
+                
+            })
+            .catch(function(error){
+                console.log(error)
+            })
+        }
+        else{
+            {console.log('else true')}
+            setIsModalVisible(true)
+        }
+    }
+    
     return(
         <div>   
              <Layout className="layout" style={{ minHeight: '100vh' }}>
@@ -144,23 +204,40 @@ function DashBoard1() {
             <Content style={{ padding: 20 }}>
                 <div className="site-layout-content">
                     <Title >Assign Task</Title>
-                    {assignTasklist?<div>              
-                    {
-                        assignTasklist.map(assignTasklist=><div className="technology_card" style={{borderRadius:50}} key={assignTasklist._id}><Card hoverable style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}
-                        ><div><div>Assign Task:</div>{assignTasklist.emailIdOfReceiver}<div><span>Task Status: </span>{assignTasklist.assignTaskStatus}</div><div><span>Your Status: </span>{assignTasklist.assignTaskVerifiedStatus}</div></div></Card></div>)
-                    } 
-                     </div> :''}
-                     {assignQuestionList?<div>              
-                      {
-                        assignQuestionList.map(assignQuestionList=><div className="technology_card" style={{borderRadius:50}} key={assignQuestionList._id}><Card hoverable  style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}
-                        ><div><div>Assign Task:</div>{assignQuestionList.assignUserEmail}<div><span>Submit Task Status: </span>{assignQuestionList.isSubmit?<span>Submited</span>:<span>Not Submited</span>}</div></div></Card></div>)
-                    }
-                     </div> :''}
-                     <div>
-                         {isData?<div>No Data Found</div>:''}
-                     </div>
+                    <div>
+                    {allassigntask?<div>{allassigntask.map(allassigntask=><div>
+                    <Card hoverable style={{ width: 200 ,borderRadius:10, justifyContent:'center', display:'flex', alignItems:'center'}}>
+                        Status:{allassigntask.isSubmit?<div><Button onClick={()=>viewResult(allassigntask)}>View</Button></div>:<div>Not Submitted</div>}
+                    </Card>
+                    </div>)}</div>:null}
                     </div>
+
+                    <Modal title='Answer' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                        {console.log('answerList',answerList)}
+                        {answerList}
+                        
+                       
+
+
+                        
+
+                      
+                        
+                       
+                        
+
+                       
+                        
+                    </Modal>
+
+                   
+
+                    
+                    </div>
+                
+                   
                     </Content>
+                
                 </Layout>
             </Layout>
         </div>
