@@ -97,6 +97,7 @@ app.get(baseUrl + '/assigntaskuserlist/viewbyid/:id',auth.isAuthenticated, assig
 app.post(baseUrl + '/assigntaskuserlist/viewbyassignbyemail',auth.isAuthenticated, assignTaskUserList.viewByAssignByEmail)
 app.put(baseUrl + '/assigntaskuserlist/editassigntaskuserlist/:id',auth.isAuthenticated, assignTaskUserList.editAssignTaskUserList)
 app.get(baseUrl + '/assigntaskuserlist/viewbyassignuseremail/:email',auth.isAuthenticated, assignTaskUserList.viewByAssignUserEmail)
+app.post(baseUrl + '/assigntaskuserlist/viewbyassignby',auth.isAuthenticated, assignTaskUserList.viewByAssignBy)
 
 //allAssignTaskList
 app.post(baseUrl + '/allassigntasklist/createallassigntasklist',auth.isAuthenticated, allAssignTaskList.createAllAssignTaskList)
