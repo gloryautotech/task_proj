@@ -67,6 +67,25 @@ let viewByAssignUserEmail = (req, res) => {
     })
 }
 
+let viewByAssignBy = (req, res) => {
+    assignTaskUserList.find({ 'assignBy': req.params.assignBy }, (err, result) => {
+        if (err) {
+            logger.log('viewByassignBy', req, err, req.body, res)
+            let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
+            res.send(apiResponse)
+        }
+        else if (!result) {
+            let apiResponse = response.respons(true, constants.messages.NOT_FOUND, constants.constants.HTTP_SUCCESS, null)
+            res.send(apiResponse)
+        }
+        else {
+            let apiResponse = response.respons(true, constants.messages.SUCCESS, constants.constants.HTTP_SUCCESS, result)
+            res.send(apiResponse)
+        }
+
+    })
+}
+
 let viewByAssignByEmail = (req, res) => {
     assignTaskUserList.find({$and: [{"assignUserEmail":req.body.assignUserEmail},{"assignBy":req.body.assignBy}] }, (err, result) => {
         if (err) {
@@ -112,5 +131,6 @@ module.exports = {
     viewByAssignByEmail,
     viewById,
     editAssignTaskUserList,
-    viewByAssignUserEmail
+    viewByAssignUserEmail,
+    viewByAssignBy
 }
