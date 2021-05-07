@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Input, Divider, Layout, Alert, Select, Card, Radio } from "antd";
+import { Form, Button, Input, Divider, Layout, Alert, Select, Card, Radio,message } from "antd";
 import DynamicField from "./dynamicField";
 import axios from 'axios';
 import PageHeader from './pageHeader';
@@ -108,6 +108,7 @@ function QuestionPaper(props) {
             }).catch(err => {
                 console.log("error", err)
             })
+            message.success('Your task is submitted')
     }
 
     return (
@@ -139,7 +140,7 @@ function QuestionPaper(props) {
                 >
                     {<div>
                         {questionList.map(questionList => <div className="technology_card" style={{ display: 'flex' }} key={questionList._id}>
-                            <Card style={{ borderRadius: 20, justifyContent: 'center', display: 'flex', alignItems: 'center', width: 200 }}
+                            <Card style={{ borderRadius: 20, justifyContent: 'center', display: 'flex', alignItems: 'center', width: 300 }}
                             >{questionList.questionBankQuestion}{questionList.questionBankOption ? <div style={{ display: 'flex' }}>
                                 {questionList.questionOption.map(questionOption => <div key={questionList._id}>
                                     <Radio.Group style={{ display: 'flex' }} name={questionList._id} onChange={e => createSubmitAnswerList(e.target.value, questionList._id)} value={answerList.Answer} key={questionList._id}>
@@ -153,7 +154,7 @@ function QuestionPaper(props) {
                             </div> : <Input onChange={e => createSubmitAnswerList(e.target.value, questionList._id)} />}</Card></div>)}
 
                         <div>
-                            <Button style={{ marginTop: 50 }} onClick={e => onSubmit()}>Submit</Button>
+                            <Button style={{ marginTop: 50,marginLeft:100 }} onClick={e => onSubmit()}>Submit</Button>
                         </div></div>}
                 </Card>
             }
