@@ -42,6 +42,7 @@ useEffect(() => {
 		console.log('Header Data ', response.data.data)
 		setuserData(response.data.data)
 		if(response.data.data.userType == 'user'){
+			
 			setIsuser(true)
 		}
 
@@ -57,7 +58,9 @@ useEffect(() => {
 						isUser
 						?
 						<div style={{display:'flex', height:'100vh'}}>
-							<label style={{color:'#ffffff', marginRight:500	,fontSize:20,alignSelf:'center',position:'initial'}} >Glory Autotech</label>
+							<label style={{color:'#ffffff', marginRight:350	,fontSize:20,alignSelf:'center',position:'initial'}} >Glory Autotech </label>
+							
+							
 						</div>
 						:
 						<div style={{display:'flex', height:'100vh'}}>
@@ -69,7 +72,18 @@ useEffect(() => {
 					{/* <div style={{display:'flex', height:'100vh'}}>
 						<label style={{color:'#ffffff', marginRight:400	,fontSize:20,alignSelf:'center',position:'initial'}} >Glory Autotech</label>
 					</div> */}
-					<label style={{color:'#ffffff',fontWeight:30,fontSize:20,marginRight:10}}>{userData.userFirstName +' '+ userData.userLastName}</label>
+					{
+						isUser
+						?
+						<label style={{color:'#ffffff',fontWeight:30,fontSize:20,marginRight:10}}>{userData.email}</label>
+						:
+						<label style={{color:'#ffffff',fontWeight:30,fontSize:20,marginRight:10}}>{userData.userFirstName +' '+ userData.userLastName}</label>
+
+
+					}
+					{/* <label style={{color:'#ffffff',fontWeight:30,fontSize:20,marginRight:10}}>{userData.userFirstName +' '+ userData.userLastName}</label>
+					<label style={{color:'#ffffff',fontWeight:30,fontSize:20,marginRight:10}}>{userData.email}</label> */}
+							
 					<Menu mode='horizontal' style={{backgroundColor:'#001529'}} >
 					
 						<SubMenu  icon={<UserOutlined style={{fontSize:'20px'}} className='user_icon'/>}>

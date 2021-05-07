@@ -70,7 +70,7 @@ app.post(baseUrl + '/assigntask/viewbyemailandid', assignTask.viewByEmailAndId)
 app.get(baseUrl + '/questionbank/allquestionlist',auth.isAuthenticated, questionBank.getAllQuestionList)
 app.post(baseUrl + '/questionbank/createquestionbank',auth.isAuthenticated, questionBank.createQuestionBank)
 app.post(baseUrl + '/questionbank/viewbyquestionbanktype',auth.isAuthenticated, questionBank.viewByQuestionBankType)
-
+    
 //assign Question Bank
 app.post(baseUrl + '/assignquestionbank/createassignquestionlist',auth.isAuthenticated, assignQuestionBank.createAssignQuestionList)
 app.post(baseUrl + '/assignquestionbank/viewquestionbankbyid',auth.isAuthenticated, assignQuestionBank.viewQuestionBankById)
@@ -97,7 +97,7 @@ app.get(baseUrl + '/assigntaskuserlist/viewbyid/:id',auth.isAuthenticated, assig
 app.post(baseUrl + '/assigntaskuserlist/viewbyassignbyemail',auth.isAuthenticated, assignTaskUserList.viewByAssignByEmail)
 app.put(baseUrl + '/assigntaskuserlist/editassigntaskuserlist/:id',auth.isAuthenticated, assignTaskUserList.editAssignTaskUserList)
 app.get(baseUrl + '/assigntaskuserlist/viewbyassignuseremail/:email',auth.isAuthenticated, assignTaskUserList.viewByAssignUserEmail)
-app.post(baseUrl + '/assigntaskuserlist/viewbyassignby',auth.isAuthenticated, assignTaskUserList.viewByAssignBy)
+app.get(baseUrl + '/assigntaskuserlist/viewbyassignby/:assignBy',auth.isAuthenticated, assignTaskUserList.viewByAssignBy)
 
 //allAssignTaskList
 app.post(baseUrl + '/allassigntasklist/createallassigntasklist',auth.isAuthenticated, allAssignTaskList.createAllAssignTaskList)
