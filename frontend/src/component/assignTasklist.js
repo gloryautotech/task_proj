@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Card, Button, Modal,Row,Col } from 'antd';
+import { Layout, Card, Button, Modal,Row,Col ,Table} from 'antd';
 import Title from 'antd/lib/typography/Title';
 import style from "./styles/style.common.css";
 import axios from 'axios';
@@ -23,7 +23,7 @@ function DashBoard1() {
     const [answerTask, setanswerTask] = useState(false)
     const [taskAnswerList, settaskAnswerList] = useState('')
     const [currentId,setCurrentId]=useState('')
-    const [assignTaskUserList,setAssignTaskUserList]=useState()
+    const [assignTaskUserList,setAssignTaskUserList]=useState([])
     const [userIdArray,setUserIdArray]=useState()
     const [allassigntask,setAllAssignTask]=useState([])
     const [assignQuestionList,setassignQuestionList]=useState([]);
@@ -65,10 +65,13 @@ function DashBoard1() {
            })
            .then(response=>{
                console.log('assigntaskuserlist',response.data.data)
+               setassignUserEmail(response.data.data) 
                let assignTaskUserIdList=[]
                response.data.data.forEach(element=>{
                    assignTaskUserIdList.push(element._id)
+                   console.log('element._id',element._id)
                     setAssignTaskUserList(element._id)
+                    // setAssignTaskUserList(element.assignUserEmail)
                    
             
                 
@@ -151,6 +154,48 @@ function DashBoard1() {
         
        
     }
+    const handleTableButton=(e)=>{
+        console.log('id',e)
+        axios({
+            'method':'GET',
+            'url':`http://localhost:4000/api/v1/allassigntasklist/viewbyassigntaskuserlistid/${e}`,
+            'headers': {
+                'token': localStorage.getItem('accessToken')
+              }
+        })
+        .then(response=>{
+            console.log('elememnet',response.data.data)
+            response.data.data.forEach(element=>{
+                console.log('userId',element._id)
+                setAllAssignAnswer(element.answer)
+                setUserIdArray(element._id)
+            })
+        })
+
+    }
+    const columns = [
+        {
+            title:'Email',
+            dataIndex:'assignUserEmail',
+            key:'assignUserEmail',
+
+        },
+        // {
+        //     title:'Id',
+        //     dataIndex:'_id',
+        //     key:'_id'
+
+        // },
+        {
+            title:'Status',
+            dataIndex:'_id',
+            key:'_id',
+            render:(e)=>(
+               
+                <Button onClick={()=>{ handleTableButton(e);setIsModalVisible(true)}} >View</Button>
+            )
+        }
+    ]
     
     return(
         <div>   
@@ -171,19 +216,25 @@ function DashBoard1() {
                     <Title >Assign Task</Title>
                     
 
-                    
-                            {allassigntask ? <div >{allassigntask.map(allassigntask => <div className='technology_card'>
+                            
+                            {/* {allassigntask ? <div >{allassigntask.map(allassigntask => <div className='technology_card'>
                                 
 
                                         <Card hoverable style={{ width: 200, borderRadius: 10, justifyContent: 'center', display: 'flex', alignItems: 'center' }}>
-                                           {/* <span>Assigned to:{assignUserEmail}{console.log('allassigntask._id',allassigntask._id)}</span><br/> */}
+                                           
                                             Status:{allassigntask.isSubmit ? <div><Button onClick={() => { viewResult(allassigntask._id);setIsModalVisible(true) }}>View</Button></div> : <div>Not Submitted</div>}
 
                                         </Card>
                                    
-                            </div>)}</div> : null}
+                            </div>)}</div> : null} */}
 
-                    
+                        <Table columns={columns} dataSource={assignUserEmail}>
+                               
+
+                        </Table>
+
+
+                        
                    
                     
                     <Modal title='Answer' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
