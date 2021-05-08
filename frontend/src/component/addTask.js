@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Select, Layout, Alert, Row, Col, Card, Image } from 'antd';
+import { Form, Input, Button, Select, Layout, Alert, Row, Col, Card, Image,message } from 'antd';
 import axios from 'axios';
 import PageHeader from './pageHeader';
 import LeftSideBar from "./leftSideBar";
@@ -222,7 +222,7 @@ function AddTask() {
                                         </Form.Item>
 
                                         <Form.Item>
-                                            <Button style={{marginLeft:155}} type='primary' htmlType='submit'>Submit</Button>
+                                            <Button style={{marginLeft:155}} type='primary' htmlType='submit' onClick={()=>{message.success('Submitted')}}>Submit</Button>
                                         </Form.Item>
                                     </Form>
                                 </Card>

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, DatePicker, Select, Layout,Row,Col,Card,Image } from 'antd';
+import { Form, Input, Button, DatePicker, Select, Layout,Row,Col,Card,Image,message } from 'antd';
 import styles from './styles/style.module.css';
 import { useHistory } from "react-router";
 import moment from 'moment';
@@ -152,7 +152,7 @@ function SignUp() {
                                                     }
                                                 ]}>
                                                 <Input
-                                                    style={{ width: 200, borderRadius: 5, borderWidth: 2, }}
+                                                    style={{ width: 200, borderRadius: 5,  }}
                                                     placeholder='User Email'
                                                     onChange={(e) => { setemail(e.target.value) }}></Input>
                                             </Form.Item>
@@ -166,7 +166,7 @@ function SignUp() {
                                                     }
                                                 ]}>
                                                 <Input
-                                                    style={{ width: 200, borderRadius: 5, borderWidth: 2, }}
+                                                    style={{ width: 200, borderRadius: 5,  }}
                                                     placeholder='Description'
                                                     onChange={(e) => { setdescription(e.target.value) }}></Input>
                                             </Form.Item>
@@ -186,7 +186,7 @@ function SignUp() {
                                                 showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
                                             />
                                             <Form.Item {...formItemLayout} style={{ marginLeft: 60 }}>
-                                                <Button type='primary' htmlType="submit" style={{ marginTop: 20, }} >Submit</Button>
+                                                <Button type='primary' htmlType="submit" style={{ marginTop: 20, }} onClick={()=>{message.success('Submitted')}} >Submit</Button>
                                             </Form.Item>
                                         </Form>
                                     </Card>
