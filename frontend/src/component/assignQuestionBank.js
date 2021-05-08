@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Card, Spin, Form, Input, Select, Button } from 'antd';
+import { Layout, Card, Spin, Form, Input, Select, Button,message } from 'antd';
 import {  Col, Row } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import style from "./styles/style.common.css";
@@ -178,6 +178,7 @@ function AssignQuestionBank() {
         .catch(function (error) {
             console.log(error);
         });
+        message.success('Submitted')
         
     }
 
@@ -234,7 +235,7 @@ function AssignQuestionBank() {
                                         >
                                             <Form form={form} name="assignQuestion" onFinish={submit}>
                                                 <Form.Item
-                                                    
+                                                        
                                                     name='email'
                                                     rules={[
                                                         {

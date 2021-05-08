@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Input, Divider, Layout, Alert, Select, Row, Col, Card, Image } from "antd";
+import { Form, Button, Input, Divider, Layout, Alert, Select, Row, Col, Card, Image,message } from "antd";
 import DynamicField from "./dynamicField";
 import axios from 'axios';
 import PageHeader from './pageHeader';
@@ -172,7 +172,7 @@ function AddQuestionBank() {
                                             placeholder="QuestionBank Type"
                                             onChange={(e) => { questionBankTypeHandleChange(e) }}>
                                             <Option value="Logical">Logical</Option>
-                                            <Option value="screening"> Screening</Option>
+                                            <Option value="Screening"> Screening</Option>
                                             <Option value="Technical">Technical</Option>
                                         </Select>
                                     </Form.Item>
@@ -211,7 +211,7 @@ function AddQuestionBank() {
                                     {isQuestionOptionTrue ? <DynamicField /> : ''}
                                     <h5 style={{ color: 'red' }}>{error}</h5>
                                     <Form.Item>
-                                        <Button type="primary" htmlType="submit" style={{marginLeft:150}}>
+                                        <Button type="primary" htmlType="submit" style={{marginLeft:150}} onClick={()=>{message.success('Your question added')}}>
                                             Submit
                                         </Button>
                                     </Form.Item>

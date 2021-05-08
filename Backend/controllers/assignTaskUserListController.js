@@ -69,6 +69,7 @@ let viewByAssignUserEmail = (req, res) => {
 
 let viewByAssignBy = (req, res) => {
     assignTaskUserList.find({ 'assignBy': req.params.assignBy }, (err, result) => {
+        console.log("api called")
         if (err) {
             logger.log('viewByassignBy', req, err, req.body, res)
             let apiResponse = response.respons(false, constants.messages.INTERNAL500 + err, constants.constants.HTTP_SERVER_ERROR, null)
@@ -79,7 +80,9 @@ let viewByAssignBy = (req, res) => {
             res.send(apiResponse)
         }
         else {
+            
             let apiResponse = response.respons(true, constants.messages.SUCCESS, constants.constants.HTTP_SUCCESS, result)
+            console.log("api called",apiResponse)
             res.send(apiResponse)
         }
 
