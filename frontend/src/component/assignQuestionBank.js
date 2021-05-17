@@ -36,7 +36,7 @@ function AssignQuestionBank() {
     const questionBankTypeHandleChange = (value) => {
         console.log('questionBankType', value)
         setquestionBankType(value)
-    }
+    }       
 
     const questionBankLevelHandleChange = (value) => {
         console.log('questionBankLevel', value)
@@ -77,6 +77,9 @@ function AssignQuestionBank() {
     }, [])
 
     const submit = () => {
+        console.log("questionBankType1",questionBankType)
+        console.log("questionLevel1",questionLevel)
+        console.log("noOfQuestion1",noOfQuestion)
         setisLoading(true)
         axios({
             'method': 'post',
@@ -254,7 +257,7 @@ function AssignQuestionBank() {
                                                 </Form.Item>
                                                 <Form.Item name="questionBankType"  rules={[{ required: true, message: "Plese Select QuestionBank Type" }]} >
                                                     <Select
-                                                        defaultValue={questionBankType}
+                                                        // defaultValue={questionBankType}
                                                         placeholder="QuestionBank Type"
                                                         onChange={(e) => { questionBankTypeHandleChange(e) }}>
                                                         <Option value="Logical">Logical</Option>

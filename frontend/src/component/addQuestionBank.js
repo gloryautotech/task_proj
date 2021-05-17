@@ -172,7 +172,7 @@ function AddQuestionBank() {
                                             placeholder="QuestionBank Type"
                                             onChange={(e) => { questionBankTypeHandleChange(e) }}>
                                             <Option value="Logical">Logical</Option>
-                                            <Option value="Screening"> Screening</Option>
+                                            <Option value="screening"> Screening</Option>
                                             <Option value="Technical">Technical</Option>
                                         </Select>
                                     </Form.Item>

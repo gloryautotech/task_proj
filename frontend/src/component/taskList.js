@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Space, Card, Button, Input, Spin } from 'antd';
+import { Layout, Space, Card, Button, Input, Spin,message } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 import PageHeader from './pageHeader';
@@ -187,15 +187,15 @@ function DashBoard3(props) {
                             <Title>Task List</Title>
                             {taskList ? (
                                 taskList.map((taskList) => (
-                                    <div style={{ blockSize: 250 }}>
+                                    <div style={{marginTop:10}}>
 
-                                        <Card style={{ borderRadius: 20, backgroundColor: '#efefef', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)' }} >
+                                        <Card hoverable style={{ borderRadius: 20, backgroundColor: '#efefef', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)' }} >
 
                                             <div style={{ display: 'block' }}>{taskList.taskName}</div>
                                             <Space style={{ float: 'right', marginBottom: 5 }}>
                                                 <Button style={{ borderRadius: 50 }} onClick={() => { setExpanded(true); handleIndividual(taskList._id) }}> Know more</Button>
 
-                                                <Button style={{ borderRadius: 50 }} onClick={() => { setExpanded(false) }}>Close</Button>
+                                                <Button style={{ borderRadius: 50, }} onClick={() => { setExpanded(false) }}>Close</Button>
                                             </Space>
                                             <div style={{ display: 'block' }}>
                                                 {
@@ -204,7 +204,7 @@ function DashBoard3(props) {
 
                                                         <Input onChange={onEmailChangeHandle}></Input>
                                                         <h5 style={{ color: 'red' }} hidden={!isNotEmail}>{error}</h5>
-                                                        <Button type='primary' onClick={() => { sendTask(taskList._id) }} disabled={isNotEmail}>Submit</Button>
+                                                        <Button type='primary' style={{marginTop:10}} onClick={() => { sendTask(taskList._id);message.success('Submitted') }} disabled={isNotEmail}>Submit</Button>
                                                     </li> : '' : ''
                                                 }
                                             </div>
