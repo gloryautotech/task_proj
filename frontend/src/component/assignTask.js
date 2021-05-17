@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Card, Button, Input, Form, Layout } from 'antd';
+import { Card, Button, Input, Form, Layout,message } from 'antd';
 import axios from 'axios';
 import styles from './styles/style.module.css';
 import { useForm } from 'antd/lib/form/Form';
@@ -91,6 +91,7 @@ function GivenTask(props) {
     const startTask = () => {
         console.log("admid id on start", currentUserTaskId)
         setisStart(true)
+        //  history.push('/compiler')
     }
     const sumbitTask = () => {
 
@@ -167,15 +168,15 @@ function GivenTask(props) {
 
                                 <Card style={{ borderRadius: 20, backgroundColor: '#efefef', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)' }} >
 
-                                    <div style={{ float: 'left' }}>{taskDetalis.taskName}</div>
-
+                                    <div style={{ float: 'left' }}>Task Name: {taskDetalis.taskName}</div>
+                                    <br/>
                                     <div style={{ float: 'left' }}>
                                         {
 
-                                            <li>{taskDetalis.tasDescription}
+                                            <li>Task Description: {taskDetalis.tasDescription}
                                             </li>}
                                         {isStart ? <div>{taskDetalis.taskType == 'Project' ?<div><Input onChange={(e) => { setgitLink(e.target.value) }}></Input>
-                                            <Button onClick={e=>sumbitTask()}>Submit</Button></div>:<div></div>}
+                                            <Button onClick={e=>{sumbitTask();message.success('Submitted')}}>Submit</Button></div>:<div></div>}
                                         </div> : <Button onClick={e=>startTask()}>Start</Button>}
                                     </div>
 

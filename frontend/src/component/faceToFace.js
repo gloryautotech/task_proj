@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, DatePicker, Select, Layout } from 'antd';
+import { Form, Input, Button, DatePicker, Select, Layout,Row,Col,Card,Image,message } from 'antd';
 import styles from './styles/style.module.css';
 import { useHistory } from "react-router";
 import moment from 'moment';
@@ -132,55 +132,66 @@ function SignUp() {
                     </Sider>
                     <Content style={{ padding: 20 }}>
                         <div style={{ padding: 20 }}>
+                            <Row justify="center" align="middle" style={{ minHeight: '70vh' }}>
+                                <Col>
+                                    <Card style={{ boxShadow: "5px 8px 24px 5px rgba(208, 216, 243, 0.6)", borderRadius: 20, width: 600, }}>
+                                        <Form {...formItemLayout} form={form} onFinish={e => submit()} name="googleMeet" style={{ width: 400 }} scrollToFirstError>
+                                        <Image style={{ marginLeft: 250 }} width={300} src={require('../img/facetoface.jpg')} preview={false}></Image>
+                                            <Form.Item
 
-                            <Form {...formItemLayout} form={form} onFinish={e=>submit()} name="googleMeet" style={{ width: 400 }} scrollToFirstError>
-                                <Form.Item
-                        label='User Email'
-                        name='useremail'
-                        rules={[
-                            {
-                                type: "email",
-                                message: 'Please Enter a Valid Email'
-                            },
-                            {
-                                required: true,
-                                message: 'Please enter your Email'
-                            }
-                        ]}>
-                        <Input
-                            style={{ width: 270, borderRadius: 10, borderWidth: 2, borderColor: "#191919" }}
-                            onChange={(e) => { setemail(e.target.value) }}></Input>
-                    </Form.Item>
-                    <Form.Item
-                        label='Description'
-                        name='description'
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please enter your Description'
-                            }
-                        ]}>
-                        <Input
-                            style={{ width: 270, borderRadius: 10, borderWidth: 2, borderColor: "#191919" }}
-                            onChange={(e) => { setdescription(e.target.value) }}></Input>
-                    </Form.Item>
-                                <DatePicker
-                                   // format="YYYY-MM-DD HH:mm:ss"
-                                    disabledDate={disabledDate}
-                                    onChange={(date, dateString) => { setstartDate(dateString); setendDateMin(date) }}
-                                    showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                />
-                                <DatePicker
-                                    format="YYYY-MM-DD HH:mm:ss"
-                                    disabledDate={disabledDateEnd}
-                                   // disabledTime={disabledDateTimeEnd}
-                                    onChange={(date, dateString) => { setendDate(dateString) }}
-                                    showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                />
-                                <Form.Item {...formItemLayout} style={{ marginLeft: 300 }}>
-                                    <Button type='primary' htmlType="submit" className={styles.submit} >Submit</Button>
-                                </Form.Item>
-                            </Form>
+                                                name='useremail'
+                                                style={{ marginTop: -300 }}
+                                                rules={[
+                                                    {
+                                                        type: "email",
+                                                        message: 'Please Enter a Valid Email'
+                                                    },
+                                                    {
+                                                        required: true,
+                                                        message: 'Please enter your Email'
+                                                    }
+                                                ]}>
+                                                <Input
+                                                    style={{ width: 200, borderRadius: 5,  }}
+                                                    placeholder='User Email'
+                                                    onChange={(e) => { setemail(e.target.value) }}></Input>
+                                            </Form.Item>
+                                            <Form.Item
+
+                                                name='description'
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: 'Please enter your Description'
+                                                    }
+                                                ]}>
+                                                <Input
+                                                    style={{ width: 200, borderRadius: 5,  }}
+                                                    placeholder='Description'
+                                                    onChange={(e) => { setdescription(e.target.value) }}></Input>
+                                            </Form.Item>
+                                            <DatePicker
+                                                // format="YYYY-MM-DD HH:mm:ss"
+                                                placeholder='Start date'
+                                                disabledDate={disabledDate}
+                                                onChange={(date, dateString) => { setstartDate(dateString); setendDateMin(date) }}
+                                                showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                            /><br/><br/>
+                                            <DatePicker
+                                                placeholder='End date'
+                                                format="YYYY-MM-DD HH:mm:ss"
+                                                disabledDate={disabledDateEnd}
+                                                // disabledTime={disabledDateTimeEnd}
+                                                onChange={(date, dateString) => { setendDate(dateString) }}
+                                                showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                            />
+                                            <Form.Item {...formItemLayout} style={{ marginLeft: 60 }}>
+                                                <Button type='primary' htmlType="submit" style={{ marginTop: 20, }} onClick={()=>{message.success('Submitted')}} >Submit</Button>
+                                            </Form.Item>
+                                        </Form>
+                                    </Card>
+                                </Col>
+                            </Row>
                         </div>
                     </Content>
                 </Layout>

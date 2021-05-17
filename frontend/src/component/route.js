@@ -18,6 +18,7 @@ import questionPaper from "./questionPaper";
 import faceToFace from "./faceToFace";
 import userTask from "./userTask";
 import round from "./round";
+import compiler from './compiler'
 const {Content } = Layout;
 
 function RouteJs() {
@@ -45,6 +46,7 @@ function RouteJs() {
 				<Route path="/questionpaper" exact component={questionPaper} />
 				<Route path="/usertask" exact component={userTask} />
 				<Route path="/facetoface" exact component={faceToFace} />
+				<Route path='/compiler' exact component={compiler}/>
 				</div>
 			</Content>
 </Router>

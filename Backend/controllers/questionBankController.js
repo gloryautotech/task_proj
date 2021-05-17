@@ -80,6 +80,8 @@ let createQuestionBank = (req, res) => {
 let viewByQuestionBankType = (req, res) => {
     var v = req.body.questionBankType;
     console.log("questionBankType",v)
+    console.log("result", req.body.questionBankLevel)
+    console.log("req.body.limit",req.body.limit)
     questionBank.find({ $and :[{'questionBankType': req.body.questionBankType},{'questionLevel': req.body.questionBankLevel}] }, (err, result) => {
         if (err) {
             logger.log('viewByQuestionBankType',req, err,req.body,res)
@@ -91,6 +93,7 @@ let viewByQuestionBankType = (req, res) => {
             res.send(apiResponse)
         }
         else {
+            console.log("result",result)
             let apiResponse = response.respons(true,constants.messages.SUCCESS,constants.constants.HTTP_SUCCESS,result)
             res.send(apiResponse)
         }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Card, Spin, Form, Input, Select, Button } from 'antd';
+import { Layout, Card, Spin, Form, Input, Select, Button,message } from 'antd';
 import {  Col, Row } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import style from "./styles/style.common.css";
@@ -36,7 +36,7 @@ function AssignQuestionBank() {
     const questionBankTypeHandleChange = (value) => {
         console.log('questionBankType', value)
         setquestionBankType(value)
-    }
+    }       
 
     const questionBankLevelHandleChange = (value) => {
         console.log('questionBankLevel', value)
@@ -77,6 +77,9 @@ function AssignQuestionBank() {
     }, [])
 
     const submit = () => {
+        console.log("questionBankType1",questionBankType)
+        console.log("questionLevel1",questionLevel)
+        console.log("noOfQuestion1",noOfQuestion)
         setisLoading(true)
         axios({
             'method': 'post',
@@ -178,6 +181,7 @@ function AssignQuestionBank() {
         .catch(function (error) {
             console.log(error);
         });
+        message.success('Submitted')
         
     }
 
@@ -234,7 +238,7 @@ function AssignQuestionBank() {
                                         >
                                             <Form form={form} name="assignQuestion" onFinish={submit}>
                                                 <Form.Item
-                                                    
+                                                        
                                                     name='email'
                                                     rules={[
                                                         {
@@ -253,7 +257,7 @@ function AssignQuestionBank() {
                                                 </Form.Item>
                                                 <Form.Item name="questionBankType"  rules={[{ required: true, message: "Plese Select QuestionBank Type" }]} >
                                                     <Select
-                                                        defaultValue={questionBankType}
+                                                        // defaultValue={questionBankType}
                                                         placeholder="QuestionBank Type"
                                                         onChange={(e) => { questionBankTypeHandleChange(e) }}>
                                                         <Option value="Logical">Logical</Option>

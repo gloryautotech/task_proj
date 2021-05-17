@@ -52,7 +52,7 @@ function LeftSideBar(props) {
     <div>
       {isAdmin ?
         <Menu theme="dark" defaultSelectedKeys={[props.currentkey]} mode="inline">
-          <Menu.Item key="1">
+          <Menu.Item key="1" style={{marginTop:0}}>
             <HomeOutlined />
             <span>Home</span>
             <Link to="/round" />
@@ -93,7 +93,7 @@ function LeftSideBar(props) {
         </Menu>
         :<div>{isUser?
         <Menu theme="dark" defaultSelectedKeys={[props.currentkey]} mode="inline">
-        <Menu.Item key="1">
+        <Menu.Item key="1" style={{marginTop:0}}>
           <HomeOutlined />
           <span>Home</span>
           <Link to="/questionpaper" />

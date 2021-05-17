@@ -20,6 +20,7 @@ function DashBoard1() {
     const [currentTaskId, setcurrentTaskId] = useState('')
     const [isData, setisData] = useState(false)
     const [isTask, setisTask] = useState(false)
+    const [userEmail,setUserEmail]=useState([])
 
     const onCollapse = (collapsed) => {
         setcollapsed(collapsed)
@@ -49,6 +50,8 @@ function DashBoard1() {
                 }
             }).then(response => {
                 console.log('response.data viewuserlist', response.data.data)
+                console.log('useremail',response.data.data.email)
+                setUserEmail(response.data.data.email)
                 axios({
                     'method': 'GET',
                     'url': `http://localhost:4000/api/v1/assigntaskuserlist/viewbyassignuseremail/${response.data.data.email}`,
@@ -98,6 +101,7 @@ function DashBoard1() {
                     <Content style={{ padding: 20 }}>
                         <div className="site-layout-content">
                             <Title >Assign Task</Title>
+                            {/* <Title level={2}>Welcome  {userEmail}</Title> */}
                             {allTask ? <div>
                                 {
                                     allTask.map(allTask => <div className="technology_card"
